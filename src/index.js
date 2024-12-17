@@ -1,12 +1,19 @@
 import express from 'express';
 import cors from 'cors';
 
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true,
+    optionSuccessStatus: 200
+};
 
 const app = express();
 
-app.get('/', (req, res) => {
+app.use(cors(corsOptions));
+
+app.get('/api', (req, res) => {
     res.send('Server is running');
+    console.log('Server is running');
 });
 
 const port = process.env.PORT || 5001;
