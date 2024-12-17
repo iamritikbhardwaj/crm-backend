@@ -1,3 +1,3 @@
 # crm-backend
 
-This is the backend for crm project
+This is the backend for crm projects
