@@ -8,15 +8,16 @@ import { DBConnect } from './dbConfig/dbConfig.js';
 DBConnect();
 const app = express();
 
-const corsOptions = {
-    origin: "http://localhost:3000",
-    credentials: true,
-  };
 
 app.use(express.json());
 app.use("/api/users", router);
 
-app.use(cors(corsOptions));
+app.use(cors({
+    origin: 'http://localhost:3000', // Frontend URL
+    methods: 'GET,POST,PUT,DELETE', // Allowed HTTP methods
+    allowedHeaders: '*', // Allowed headers
+    credentials: true, // Allow cookies/credentials
+  }));
 
 app.get('/api', (req, res) => {
     res.send('Server is running');
