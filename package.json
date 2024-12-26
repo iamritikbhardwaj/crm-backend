@@ -19,6 +19,12 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-async-handler": "^1.2.0",
+    "mariadb": "^3.4.0",
+    "sequelize": "^6.37.5",
+    "uuid": "^11.0.3",
+    "zod": "^3.24.1"
   }
 }
