@@ -2,18 +2,23 @@ import asyncHandler from "express-async-handler"
 import { userModel } from "../models/userModel.js";
 
 export const createUser = asyncHandler(async (req, res) => {
-    const userData = req.body;
-    console.log(userData, 'userData');
+    const {userName: name, email, password, phoneNumber: phone, profile, status} = req.body;
+    console.log(name, 'userData');
+    const userData = {name, phone, profile, email, password, status};
+    const id = req.params.id;
     const user = null;
-    if(req.params.id) {
+    try {if(id) {
         log('update user')
-        user = await userModel.update(userData, {
+        user = await userModel.update(
+            userData, {
             where: {
-                id: userData.id
+                id: id
             }
         })
     } else {
+        console.log("creatingUser");
         user = await userModel.create(userData);
+        console.log(user, 'user');
     if (!user) {
         res.status(400);
         throw new Error('Invalid user data');
@@ -25,7 +30,13 @@ export const createUser = asyncHandler(async (req, res) => {
             OUTPUT: user
         });
     }
-    }
+    }} catch (error) {
+        if (error.name === "SequelizeValidationError") {
+          console.error("Validation Error:", error.errors);
+        } else {
+          console.error("Unexpected Error:", error);
+        }
+      }
 });
 
 export const getAllUsers = asyncHandler(async (req, res) => {

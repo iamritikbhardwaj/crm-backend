@@ -6,6 +6,13 @@ import { CLIENT_URL } from './constants.js';
 
 DBConnect();
 const app = express();
+const corsOptions = {
+    origin: '*',  // Allow only this origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use("/api/users", router);
@@ -21,10 +28,4 @@ app.listen(port, () => {
     console.log(`server started on port ${port}`);
 });
 
-const corsOptions = {
-    origin: CLIENT_URL,  // Allow only this origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-};
 
-app.use(cors(corsOptions));
