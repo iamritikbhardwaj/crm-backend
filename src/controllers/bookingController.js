@@ -1,4 +1,4 @@
-import { asyncHandler } from "express-async-handler";
+import asyncHandler from "express-async-handler";
 import { bookingModel } from "../models/bookingModel.js";
 
 export const getAllBooking = asyncHandler(async (req, res) => {

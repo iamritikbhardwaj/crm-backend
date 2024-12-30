@@ -1,35 +1,34 @@
-import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import sequelize from "../dbConfig/dbConfig.js";
-
-export const agentSchema = z.object({
-    Agent: z.string(),
-    Status: z.string(),
-});
+import { DataTypes } from "sequelize";
 
 export const agentModel = sequelize.define(
     "agent",
     {
         agent_id: {
-            type: uuidv4(),
+            type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
-            autoIncrement: true,
+            defaultValue: uuidv4(),
         },
-        ...agentSchema.shape,
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        status: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
     },
     {
-        tableName: "agent",
+        timestamps: true,
+        createdAt: "created_at",
+        updatedAt: "updated_at",
     }
 );
 
-( async () => {
-    try{
-        await agentModel.sync
-        console.log("Agent Model Synced");
-    } catch (error) {
-        console.log(error);
-    }
+(async () => {
+    await sequelize.sync();
 })();
 
 export default agentModel;

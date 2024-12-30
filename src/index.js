@@ -3,11 +3,17 @@ import cors from 'cors';
 import router from './routes/userRouter.js';
 import { DBConnect } from './dbConfig/dbConfig.js';
 import { CLIENT_URL } from './constants.js';
+import dbInit from './dbConfig/dbInit.js';
+import resetDatabase from './dbConfig/resetDatabase.js';
 
+dbInit();
+// resetDatabase();
 DBConnect();
+
+
 const app = express();
 const corsOptions = {
-    origin: '*',  // Allow only this origin
+    origin: CLIENT_URL,  // Allow only this origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 };

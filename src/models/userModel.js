@@ -1,4 +1,4 @@
-import { Sequelize, DataTypes } from "sequelize";
+import { DataTypes } from "sequelize";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import sequelize from "../dbConfig/dbConfig.js";
@@ -16,10 +16,10 @@ export const userModel = sequelize.define(
         "user",
         {
             id: {
-                type: DataTypes.UUID,
+                type: DataTypes.STRING,
                 allowNull: false,
                 primaryKey: true,
-                defaultValue: DataTypes.UUIDV4,
+                defaultValue: uuidv4(),
             },
             name: {
                 type: DataTypes.STRING,
@@ -54,11 +54,3 @@ export const userModel = sequelize.define(
             updatedAt: "updatedAt",
         }
     );
-    (async () => {
-        try {
-            await userModel.sync();
-            console.log("userModel synchronized successfully.", userModel);
-        } catch (error) {
-            console.error("Error synchronizing the database:", error);
-        }
-    })();    

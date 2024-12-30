@@ -2,22 +2,29 @@ import asyncHandler from "express-async-handler"
 import { userModel } from "../models/userModel.js";
 
 export const createUser = asyncHandler(async (req, res) => {
-    const {userName: name, email, password, phoneNumber: phone, profile, status} = req.body;
+    const { userName: name, email, password, phoneNumber: phone, profile, status} = req.body;
     console.log(name, 'userData');
     const userData = {name, phone, profile, email, password, status};
-    const id = req.params.id;
-    const user = null;
-    try {if(id) {
-        log('update user')
-        user = await userModel.update(
+    const id = req.query;
+    try {if(req.query.hasOwnProperty('id')) {
+        console.log('update user')
+        const resp = await userModel.update(
             userData, {
-            where: {
-                id: id
-            }
+            where: id
         })
+        if(resp) {
+            res.status(200).json({
+                STATUS: 'SUCCESS',
+                MESSAGE: 'User updated successfully',
+                OUTPUT: resp
+            });
+        } else {
+            res.status(400);
+            throw new Error('Invalid user data');
+        }
     } else {
         console.log("creatingUser");
-        user = await userModel.create(userData);
+        const user = await userModel.create(userData);
         console.log(user, 'user');
     if (!user) {
         res.status(400);

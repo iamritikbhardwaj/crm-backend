@@ -1,45 +1,72 @@
+import { DataTypes } from 'sequelize';
 import sequelize from '../dbConfig/dbConfig.js';
-import { z } from "zod";
-
-export const bookingSchema = z.object({
-    BookingDate: z.string(),
-    SalesSPOC: z.string(),
-    CustomerName: z.string(),
-    ArrivalDate: z.string(),
-    DepartureDate: z.string(),
-    TravelMonth: z.string(),
-    CountryCode: z.string(),
-    OrderValue: z.string(),
-    WhatsappNumber: z.string(),
-});
+import { v4 as uuidv4 } from "uuid";
 
 export const bookingModel = sequelize.define(
         "booking",
         {
             booking_id: {
-                type: uuidv4(),
+                type: DataTypes.STRING,
                 allowNull: false,
                 primaryKey: true,
-                autoIncrement: true,
+                defaultValue: uuidv4(),
             },
-            ...bookingSchema.shape,
+            bookingDate: {
+                type: DataTypes.DATE,
+                allowNull: false,
+            },
+            salesSpoc: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            agent: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            customerName: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            paxAdult: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            paxChild: {
+                type: DataTypes.JSON,
+                allowNull: false,
+                defaultValue: [],
+            },
+            childAge: {
+                type: DataTypes.VIRTUAL,
+                allowNull: false,
+                get() {
+                    return this.paxChild ? this.paxChild.length : 0;
+                },
+            },
+            arrivalDate: {
+                type: DataTypes.DATE,
+                allowNull: false,
+            },
+            departureDate: {
+                type: DataTypes.DATE,
+                allowNull: false,
+            },
+            countryCode: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            constactDetais: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            orderValue: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
         },
         {
-            tableName: "booking",
-        },
-        Booking.hasOne(destModel(sequelize), (
-            {
-                foreignKey: "destination_id",
-            }
-        )),
-        Booking.hasOne(agentModel(sequelize), (
-            {
-                foreignKey: "agent_id",
-            }
-        ),
-        ))
-
-
-(async () => {
-    await bookingModel.sync();
-})
+            timestamps: true,
+            createdAt: "created_at",
+            updatedAt: "updated_at",
+        }
+        )

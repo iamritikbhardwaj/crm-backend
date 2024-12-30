@@ -1,7 +1,7 @@
-import { asyncHandler } from "express-async-handler";
+import asyncHandler from "express-async-handler";
 import { agentModel } from "../models/agentModel.js";
 
-export const getAllAgent = asyncHandler(async (req, res) => {
+export const getAllAgents = asyncHandler(async (req, res) => {
      console.log('getAllAgent');
     try { const agent = await agentModel.findAll();
      console.log(agent, 'agent');
@@ -22,11 +22,11 @@ export const getAllAgent = asyncHandler(async (req, res) => {
 
 export const createAgent = asyncHandler(async (req, res) => {
      const agentData = req.body;
-     const id = req?.params?.id
+     const id = req?.query?.id;
      console.log(agentData, 'agentData');
      
      try {
-          if(id) {
+          if(req.query.hasOwnProperty('id')) {
           log('update agent')
           const agent = await agentModel.update(agentData, {
                where: {
@@ -43,7 +43,8 @@ export const createAgent = asyncHandler(async (req, res) => {
                     OUTPUT: agent
                });
           }
-     }else {const agent = await agentModel.create(agentData);
+     } else {
+          const agent = await agentModel.create(agentData);
      if (!agent) {
           res.status(400);
           throw new Error('Invalid agent data');
@@ -65,7 +66,7 @@ export const createAgent = asyncHandler(async (req, res) => {
 });
 
 export const deleteAgent = asyncHandler(async (req, res) => {
-     const id = req?.params?.id;
+     const id = req?.query?.id;
      console.log(id, 'id');
      try {
           const agent = await agentModel.destroy({

@@ -1,29 +1,34 @@
+import { DataTypes } from 'sequelize';
 import sequelize from '../dbConfig/dbConfig.js';
-import { z } from "zod";
-
-export const supSchema = z.object({
-    Supplier: z.string(),
-    Status: z.string(),
-});
+import { v4 as uuidv4 } from "uuid";
 
 export const supModel = sequelize.define(
     "supplier",
     {
         supplier_id: {
-            type: uuidv4(),
+            type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
-            autoIncrement: true,
+            defaultValue: uuidv4(),
         },
-        ...supSchema.shape,
+        name:  {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        status: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
     },
     {
-        tableName: "supplier",
+        timestamps: true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
     }
 );
 
-( async () => {
-    await supModel.sync();
+(async () => {
+    await sequelize.sync();
 })();
 
 export default supModel;

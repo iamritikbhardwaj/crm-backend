@@ -1,5 +1,10 @@
 import { Router } from "express";
 import { createUser, getAllUsers, deleteUser, login } from "../controllers/userController.js";
+import { createAgent, getAllAgents, deleteAgent } from "../controllers/agentController.js";
+import { createSupp, getAllSupp, deleteSupp } from "../controllers/suppController.js";
+import { createDest, getAllDest, deleteDest } from "../controllers/destController.js";
+import { createTrip, getAllTrip } from "../controllers/tripController.js";
+import { createBooking, getAllBooking, deleteBooking } from "../controllers/bookingController.js";
 
 const router = Router();
 
@@ -12,28 +17,27 @@ router.delete('/deleteUser/:id', deleteUser);
 router.post('/login', login);
 
 // ! destination
-router.post("/createDestination", createUser);
-router.get('/getAllDestinations', getAllUsers);
-router.delete('/deleteDestination/:id', deleteUser);
+router.post("/createDestination", createDest);
+router.get('/getAllDestinations', getAllDest);
+router.delete('/deleteDestination/:id', deleteDest);
 
 // ! trip
-router.post("/createTrip", createUser);
-router.get('/getAllTrips', getAllUsers);
-router.delete('/deleteTrip/:id', deleteUser);
+router.post("/createTrip", createTrip);
+router.get('/getAllTrips', getAllTrip);
 
 // ! booking
-router.post("/createBooking", createUser);
-router.get('/getAllBookings', getAllUsers);
-router.delete('/deleteBooking/:id', deleteUser);
+router.post("/createBooking", createBooking);
+router.get('/getAllBookings', getAllBooking);
+router.delete('/deleteBooking/:id', deleteBooking);
 
 // ! agent
-router.post("/createAgent", createUser);
-router.get('/getAllAgents', getAllUsers);
-router.delete('/deleteAgent/:id', deleteUser);
+router.post("/createAgent", createAgent);
+router.get('/getAllAgents', getAllAgents);
+router.delete('/deleteAgent/:id', deleteAgent);
 
 // ! supplier 
-router.post("/createSupplier", createUser);
-router.get('/getAllSuppliers', getAllUsers);
-router.delete('/deleteSupplier/:id', deleteUser);
+router.post("/createSupplier", createSupp);
+router.get('/getAllSuppliers', getAllSupp);
+router.delete('/deleteSupplier/:id', deleteSupp);
 
 export default router;

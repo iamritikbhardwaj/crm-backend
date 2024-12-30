@@ -1,4 +1,4 @@
-import { asyncHandler } from "express-async-handler";
+import asyncHandler from "express-async-handler";
 import { destModel } from "../models/destModel.js";
 
 export const getAllDest = asyncHandler(async (req, res) => {
@@ -21,16 +21,16 @@ export const getAllDest = asyncHandler(async (req, res) => {
 });
 
 export const createDest = asyncHandler(async (req, res) => {
-    const destData = req.body;
-    const id = req?.params?.id
-    console.log(destData, 'destData');
+    const {destination, currency} = req.body;
+    const id = req?.query?.id;
+    console.log(destination, 'destData');
     
     try {
-        if(id) {
-        log('update dest')
-        const dest = await destModel.update(destData, {
+        if(req.query.hasOwnProperty('id')) {
+        console.log('update dest', req.params)
+        const dest = await destModel.update({destination: destination, currency: currency}, {
             where: {
-                id: id
+                destination_id: id
             }
         })
         if(!dest) {
@@ -43,7 +43,7 @@ export const createDest = asyncHandler(async (req, res) => {
                 OUTPUT: dest
             });
         }
-    }else {const dest = await destModel.create(destData);
+    }else {const dest = await destModel.create({destination: destination, currency: currency});
     if (!dest) {
         res.status(400);
         throw new Error('Invalid destination data');
@@ -65,11 +65,12 @@ export const createDest = asyncHandler(async (req, res) => {
 });
 
 export const deleteDest = asyncHandler(async (req, res) => {
-    const id = req.params.id;
+    const id = req?.params?.id;
+    console.log(id, 'id');
     try {
         const dest = await destModel.destroy({
         where: {
-            id: id
+            destination_id: id
         }
     });
     res.status(200).json({

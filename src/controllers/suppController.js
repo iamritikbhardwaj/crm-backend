@@ -1,4 +1,4 @@
-import { asyncHandler } from "express-async-handler";
+import asyncHandler from "express-async-handler";
 import { supModel } from "../models/supModel.js";
 
 export const getAllSupp = asyncHandler(async (req, res) => {
@@ -21,7 +21,7 @@ export const getAllSupp = asyncHandler(async (req, res) => {
 });
 
 export const deleteSupp = asyncHandler(async (req, res) => {
-    const id = req?.params?.id;
+    const id = req?.query?.id;
     console.log(id, 'id');
     try {
          const supp = await supModel.destroy({
@@ -46,11 +46,11 @@ export const deleteSupp = asyncHandler(async (req, res) => {
 
 export const createSupp = asyncHandler(async (req, res) => {
     const suppData = req.body;
-    const id = req?.params?.id
+    const id = req?.query?.id
     console.log(suppData, 'suppData');
     
     try {
-        if(id) {
+        if(req.query.hasOwnProperty('id')) {
         log('update supp')
         const supp = await supModel.update(suppData, {
             where: {

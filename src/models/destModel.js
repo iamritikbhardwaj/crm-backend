@@ -1,29 +1,38 @@
+import { DataTypes } from 'sequelize';
 import sequelize from '../dbConfig/dbConfig.js';
-import { z } from "zod";
-
-export const destSchema = z.object({
-    Destination: z.string(),
-    CountryCode: z.string(),
-});
+import { v4 as uuidv4 } from "uuid";
 
 export const destModel = sequelize.define(
+
     "destination",
     {
         destination_id: {
-            type: uuidv4(),
+            type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
-            autoIncrement: true,
+            defaultValue: uuidv4(),
         },
-        ...destSchema.shape,
+        destination: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        currency: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            
+        },
+        status: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: 'active',
+        },
+        
     },
     {
-        tableName: "destination",
+        timestamps: true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
     }
 );
-
-( async () => {
-    await destModel.sync();
-})();
 
 export default destModel;

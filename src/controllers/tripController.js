@@ -1,5 +1,6 @@
-import { asyncHandler } from "express-async-handler";
+import asyncHandler from "express-async-handler";
 import { tripModel } from "../models/tripModel.js";
+import { DataTypes } from 'sequelize';
 
 export const getAllTrip = asyncHandler(async (req, res) => {
     console.log('getAllTrip');
