@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { destModel } from "../models/destModel.js";
+import { v4 as uuidv4 } from "uuid";
 
 export const getAllDest = asyncHandler(async (req, res) => {
     console.log('getAllDest');
@@ -43,7 +44,9 @@ export const createDest = asyncHandler(async (req, res) => {
                 OUTPUT: dest
             });
         }
-    }else {const dest = await destModel.create({destination: destination, currency: currency});
+    }else {
+        console.log('create dest')
+        const dest = await destModel.create({destination_id: uuidv4(), destination: destination, currency: currency});
     if (!dest) {
         res.status(400);
         throw new Error('Invalid destination data');

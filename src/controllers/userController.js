@@ -1,5 +1,41 @@
 import asyncHandler from "express-async-handler"
 import { userModel } from "../models/userModel.js";
+import { generateToken } from "../middlewares/auth.js";
+
+export const handleUserLogin = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+    const user = await userModel.findOne({
+        where: {
+            email: email
+        }
+    })
+    if(!user) {
+        res.status(404).json({
+            STATUS: 'FAIL',
+            MESSAGE: 'User not found',
+            OUTPUT: null
+        });
+    } else {
+       if(user.password === password) {
+        const token = await generateToken(user.dataValues); // to create a jwt token
+        const options = {
+            maxAge: 8 * 60 * 60 * 1000,
+            sameSite: 'Strict'
+        }
+        res.status(200).cookie('token', token, options).json({
+            STATUS: 'SUCCESS',
+            MESSAGE: 'User logged in successfully',
+            OUTPUT: user
+        });
+    } else {
+        res.status(401).json({
+            STATUS: 'FAIL',
+            MESSAGE: 'Invalid password',
+            OUTPUT: null
+        });
+    }
+    }
+})
 
 export const createUser = asyncHandler(async (req, res) => {
     const { userName: name, email, password, phoneNumber: phone, profile, status} = req.body;

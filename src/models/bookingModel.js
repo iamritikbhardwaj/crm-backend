@@ -14,6 +14,11 @@ export const bookingModel = sequelize.define(
             bookingDate: {
                 type: DataTypes.DATE,
                 allowNull: false,
+                defaultValue: new Date(),
+            },
+            destinatio: {
+                type: DataTypes.STRING,
+                allowNull: false,
             },
             salesSpoc: {
                 type: DataTypes.STRING,
@@ -55,7 +60,7 @@ export const bookingModel = sequelize.define(
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            constactDetais: {
+            contactDetais: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
@@ -63,6 +68,18 @@ export const bookingModel = sequelize.define(
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
+            docsName: {
+                type: DataTypes.JSON,
+                allowNull: false,
+                defaultValue: [],
+            },
+            docs: {
+                type: DataTypes.BLOB,
+                allowNull: false,
+                get() {
+                    return this.docsName ? this.docsName.length : 0;
+                }
+            }
         },
         {
             timestamps: true,

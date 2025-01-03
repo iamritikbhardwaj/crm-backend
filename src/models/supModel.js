@@ -6,7 +6,7 @@ export const supModel = sequelize.define(
     "supplier",
     {
         supplier_id: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUID,
             allowNull: false,
             primaryKey: true,
             defaultValue: uuidv4(),
@@ -18,6 +18,7 @@ export const supModel = sequelize.define(
         status: {
             type: DataTypes.STRING,
             allowNull: false,
+            tolowerCase: true
         },
     },
     {

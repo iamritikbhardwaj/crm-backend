@@ -3,10 +3,11 @@ import cors from 'cors';
 import router from './routes/userRouter.js';
 import { DBConnect } from './dbConfig/dbConfig.js';
 import { CLIENT_URL } from './constants.js';
-import dbInit from './dbConfig/dbInit.js';
+import cookieParser from 'cookie-parser';
+// import dbInit from './dbConfig/dbInit.js';
 import resetDatabase from './dbConfig/resetDatabase.js';
 
-dbInit();
+// dbInit();
 // resetDatabase();
 DBConnect();
 
@@ -15,10 +16,13 @@ const app = express();
 const corsOptions = {
     origin: CLIENT_URL,  // Allow only this origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Credentials', 'credentials'],
+    credentials: true
 };
 
 app.use(cors(corsOptions));
+
+app.use(cookieParser());
 
 app.use(express.json());
 app.use("/api/users", router);
