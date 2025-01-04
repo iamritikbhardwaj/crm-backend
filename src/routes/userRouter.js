@@ -27,7 +27,7 @@ router.post("/createTrip", verifyToken, createTrip);
 router.get('/getAllTrips', verifyToken, getAllTrip);
 
 // ! booking
-router.post("/createBooking", verifyToken, createBooking);
+router.post("/createBooking", createBooking);
 router.get('/getAllBookings', verifyToken, getAllBooking);
 router.delete('/deleteBooking/:id', verifyToken, deleteBooking);
 

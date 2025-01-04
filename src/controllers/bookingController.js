@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { bookingModel } from "../models/bookingModel.js";
+import { where } from "sequelize";
 
 export const getAllBooking = asyncHandler(async (req, res) => {
      console.log('getAllBooking');
@@ -18,6 +19,25 @@ export const getAllBooking = asyncHandler(async (req, res) => {
                 OUTPUT: null
           });
      }
+});
+
+export const uploadDocument = asyncHandler(async (req, res) => {
+     const files = req.files;
+     const id = req?.params?.id;
+     console.log(id, 'id');
+     console.log(files, 'files');
+     const file = bookingModel.create({
+          document: files,
+          where: {
+               booking_id: id
+          }
+     })
+     console.log(file, 'files');
+     res.status(200).json({
+          STATUS: 'SUCCESS',
+          MESSAGE: 'Documents uploaded successfully',
+          OUTPUT: files
+     });
 });
 
 export const deleteBooking = asyncHandler(async (req, res) => {
@@ -47,7 +67,7 @@ export const deleteBooking = asyncHandler(async (req, res) => {
 export const createBooking = asyncHandler(async (req, res) => {
      const bookingData = req.body;
      console.log(bookingData, 'bookingData');
-     const id = req?.params?.id
+     const id = req?.query?.id
      console.log(id, 'id');
      try {if(id) {
           log('update booking')

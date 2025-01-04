@@ -21,6 +21,7 @@ export const generateToken = asyncHandler(async (user) => {
 
 export const verifyToken = asyncHandler( async(req, res, next) => {
     try {
+        console.log(req.cookies.token);
         if(!req.cookies.token) {
             return res.status(401).json({
                 STATUS: 'FAIL',
