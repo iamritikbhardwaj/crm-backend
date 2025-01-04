@@ -87,7 +87,7 @@ export const createBooking = asyncHandler(async (req, res) => {
                });
           }
      }
-     else{const booking = await bookingModel.create(bookingData);
+     else{const booking = await bookingModel.create({booking_id: uuidv4(), bookingData});
      if (!booking) {
           res.status(400);
           throw new Error('Invalid booking data');
