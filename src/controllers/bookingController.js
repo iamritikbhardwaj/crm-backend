@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { bookingModel } from "../models/bookingModel.js";
-import { where } from "sequelize";
+import { v4 as uuidv4 } from "uuid";
 
 export const getAllBooking = asyncHandler(async (req, res) => {
      console.log('getAllBooking');
@@ -69,7 +69,8 @@ export const createBooking = asyncHandler(async (req, res) => {
      console.log(bookingData, 'bookingData');
      const id = req?.query?.id
      console.log(id, 'id');
-     try {if(id) {
+     return
+     try {if(req.query.hasOwnProperty('id') && id !== undefined && id !== null) {
           log('update booking')
           const booking = await bookingModel.update(bookingData, {
                where: {

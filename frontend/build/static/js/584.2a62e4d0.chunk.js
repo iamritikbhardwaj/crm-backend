@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkcrm=self.webpackChunkcrm||[]).push([[584],{9584:(e,s,c)=>{c.r(s),c.d(s,{default:()=>r});c(5043);var n=c(579);const r=function(){return(0,n.jsx)("div",{className:"w-screen h-screen flex justify-center items-center",children:(0,n.jsx)("h3",{className:"text-3xl",children:"404 Not Found"})})}}}]);
-//# sourceMappingURL=584.2a62e4d0.chunk.js.map

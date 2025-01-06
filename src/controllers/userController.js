@@ -22,7 +22,7 @@ export const handleUserLogin = asyncHandler(async (req, res) => {
             maxAge: 8 * 60 * 60 * 1000,
             sameSite: 'Strict'
         }
-        res.status(200).cookie('token', token, options).json({
+        res.status(200).cookie('token', token, user, options).json({
             STATUS: 'SUCCESS',
             MESSAGE: 'User logged in successfully',
             OUTPUT: user
