@@ -5,7 +5,6 @@ import { DBConnect } from './dbConfig/dbConfig.js';
 import { CLIENT_URL } from './constants.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
-import { fileURLToPath } from 'url';
 // import dbInit from './dbConfig/dbInit.js';
 import resetDatabase from './dbConfig/resetDatabase.js';
 
