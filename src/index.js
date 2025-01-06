@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import router from './routes/userRouter.js';
 import { DBConnect } from './dbConfig/dbConfig.js';
-import { CLIENT_URL } from './constants.js';
+import { CLIENT_URL, PROD_URL } from './constants.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 // import dbInit from './dbConfig/dbInit.js';
@@ -17,7 +17,7 @@ DBConnect();
 const app = express();
 
 const corsOptions = {
-    origin: CLIENT_URL,  // Allow only this origin
+    origin: process.env.ENVIRONMENT == 'LOCAL' ? CLIENT_URL : PROD_URL,  // Allow only this origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Credentials', 'credentials'],
     credentials: true
