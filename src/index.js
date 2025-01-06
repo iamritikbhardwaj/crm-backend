@@ -16,14 +16,14 @@ DBConnect();
 
 const app = express();
 
-// const corsOptions = {
-//     origin: '*',  // Allow only this origin
-//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//     allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Credentials', 'credentials'],
-//     credentials: true
-// };
+const corsOptions = {
+    origin: '*',  // Allow only this origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Credentials', 'credentials'],
+    credentials: true
+};
 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use(cookieParser());
 
