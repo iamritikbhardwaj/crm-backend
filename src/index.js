@@ -17,7 +17,7 @@ DBConnect();
 const app = express();
 
 const corsOptions = {
-    origin: process.env.ENVIRONMENT == 'LOCAL' ? CLIENT_URL : PROD_URL,  // Allow only this origin
+    origin: '*',  // Allow only this origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Credentials', 'credentials'],
     credentials: true
