@@ -65,14 +65,26 @@ export const deleteBooking = asyncHandler(async (req, res) => {
 });
 
 export const createBooking = asyncHandler(async (req, res) => {
-     const bookingData = req.body;
-     console.log(bookingData, 'bookingData');
+     const { destination, salesSpoc, agent, customerName, arrivalDate,
+     departureDate,
+     pax,
+     orderValue,
+     countryCode,
+     whatsappNumber} = req.body;
      const id = req?.query?.id
      console.log(id, 'id');
-     return
-     try {if(req.query.hasOwnProperty('id') && id !== undefined && id !== null) {
+     
+     try {
+          if(req.query.hasOwnProperty('id') && id !== undefined && id !== null) {
           log('update booking')
-          const booking = await bookingModel.update(bookingData, {
+          const booking = await bookingModel.update({destination: destination, 
+               salesSpoc: salesSpoc, 
+               agent: agent, customerName: customerName, arrivalDate: arrivalDate,
+               departureDate: departureDate,
+               pax: pax,
+               orderValue: orderValue,
+               countryCode: countryCode,
+               whatsappNumber: whatsappNumber}, {
                where: {
                     id: id
                }
@@ -88,7 +100,14 @@ export const createBooking = asyncHandler(async (req, res) => {
                });
           }
      }
-     else{const booking = await bookingModel.create({booking_id: uuidv4(), bookingData});
+     else{const booking = await bookingModel.create({booking_id: uuidv4(), destination: destination, 
+          salesSpoc: salesSpoc, 
+          agent: agent, customerName: customerName, arrivalDate: arrivalDate,
+          departureDate: departureDate,
+          pax: pax,
+          orderValue: orderValue,
+          countryCode: countryCode,
+          whatsappNumber: whatsappNumber});
      if (!booking) {
           res.status(400);
           throw new Error('Invalid booking data');
