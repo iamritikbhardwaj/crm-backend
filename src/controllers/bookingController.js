@@ -42,11 +42,11 @@ export const uploadDocument = asyncHandler(async (req, res) => {
 
 export const deleteBooking = asyncHandler(async (req, res) => {
      const id = req?.params?.id;
-     console.log(id, 'id');
+     console.log(req.params, 'id');
      try {
           const booking = await bookingModel.destroy({
                where: {
-                    id: id
+                    booking_id: id
                }
           });
           res.status(200).json({
