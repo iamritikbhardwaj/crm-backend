@@ -17,6 +17,10 @@ export const bookingModel = sequelize.define(
       allowNull: false,
       defaultValue: sequelize.fn('NOW'), // Default to current timestamp
     },
+    status: { // where are we setting this
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     destination: {
       type: DataTypes.STRING,
       allowNull: false,
