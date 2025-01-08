@@ -49,11 +49,22 @@ export const deleteBooking = asyncHandler(async (req, res) => {
                     booking_id: id
                }
           });
-          res.status(200).json({
+
+          console.log(booking, 'booking');
+
+          if(booking){res.status(200).json({
                STATUS: 'SUCCESS',
                MESSAGE: 'Booking deleted successfully',
                OUTPUT: booking
           });
+          } else {
+               res.status(404).json({
+                    STATUS: 'FAIL',
+                    MESSAGE: 'Booking not found',
+                    OUTPUT: null
+               });
+          }
+
      } catch (error) {
           console.log(error);
           res.status(500).json({
