@@ -10,7 +10,7 @@ export const handleUserLogin = asyncHandler(async (req, res) => {
         }
     })
     if(!user) {
-        res.status(404).json({
+        res.status(201).json({
             STATUS: 'FAIL',
             MESSAGE: 'User not found',
             OUTPUT: null
@@ -28,7 +28,7 @@ export const handleUserLogin = asyncHandler(async (req, res) => {
             OUTPUT: user
         });
     } else {
-        res.status(401).json({
+        res.status(201).json({
             STATUS: 'FAIL',
             MESSAGE: 'Invalid password',
             OUTPUT: null
