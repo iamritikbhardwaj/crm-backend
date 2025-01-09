@@ -24,7 +24,7 @@ export const destModel = sequelize.define(
         status: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: 'active',
+            defaultValue: 'ACTIVE',
         },
         
     },
