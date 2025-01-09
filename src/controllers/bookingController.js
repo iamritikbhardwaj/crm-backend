@@ -21,25 +21,6 @@ export const getAllBooking = asyncHandler(async (req, res) => {
      }
 });
 
-export const uploadDocument = asyncHandler(async (req, res) => {
-     const files = req.files;
-     const id = req?.params?.id;
-     console.log(id, 'id');
-     console.log(files, 'files');
-     const file = bookingModel.create({
-          document: files,
-          where: {
-               booking_id: id
-          }
-     })
-     console.log(file, 'files');
-     res.status(200).json({
-          STATUS: 'SUCCESS',
-          MESSAGE: 'Documents uploaded successfully',
-          OUTPUT: files
-     });
-});
-
 export const deleteBooking = asyncHandler(async (req, res) => {
      const id = req?.params?.id;
      console.log(req.params, 'id');
@@ -81,10 +62,12 @@ export const createBooking = asyncHandler(async (req, res) => {
      pax,
      orderValue,
      countryCode,
-     whatsappNumber} = req.body;
+     whatsappNumber, documents} = req.body;
      const id = req?.query?.id
      console.log(id, 'id');
-     
+     console.log(documents, 'id');
+
+return     
      try {
           if(req.query.hasOwnProperty('id') && id !== undefined && id !== null) {
           log('update booking')
@@ -95,7 +78,7 @@ export const createBooking = asyncHandler(async (req, res) => {
                pax: pax,
                orderValue: orderValue,
                countryCode: countryCode,
-               whatsappNumber: whatsappNumber}, {
+               whatsappNumber: whatsappNumber, documents: documents}, {
                where: {
                     id: id
                }
@@ -118,7 +101,7 @@ export const createBooking = asyncHandler(async (req, res) => {
           pax: pax,
           orderValue: orderValue,
           countryCode: countryCode,
-          whatsappNumber: whatsappNumber});
+          whatsappNumber: whatsappNumber, documents: documents});
      if (!booking) {
           res.status(400);
           throw new Error('Invalid booking data');
