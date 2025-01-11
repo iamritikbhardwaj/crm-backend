@@ -66,8 +66,7 @@ export const createBooking = asyncHandler(async (req, res) => {
      const id = req?.query?.id
      console.log(id, 'id');
      console.log(documents, 'id');
-
-return     
+     
      try {
           if(req.query.hasOwnProperty('id') && id !== undefined && id !== null) {
           log('update booking')

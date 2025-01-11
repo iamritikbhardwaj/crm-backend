@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler"
 import { userModel } from "../models/userModel.js";
 import { generateToken } from "../middlewares/auth.js";
+import { v4 as uuidv4 } from "uuid";
 
 export const handleUserLogin = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
@@ -60,7 +61,7 @@ export const createUser = asyncHandler(async (req, res) => {
         }
     } else {
         console.log("creatingUser");
-        const user = await userModel.create(userData);
+        const user = await userModel.create({id: uuidv4(), name: name, email: email, password: password, phone: phone, profile: profile, status: status});
         console.log(user, 'user');
     if (!user) {
         res.status(400);
