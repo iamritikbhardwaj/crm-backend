@@ -61,6 +61,10 @@ export const bookingModel = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    opsSpoc: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     documents: {
       type: DataTypes.JSON, // Use JSON instead of JSONB
       allowNull: true,

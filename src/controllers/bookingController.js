@@ -62,24 +62,17 @@ export const createBooking = asyncHandler(async (req, res) => {
      pax,
      orderValue,
      countryCode,
-     whatsappNumber, documents} = req.body;
+     whatsappNumber, documents, opsSpoc} = req.body;
      const id = req?.query?.id
      console.log(id, 'id');
      console.log(documents, 'id');
      
      try {
           if(req.query.hasOwnProperty('id') && id !== undefined && id !== null) {
-          log('update booking')
-          const booking = await bookingModel.update({destination: destination, 
-               salesSpoc: salesSpoc, 
-               agent: agent, customerName: customerName, arrivalDate: arrivalDate,
-               departureDate: departureDate,
-               pax: pax,
-               orderValue: orderValue,
-               countryCode: countryCode,
-               whatsappNumber: whatsappNumber, documents: documents}, {
+          console.log('update booking')
+          const booking = await bookingModel.update({opsSpoc: opsSpoc, documents: documents, status: "confirmed"}, {
                where: {
-                    id: id
+                    booking_id: id
                }
           })
           if(!booking) {
