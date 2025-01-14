@@ -5,40 +5,41 @@ import { createSupp, getAllSupp, deleteSupp } from "../controllers/suppControlle
 import { createDest, getAllDest, deleteDest } from "../controllers/destController.js";
 import { createTrip, getAllTrip } from "../controllers/tripController.js";
 import { createBooking, getAllBooking, deleteBooking } from "../controllers/bookingController.js";
-import { verifyToken } from "../middlewares/auth.js";
+import { upload } from "../middlewares/multer.js";
+import uploadOnCloudinary from "../middlewares/cloudinary.js";
 
 const router = Router();
 
 // ! user
-router.post("/createUser", verifyToken, createUser);
-router.get('/getAllUsers', verifyToken, getAllUsers);
-router.delete('/deleteUser/:id', verifyToken, deleteUser);
+router.post("/createUser", createUser);
+router.get('/getAllUsers', getAllUsers);
+router.delete('/deleteUser/:id', deleteUser);
 
 // ! login
 router.post('/login', handleUserLogin);
 
 // ! destination
-router.post("/createDestination", verifyToken, createDest);
-router.get('/getAllDestinations', verifyToken, getAllDest);
-router.delete('/deleteDestination/:id', verifyToken, deleteDest);
+router.post("/createDestination", createDest);
+router.get('/getAllDestinations', getAllDest);
+router.delete('/deleteDestination/:id', deleteDest);
 
 // ! trip
-router.post("/createTrip", verifyToken, createTrip);
-router.get('/getAllTrips', verifyToken, getAllTrip);
+router.post("/createTrip",uploadOnCloudinary(upload.fields([{ name: req.body.documents.catagory , maxCount: 10 }])), createTrip);
+router.get('/getAllTrips', getAllTrip);
 
 // ! booking
-router.post("/createBooking", createBooking);
-router.get('/getAllBookings', verifyToken, getAllBooking);
-router.delete('/deleteBooking/:id', verifyToken, deleteBooking);
+router.post("/createBooking",uploadOnCloudinary(upload.fields([{ name: 'documents', maxCount: 10 }])), createBooking);
+router.get('/getAllBookings', getAllBooking);
+router.delete('/deleteBooking/:id', deleteBooking);
 
 // ! agent
-router.post("/createAgent", verifyToken, createAgent);
-router.get('/getAllAgents', verifyToken, getAllAgents);
-router.delete('/deleteAgent/:id', verifyToken, deleteAgent);
+router.post("/createAgent", createAgent);
+router.get('/getAllAgents', getAllAgents);
+router.delete('/deleteAgent/:id', deleteAgent);
 
 // ! supplier 
-router.post("/createSupplier", verifyToken, createSupp);
-router.get('/getAllSuppliers', verifyToken, getAllSupp);
-router.delete('/deleteSupplier/:id', verifyToken, deleteSupp);
+router.post("/createSupplier", createSupp);
+router.get('/getAllSuppliers', getAllSupp);
+router.delete('/deleteSupplier/:id', deleteSupp);
 
 export default router;

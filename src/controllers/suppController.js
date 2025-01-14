@@ -47,7 +47,7 @@ export const deleteSupp = asyncHandler(async (req, res) => {
 
 export const createSupp = asyncHandler(async (req, res) => {
     const suppData = req.body;
-    const { name, status } = suppData;
+    const { name, status, destination_id } = suppData;
     const id = req?.query?.id
     console.log(id, 'suppData');
     
@@ -71,7 +71,7 @@ export const createSupp = asyncHandler(async (req, res) => {
         }
     }else {
         console.log('create supp')
-        const supp = await supModel.create({supplier_id: uuidv4(), name: name, status: status});
+        const supp = await supModel.create({supplier_id: uuidv4(), name: name, status: status, destination_id: destination_id});
     if (!supp) {
         res.status(400);
         throw new Error('Invalid supplier data');

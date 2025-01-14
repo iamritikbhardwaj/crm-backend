@@ -5,12 +5,12 @@ import { DBConnect } from './dbConfig/dbConfig.js';
 import { CLIENT_URL } from './constants.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
-// import dbInit from './dbConfig/dbInit.js';
+import {dbInit} from './dbConfig/dbInit.js';
 import resetDatabase from './dbConfig/resetDatabase.js';
 
 // Define __dirname for ES modules
 
-// dbInit();
+dbInit();
 // resetDatabase();
 DBConnect();
 

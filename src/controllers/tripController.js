@@ -1,6 +1,46 @@
 import asyncHandler from "express-async-handler";
 import { tripModel } from "../models/tripModel.js";
-import { DataTypes } from 'sequelize';
+  
+  const generateUniqueTripId = async () => {
+    try {
+        const currentYear = new Date().getFullYear().toString().slice(2);
+      
+        let uniqueTripId = null;
+      
+        while (!uniqueTripId) {
+      
+        //   Fetch the latest invoice number
+          const lastTrip = await tripModel.findOne({
+            order: [['created_at', 'DESC']], // Sort by creation date, latest first
+            attributes: ['tripId'], // Only fetch the tripId field
+          });
+      
+          let newInvoiceNumber = 1; // Default to 1 if no trips exist
+      
+          if (lastTrip) {
+            const lastInvoiceNumber = parseInt(
+              lastTrip.tripId.slice(4),
+              10 // Extract and convert the last 4 digits to a number
+            );
+            newInvoiceNumber = lastInvoiceNumber + 1;
+          }
+      
+          // Format the new trip ID
+          const formattedInvoice = String(newInvoiceNumber).padStart(4, '0'); // Ensure 4 digits
+          const generatedId = `TRP${currentYear}${formattedInvoice}`;
+      
+          // Check uniqueness
+          const existingTrip = await tripModel.findOne({ where: { tripId: generatedId } });
+          if (!existingTrip) {
+            uniqueTripId = generatedId; // Set the unique trip ID
+          }
+        }
+        return uniqueTripId;
+    } catch (error) {
+        console.error('Error generating unique trip ID:', error);
+        throw error;
+    }
+  };
 
 export const getAllTrip = asyncHandler(async (req, res) => {
     console.log('getAllTrip');
@@ -23,11 +63,13 @@ export const getAllTrip = asyncHandler(async (req, res) => {
 })
 
 export const createTrip = asyncHandler(async (req, res) => {
-    const tripData = req.body;
+    const { bookingDate, destination, salesSpoc, agent, customerName, arrivalDate, 
+        departureDate, pax, orderValue, countryCode, whatsappNumber, documents,
+        opsSpoc} = req.body;
+    console.log(req.body, 'tripData');
     const id = req?.params?.id
-    console.log(tripData, 'tripData');
     try {
-        if(id) {
+        if(req.params.hasOwnProperty('id') && id !== undefined && id !== null) {
             log('update trip')
             const trip = await tripModel.update(tripData, {
                 where: {
@@ -46,7 +88,22 @@ export const createTrip = asyncHandler(async (req, res) => {
             }
         }
         else {
-            const trip = await tripModel.create(tripData);
+            const trip = await tripModel.create({
+                tripId: await generateUniqueTripId(),
+                bookingDate: bookingDate,
+                destination: destination,
+                salesSpoc: salesSpoc,
+                agent: agent,
+                customerName: customerName,
+                arrivalDate: arrivalDate,
+                departureDate: departureDate,
+                pax: pax,
+                orderValue: orderValue,
+                countryCode: countryCode,
+                whatsappNumber: whatsappNumber,
+                documents: documents,
+                opsSpoc: opsSpoc
+            });
         if (!trip) {
             res.status(400);
             throw new Error('Invalid trip data');
@@ -59,7 +116,7 @@ export const createTrip = asyncHandler(async (req, res) => {
         }
         }
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
         res.status(500).json({
             STATUS: 'FAIL',
             MESSAGE: error.message,
