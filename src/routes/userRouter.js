@@ -5,8 +5,6 @@ import { createSupp, getAllSupp, deleteSupp } from "../controllers/suppControlle
 import { createDest, getAllDest, deleteDest } from "../controllers/destController.js";
 import { createTrip, getAllTrip } from "../controllers/tripController.js";
 import { createBooking, getAllBooking, deleteBooking } from "../controllers/bookingController.js";
-import { upload } from "../middlewares/multer.js";
-import uploadOnCloudinary from "../middlewares/cloudinary.js";
 
 const router = Router();
 
@@ -24,11 +22,11 @@ router.get('/getAllDestinations', getAllDest);
 router.delete('/deleteDestination/:id', deleteDest);
 
 // ! trip
-router.post("/createTrip",uploadOnCloudinary(upload.fields([{ name: req.body.documents.catagory , maxCount: 10 }])), createTrip);
+router.post("/createTrip", createTrip);
 router.get('/getAllTrips', getAllTrip);
 
 // ! booking
-router.post("/createBooking",uploadOnCloudinary(upload.fields([{ name: 'documents', maxCount: 10 }])), createBooking);
+router.post("/createBooking", createBooking);
 router.get('/getAllBookings', getAllBooking);
 router.delete('/deleteBooking/:id', deleteBooking);
 
