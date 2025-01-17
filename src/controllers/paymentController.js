@@ -24,21 +24,22 @@ export const getAllPayments = asyncHandler(async (req, res) => {
 export const createPayment = asyncHandler(async (req, res) => {
      console.log('createPayment');
      const paymentData = req.body;
-     // const { date, amount, paymentMode, status, remarks, validatedBy } = paymentData;
-     console.log(paymentData, 'paymentData');
      const id = req?.query?.id;
-     console.log(id, 'id');
+     console.log(id, 'paymentData');
      try {
-        if(req.query.hasOwnProperty('id')) {
+        if(req.query.hasOwnProperty('id') && id !== undefined && id !== null) {
         console.log('update payment')
         const payment = await paymentModel.update(paymentData, {
             where: {
                 payment_id: id
             }
         })
-        if(!payment) {
-            res.status(400);
-            throw new Error('Invalid payment data');
+        if(payment[0] === 0) {
+            res.status(400).json({
+                STATUS: 'FAIL',
+                MESSAGE: 'Invalid payment data',
+                OUTPUT: null
+            });
         } else {
             res.status(200).json({
                 STATUS: 'SUCCESS',
