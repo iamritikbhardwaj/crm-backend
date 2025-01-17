@@ -33,16 +33,17 @@ export const getAllRecon = asyncHanler(async (req, res) => {
 
 export const createRecon = asyncHanler(async (req, res) => {
      const reconData = req.body;
-     console.log(reconData, 'reconData');
+     const id = req?.query?.id;
+     console.log(reconData,id, 'reconData');
      try {
-          if(req.query.hasOwnProperty('id')){
-            console.log('update recon')
+          if(id !== undefined && id !== null) {
+               console.log('update recon')
             const recon = await reconModel.update(reconData, {
                  where: {
                       recon_id: id
                  }
             })
-            if(!recon) {
+            if(recon[0] === 0) {
                  res.status(400);
                  throw new Error('Invalid recon data');
             } else {
@@ -85,7 +86,7 @@ export const deleteRecon = asyncHanler(async (req, res) => {
                }
           });
           console.log(recon, 'recon');
-          if(!recon)
+          if(recon[0] === 0)
           {
                res.status(404).json({
                     STATUS: 'FAIL',
