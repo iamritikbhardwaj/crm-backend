@@ -7,7 +7,7 @@ export const destModel = sequelize.define(
     "destination",
     {
         destination_id: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUID,
             allowNull: false,
             primaryKey: true,
             defaultValue: uuidv4(),

@@ -10,9 +10,13 @@ import resetDatabase from './dbConfig/resetDatabase.js';
 
 // Define __dirname for ES modules
 
-dbInit();
-// resetDatabase();
-DBConnect();
+
+(async () => {
+  // await resetDatabase()
+  await dbInit()
+  await DBConnect()
+}
+)()
 
 const app = express();
 

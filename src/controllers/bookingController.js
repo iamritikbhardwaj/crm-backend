@@ -33,17 +33,18 @@ export const deleteBooking = asyncHandler(async (req, res) => {
 
           console.log(booking, 'booking');
 
-          if(booking){res.status(200).json({
-               STATUS: 'SUCCESS',
-               MESSAGE: 'Booking deleted successfully',
-               OUTPUT: booking
-          });
-          } else {
+          if(booking !== 1)
+          {
                res.status(404).json({
                     STATUS: 'FAIL',
                     MESSAGE: 'Booking not found',
                     OUTPUT: null
                });
+          } else {res.status(200).json({
+               STATUS: 'SUCCESS',
+               MESSAGE: 'Booking deleted successfully',
+               OUTPUT: booking
+          });
           }
 
      } catch (error) {

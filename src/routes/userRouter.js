@@ -5,6 +5,8 @@ import { createSupp, getAllSupp, deleteSupp } from "../controllers/suppControlle
 import { createDest, getAllDest, deleteDest } from "../controllers/destController.js";
 import { createTrip, getAllTrip } from "../controllers/tripController.js";
 import { createBooking, getAllBooking, deleteBooking } from "../controllers/bookingController.js";
+import { createPayment, getAllPayments, deletePayment } from "../controllers/paymentController.js";
+import { createRecon, getAllRecon, deleteRecon } from "../controllers/reconController.js";
 
 const router = Router();
 
@@ -39,5 +41,15 @@ router.delete('/deleteAgent/:id', deleteAgent);
 router.post("/createSupplier", createSupp);
 router.get('/getAllSuppliers', getAllSupp);
 router.delete('/deleteSupplier/:id', deleteSupp);
+
+// ! payment 
+router.post("/createPayment", createPayment);
+router.get('/getAllPayments', getAllPayments);
+router.delete('/deletePayment/:id', deletePayment);
+
+// ! recon
+router.post("/createRecon", createRecon);
+router.get('/getAllRecons', getAllRecon);
+router.delete('/deleteRecon/:id', deleteRecon);
 
 export default router;

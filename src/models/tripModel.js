@@ -97,8 +97,4 @@ export const tripModel = sequelize.define(
         },
     );
 
-    (async () => {
-      await sequelize.sync();
-  })();
-
     export default tripModel;

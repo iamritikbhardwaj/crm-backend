@@ -27,8 +27,5 @@ export const agentModel = sequelize.define(
     }
 );
 
-(async () => {
-    await sequelize.sync();
-})();
 
 export default agentModel;

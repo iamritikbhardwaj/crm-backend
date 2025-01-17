@@ -66,6 +66,7 @@ export const createTrip = asyncHandler(async (req, res) => {
     const { bookingDate, destination, salesSpoc, agent, customerName, arrivalDate, 
         departureDate, pax, orderValue, countryCode, whatsappNumber, documents,
         opsSpoc} = req.body;
+        const tripData = req.body;
     console.log(req.body, 'tripData');
     const id = req?.params?.id
     try {

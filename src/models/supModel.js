@@ -20,6 +20,14 @@ export const supModel = sequelize.define(
             allowNull: false,
             tolowerCase: true
         },
+        destination_id: {
+            type: DataTypes.UUID,
+            references: {
+              model: 'destinations',  // Name of the destination table
+              key: 'destination_id',
+            },
+            allowNull: false,
+          },
     },
     {
         timestamps: true,
@@ -27,9 +35,5 @@ export const supModel = sequelize.define(
         updatedAt: 'updated_at',
     }
 );
-
-(async () => {
-    await sequelize.sync();
-})();
 
 export default supModel;
