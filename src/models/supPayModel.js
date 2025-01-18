@@ -29,10 +29,6 @@ const vendorPayModel = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    remarks: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
     tripId: {
       type: DataTypes.STRING,
       allowNull: false,
