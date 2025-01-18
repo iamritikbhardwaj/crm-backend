@@ -67,19 +67,19 @@ export const createTrip = asyncHandler(async (req, res) => {
         departureDate, pax, orderValue, countryCode, whatsappNumber, documents,
         opsSpoc} = req.body;
         const tripData = req.body;
-    console.log(req.body, 'tripData');
-    const id = req?.params?.id
+    const id = req?.query?.id
+    console.log(id, 'tripData');
     try {
-        if(req.params.hasOwnProperty('id') && id !== undefined && id !== null) {
-            log('update trip')
+        if(req.query.hasOwnProperty('id') && id !== undefined && id !== null) {
+            console.log('update trip')
             const trip = await tripModel.update(tripData, {
                 where: {
-                    id: id
+                    tripId: id
                 }
             })
             if(!trip) {
                 res.status(400);
-                throw new Error('Invalid trip data');
+                throw new Error('Invalid trip data');f
             } else {
                 res.status(200).json({
                     STATUS: 'SUCCESS',
