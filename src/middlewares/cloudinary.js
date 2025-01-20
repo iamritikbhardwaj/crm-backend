@@ -10,8 +10,9 @@ cloudinary.config({
 const uploadOnCloudinary = async (path) => {
     try {
         if(!path) return "No file found";
-        const result =  await cloudinary.uploader.upload(path,{resource_type: 'auto'});
+        const result =  await cloudinary.uploader.upload(path,{resource_type: 'auto', public_id: path});
         console.log(result, 'result');
+        if(result.hasOwnProperty('url')) fs.unlinkSync(path);
         return result.url;
     } catch (error) {
         fs.unlinkSync(path);

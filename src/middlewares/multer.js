@@ -1,15 +1,24 @@
 import multer from 'multer';
-import { v4 as uuidv4 } from 'uuid';
+import fs from 'fs';
+import e from 'express';
 
+// const id = req.params.id;
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, `public/temp`);
+    const {id} = req.query;
+        if (!fs.existsSync(`./public/temp/${id ? id : ''}`)) {
+            fs.mkdirSync(`./public/temp/${id ? id : ''}`, { recursive: true });
+            return cb(null, `./public/temp/${id ? id : ''}`);
+        }else{
+        return cb(null, `./public/temp`);
+        }
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname);
+        console.log(file, 'file');
+        return cb(null, file.originalname);
     },
 });
 
 export const upload = multer({ 
-    storage
+    storage,
  });

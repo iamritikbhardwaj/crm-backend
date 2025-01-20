@@ -64,6 +64,7 @@ export const createBooking = asyncHandler(async (req, res) => {
      orderValue,
      countryCode,
      whatsappNumber, documents, opsSpoc} = req.body;
+     console.log(req.body, req?.file, 'tripData');
      const id = req?.query?.id
      console.log(id, 'id');
      console.log(documents, 'id');

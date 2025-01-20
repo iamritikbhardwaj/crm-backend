@@ -46,7 +46,7 @@ export const bookingModel = sequelize.define(
       allowNull: false,
     },
     pax: {
-      type: DataTypes.JSON, // Use JSON instead of JSONB
+      type: DataTypes.JSON,
       allowNull: false,
     },
     orderValue: {
@@ -66,7 +66,7 @@ export const bookingModel = sequelize.define(
       allowNull: true,
     },
     documents: {
-      type: DataTypes.JSON, // Use JSON instead of JSONB
+      type: DataTypes.JSON, 
       allowNull: true,
     },
   },

@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import router from './routes/userRouter.js';
+import docrouter from './routes/docRouter.js';
 import { DBConnect } from './dbConfig/dbConfig.js';
 import { CLIENT_URL } from './constants.js';
 import cookieParser from 'cookie-parser';
@@ -22,9 +23,9 @@ const app = express();
 
 const corsOptions = {
     origin: CLIENT_URL ,  // Allow only this origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Credentials', 'credentials'],
-    credentials: true
+    methods: ['GET', 'POST', 'DELETE'],
+    allowedHeaders: ['content-Type', 'Authorization', 'credentials'],
+    credentials: true,
 };
 
 app.use(cors(corsOptions));
@@ -32,7 +33,13 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use("/api/users", router);
+
+app.set('view engine', 'ejs');
+app.set('views', path.resolve('../public/temp'));
+
+app.use("/api/upload", docrouter)
 
 const __dirname = path.resolve();
 

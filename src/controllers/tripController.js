@@ -125,3 +125,37 @@ export const createTrip = asyncHandler(async (req, res) => {
         });
     }
 })
+
+export const uploadDocs = asyncHandler(async (req, res) => {
+    const url = req.body.url
+    const id = req?.query?.id
+    console.log(id, 'tripData');
+    return
+    try {
+        if(req.query.hasOwnProperty('id') && id !== undefined && id !== null) {
+            console.log('update trip')
+            const trip = await tripModel.update({documents: url}, {
+                where: {
+                    tripId: id
+                }
+            })
+            if(!trip) {
+                res.status(400);
+                throw new Error('Invalid trip data');f
+            } else {
+                res.status(200).json({
+                    STATUS: 'SUCCESS',
+                    MESSAGE: 'Trip updated successfully',
+                    OUTPUT: trip
+                });
+            }
+        }
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({
+            STATUS: 'FAIL',
+            MESSAGE: error.message,
+            OUTPUT: null
+        });
+    }
+})  
