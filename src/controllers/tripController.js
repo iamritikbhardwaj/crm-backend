@@ -20,7 +20,7 @@ import { tripModel } from "../models/tripModel.js";
           if (lastTrip) {
             const lastInvoiceNumber = parseInt(
               lastTrip.tripId.slice(4),
-              10 // Extract and convert the last 4 digits to a number
+              // Extract and convert the last 4 digits to a number
             );
             newInvoiceNumber = lastInvoiceNumber + 1;
           }

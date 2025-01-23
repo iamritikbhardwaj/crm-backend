@@ -64,10 +64,9 @@ export const createBooking = asyncHandler(async (req, res) => {
      orderValue,
      countryCode,
      whatsappNumber, documents, opsSpoc} = req.body;
-     console.log(req.body, req?.file, 'tripData');
+     console.log(req.body, req?.file, destination, 'tripData');
      const id = req?.query?.id
      console.log(id, 'id');
-     console.log(documents, 'id');
      
      try {
           if(req.query.hasOwnProperty('id') && id !== undefined && id !== null) {
@@ -88,14 +87,13 @@ export const createBooking = asyncHandler(async (req, res) => {
                });
           }
      }
-     else{const booking = await bookingModel.create({booking_id: uuidv4(), destination: destination, 
-          salesSpoc: salesSpoc, 
-          agent: agent, customerName: customerName, arrivalDate: arrivalDate,
-          departureDate: departureDate,
-          pax: pax,
-          orderValue: orderValue,
-          countryCode: countryCode,
-          whatsappNumber: whatsappNumber, documents: documents});
+     else{
+          const booking = await bookingModel.create({booking_id: uuidv4(), destination, salesSpoc, agent, customerName, arrivalDate,
+          departureDate,
+          pax,
+          orderValue,
+          countryCode,
+          whatsappNumber, documents, opsSpoc});
      if (!booking) {
           res.status(400);
           throw new Error('Invalid booking data');
