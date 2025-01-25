@@ -4,10 +4,14 @@ import { createAgent, getAllAgents, deleteAgent } from "../controllers/agentCont
 import { createSupp, getAllSupp, deleteSupp } from "../controllers/suppController.js";
 import { createDest, getAllDest, deleteDest } from "../controllers/destController.js";
 import { createTrip, getAllTrip } from "../controllers/tripController.js";
-import { createBooking, getAllBooking, deleteBooking } from "../controllers/bookingController.js";
+import { createBooking, getAllBooking, deleteBooking, getDoc } from "../controllers/bookingController.js";
 import { createPayment, getAllPayments, deletePayment } from "../controllers/paymentController.js";
 import { createRecon, getAllRecon, deleteRecon } from "../controllers/reconController.js";
 import { createSuppPay, deleteSuppPay, getAllSuppPay } from "../controllers/supPayCont.js";
+import { upload } from "../middlewares/multer.js";
+import uploadOnCloudinary from "../middlewares/cloudinary.js";
+import expressAsyncHandler from "express-async-handler";
+import path from "path";
 
 
 const router = Router();
@@ -26,12 +30,55 @@ router.get('/getAllDestinations', getAllDest);
 router.delete('/deleteDestination/:id', deleteDest);
 
 // ! trip
-router.post("/createTrip", createTrip);
+router.post("/createTrip", upload ,
+expressAsyncHandler(async (req, res, next) => {
+    const files = req.files;  // Multer stores files in req.files
+    console.log(files, 'Files uploaded');
+  
+    if (!files) {
+      return next()
+    }
+  
+    let url = [];
+  
+    for (const field in files) {
+      for (const file of files[field]) {
+        const filePath = path.resolve(file.path);
+        const publicId = file.originalname; // Or generate a unique ID
+  
+        // Upload to Cloudinary
+        const fileUrl = await uploadOnCloudinary(filePath, publicId);
+        console.log('Uploaded file URL:', fileUrl);
+        url.push(fileUrl);  // Collect the uploaded file URLs
+      }
+    }
+    createTrip(req, res, url)
+}), createTrip);
 router.get('/getAllTrips', getAllTrip);
-// router.post("/uploadDocuments", upload.array("file"), () => {console.log("file uploaded")});
 
 // ! booking
-router.post('/createBooking', createBooking);
+router.post('/createBooking', upload,expressAsyncHandler(async (req, res) => {
+    const files = req.files;  // Multer stores files in req.files
+    console.log(files, 'Files uploaded');
+  
+    if (!files) {
+      return res.status(400).json({ error: 'No files uploaded' });
+    }
+  
+    let url = [];
+  
+    for (const field in files) {
+      for (const file of files[field]) {
+        const filePath = path.resolve(file.path);
+        const publicId = file.originalname; // Or generate a unique ID
+  
+        // Upload to Cloudinary
+        const fileUrl = await uploadOnCloudinary(filePath, publicId);
+        console.log('Uploaded file URL:', fileUrl);
+        url.push(fileUrl);  // Collect the uploaded file URLs
+      }
+    }
+createBooking(req, res, url)}), );
 router.get('/getAllBookings', getAllBooking);
 router.delete('/deleteBooking/:id', deleteBooking);
 
@@ -59,5 +106,8 @@ router.delete('/deleteRecon/:id', deleteRecon);
 router.post('/createVendor', createSuppPay);
 router.get('/getAllVendors', getAllSuppPay);
 router.delete('/deleteVendor/:id', deleteSuppPay);
+
+// ! document
+router.get('/getDocument', getDoc);
 
 export default router;

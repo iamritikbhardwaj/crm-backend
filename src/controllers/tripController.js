@@ -19,10 +19,11 @@ import { tripModel } from "../models/tripModel.js";
       
           if (lastTrip) {
             const lastInvoiceNumber = parseInt(
-              lastTrip.tripId.slice(4),
+              lastTrip.tripId.slice(6), 10
               // Extract and convert the last 4 digits to a number
             );
             newInvoiceNumber = lastInvoiceNumber + 1;
+            console.log(newInvoiceNumber, 'newInvoiceNumber');
           }
       
           // Format the new trip ID
@@ -62,13 +63,16 @@ export const getAllTrip = asyncHandler(async (req, res) => {
     }
 })
 
-export const createTrip = asyncHandler(async (req, res) => {
+export const createTrip = asyncHandler(async (req, res, url) => {
+    const data = req.body.data;
+    const tripData = JSON.parse(data);
     const { bookingDate, destination, salesSpoc, agent, customerName, arrivalDate, 
-        departureDate, pax, orderValue, countryCode, whatsappNumber, documents,
-        opsSpoc} = req.body;
-        const tripData = req.body;
+        departureDate, pax, orderValue, countryCode, whatsappNumber, documents: docs,
+        opsSpoc} = tripData;
+    const documents = url ? [...docs, url] : docs;
+    console.log(documents, "tripData");
     const id = req?.query?.id
-    console.log(id, 'tripData');
+    console.log(tripData, 'tripData');
     try {
         if(req.query.hasOwnProperty('id') && id !== undefined && id !== null) {
             console.log('update trip')
