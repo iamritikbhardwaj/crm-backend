@@ -13,7 +13,8 @@ const storage = multer.diskStorage({
        return false
     },
     filename: function (req, file, cb) {
-       if(file) return cb(null, file.originalname + file.fieldname);
+        const name = file.originalname.split('.')[0];
+       if(file) return cb(null, name + file.fieldname);
        return false
     },
 });
