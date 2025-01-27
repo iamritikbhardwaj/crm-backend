@@ -17,7 +17,7 @@ export const tripModel = sequelize.define(
             status: {
                 type: DataTypes.STRING,
                 allowNull: false,
-                defaultValue: 'Confirmed',
+                defaultValue: 'CONFIRMED',
             },
             paymentStatus: {
                 type: DataTypes.STRING,

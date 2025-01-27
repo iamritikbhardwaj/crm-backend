@@ -3,7 +3,7 @@ import { createUser, getAllUsers, deleteUser, handleUserLogin } from "../control
 import { createAgent, getAllAgents, deleteAgent } from "../controllers/agentController.js";
 import { createSupp, getAllSupp, deleteSupp } from "../controllers/suppController.js";
 import { createDest, getAllDest, deleteDest } from "../controllers/destController.js";
-import { createTrip, getAllTrip } from "../controllers/tripController.js";
+import { createTrip, getAllTrip, updateOps, updateTripStatus } from "../controllers/tripController.js";
 import { createBooking, getAllBooking, deleteBooking, getDoc } from "../controllers/bookingController.js";
 import { createPayment, getAllPayments, deletePayment } from "../controllers/paymentController.js";
 import { createRecon, getAllRecon, deleteRecon } from "../controllers/reconController.js";
@@ -59,6 +59,8 @@ expressAsyncHandler(async (req, res, next) => {
     createTrip(req, res, url)
 }), createTrip);
 router.get('/getAllTrips', getAllTrip);
+router.post('/updateStatus', updateTripStatus);
+router.post('/updateOps', updateOps);
 
 // ! booking
 router.post('/createBooking', upload,expressAsyncHandler(async (req, res) => {
@@ -119,7 +121,6 @@ router.post('/createVendor', createSuppPay);
 router.get('/getAllVendors', getAllSuppPay);
 router.delete('/deleteVendor/:id', deleteSuppPay);
 
-// ! document
-router.get('/getDocument', getDoc);
+
 
 export default router;
