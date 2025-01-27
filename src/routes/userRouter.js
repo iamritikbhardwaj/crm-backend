@@ -79,8 +79,8 @@ router.post('/createBooking', upload,expressAsyncHandler(async (req, res) => {
         let resource = 'auto';
         if(fileName.includes('pdf')){
           resource = 'raw';
-        }
-        if(fileName.includes('xls')){
+          public_id = fileName
+        } else if(fileName.includes('xls')){
           public_id = fileName.replace(/[^a-zA-Z0-9.]/g, '');
         } else { public_id = fileName.split('.')[0].replace(/[^a-zA-Z0-9]/g, '')}
   
