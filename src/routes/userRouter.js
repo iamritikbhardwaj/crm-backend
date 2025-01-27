@@ -44,10 +44,14 @@ expressAsyncHandler(async (req, res, next) => {
     for (const field in files) {
       for (const file of files[field]) {
         const filePath = path.resolve(file.path);
-        const publicId = file.originalname; // Or generate a unique ID
+        const fileName = file.fieldname + file.originalname;
+        let public_id;
+        if(fileName.includes('xls')){
+          public_id = fileName.replace(/[^a-zA-Z0-9]/g, '');
+        } else { public_id = fileName.split('.')[0].replace(/[^a-zA-Z0-9]/g, '')}
   
         // Upload to Cloudinary
-        const fileUrl = await uploadOnCloudinary(filePath, publicId);
+        const fileUrl = await uploadOnCloudinary(filePath, public_id);
         console.log('Uploaded file URL:', fileUrl);
         url.push(fileUrl);  // Collect the uploaded file URLs
       }
@@ -70,10 +74,14 @@ router.post('/createBooking', upload,expressAsyncHandler(async (req, res) => {
     for (const field in files) {
       for (const file of files[field]) {
         const filePath = path.resolve(file.path);
-        const publicId = file.originalname; // Or generate a unique ID
+        const fileName = file.fieldname + file.originalname;
+        let public_id;
+        if(fileName.includes('xls')){
+          public_id = fileName.replace(/[^a-zA-Z0-9]/g, '');
+        } else { public_id = fileName.split('.')[0].replace(/[^a-zA-Z0-9]/g, '')}
   
         // Upload to Cloudinary
-        const fileUrl = await uploadOnCloudinary(filePath, publicId);
+        const fileUrl = await uploadOnCloudinary(filePath, public_id);
         console.log('Uploaded file URL:', fileUrl);
         url.push(fileUrl);  // Collect the uploaded file URLs
       }
