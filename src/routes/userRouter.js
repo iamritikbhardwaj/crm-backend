@@ -47,7 +47,7 @@ expressAsyncHandler(async (req, res, next) => {
         const fileName = file.fieldname + file.originalname;
         let public_id;
         if(fileName.includes('xls')){
-          public_id = fileName.replace(/[^a-zA-Z0-9]/g, '');
+          public_id = fileName.replace(/[^a-zA-Z0-9.]/g, '');
         } else { public_id = fileName.split('.')[0].replace(/[^a-zA-Z0-9]/g, '')}
   
         // Upload to Cloudinary
@@ -76,12 +76,16 @@ router.post('/createBooking', upload,expressAsyncHandler(async (req, res) => {
         const filePath = path.resolve(file.path);
         const fileName = file.fieldname + file.originalname;
         let public_id;
+        let resource = 'auto';
+        if(fileName.includes('pdf')){
+          resource = 'raw';
+        }
         if(fileName.includes('xls')){
-          public_id = fileName.replace(/[^a-zA-Z0-9]/g, '');
+          public_id = fileName.replace(/[^a-zA-Z0-9.]/g, '');
         } else { public_id = fileName.split('.')[0].replace(/[^a-zA-Z0-9]/g, '')}
   
         // Upload to Cloudinary
-        const fileUrl = await uploadOnCloudinary(filePath, public_id);
+        const fileUrl = await uploadOnCloudinary(filePath, public_id, resource);
         console.log('Uploaded file URL:', fileUrl);
         url.push(fileUrl);  // Collect the uploaded file URLs
       }
