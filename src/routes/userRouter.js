@@ -76,7 +76,7 @@ router.post(
     console.log(files, "Files uploaded");
 
     if (!files) {
-      return next();
+      return null;
     }
 
     let url = [];

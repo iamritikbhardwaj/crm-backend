@@ -83,10 +83,11 @@ export const createTrip = asyncHandler(async (req, res, url) => {
     documents: docs,
     opsSpoc,
   } = tripData;
-  const documents = [...docs, url]
+  const documents = [...docs, ...url]
   console.log(documents, "tripData");
   const id = req?.query?.id;
   console.log(tripData, "tripData");
+
   try {
     if (req.query.hasOwnProperty("id") && id !== undefined && id !== null) {
       console.log("update trip");
