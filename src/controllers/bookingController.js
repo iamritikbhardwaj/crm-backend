@@ -82,7 +82,7 @@ export const createBooking = asyncHandler(async (req, res, url) => {
   const data = req.body.data;
   const bookingData = JSON.parse(data);
   const documents = url;
-
+  console.log(documents, bookingData, "tripData");
   const {
     destination,
     salesSpoc,

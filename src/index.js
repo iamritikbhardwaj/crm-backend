@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import router from './routes/userRouter.js';
-import docrouter from './routes/docRouter.js';
 import { DBConnect } from './dbConfig/dbConfig.js';
 import { CLIENT_URL } from './constants.js';
 import cookieParser from 'cookie-parser';
@@ -39,7 +38,6 @@ app.use("/api/users", router);
 app.set('view engine', 'ejs');
 app.set('views', path.resolve('../public/temp'));
 
-app.use("/api/upload", docrouter)
 
 const __dirname = path.resolve();
 
