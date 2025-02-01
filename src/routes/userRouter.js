@@ -23,6 +23,7 @@ import {
 import {
   createTrip,
   getAllTrip,
+  updateDocs,
   updateOps,
   updateTripStatus,
 } from "../controllers/tripController.js";
@@ -155,5 +156,31 @@ router.delete("/deleteRecon/:id", deleteRecon);
 router.post("/createVendor", createSuppPay);
 router.get("/getAllVendors", getAllSuppPay);
 router.delete("/deleteVendor/:id", deleteSuppPay);
+
+// ! docs
+router.post("/updateDocs", upload, expressAsyncHandler(async (req, res) => {
+  const files = req.files; // Multer stores files in req.files
+  console.log(files, "Files uploaded");
+
+  if (!files) {
+    return res.status(400).json({ error: "No files uploaded" });
+  }
+
+  let url = [];
+
+  for (const field in files) {
+    for (const file of files[field]) {
+      const filePath = path.resolve(file.path);
+      const fileName = file.fieldname + file.originalname;
+
+      // Upload to Cloudinary
+      const fileUrl = await uploadOnS3(filePath, fileName);
+      console.log("Uploaded file URL:", fileUrl);
+      url.push(fileUrl); // Collect the uploaded file URLs
+    }
+  }
+  updateDocs(req, res, url);
+})
+);
 
 export default router;

@@ -99,7 +99,6 @@ export const createTrip = asyncHandler(async (req, res, url) => {
       if (!trip) {
         res.status(400);
         throw new Error("Invalid trip data");
-        f;
       } else {
         res.status(200).json({
           STATUS: "SUCCESS",
@@ -206,3 +205,37 @@ export const updateOps = asyncHandler(async (req, res) => {
       });
     }
   });
+
+export const updateDocs = asyncHandler(async (req, res, url) => {
+    const { docs } = req.body;
+
+    const documents = {...docs, ...url}
+  
+    const id = req.query?.id;
+  
+    console.log(id, documents, "id");
+  
+    try {
+      const response = await tripModel.update(documents, {
+        where: {
+          tripId: id,
+        },
+      });
+      if (!response) {
+        res.status(400).json({ MESSAGE: "Some erro occured", STATUS: "Failed" });
+      } else {
+        console.log(response, "response");
+        res.status(200).json({
+          STATUS: "SUCCESS",
+          MESSAGE: "Trip updated successfully",
+          OUTPUT: response,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        STATUS: "FAIL",
+        MESSAGE: error.message,
+        OUTPUT: null,
+      });
+    }
+})
