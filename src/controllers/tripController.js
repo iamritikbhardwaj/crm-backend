@@ -209,20 +209,20 @@ export const updateOps = asyncHandler(async (req, res) => {
 export const updateDocs = asyncHandler(async (req, res, url) => {
     const { docs } = req.body;
 
-    const documents = {...docs, ...url}
+    const documents = [...docs, ...url]
   
     const id = req.query?.id;
   
     console.log(id, documents, "id");
   
     try {
-      const response = await tripModel.update(documents, {
+      const response = await tripModel.update({documents}, {
         where: {
           tripId: id,
         },
       });
-      if (!response) {
-        res.status(400).json({ MESSAGE: "Some erro occured", STATUS: "Failed" });
+      if (response[0] === 0) {
+        res.status(400).json({ MESSAGE: "Some error occured", STATUS: "Failed" });
       } else {
         console.log(response, "response");
         res.status(200).json({
