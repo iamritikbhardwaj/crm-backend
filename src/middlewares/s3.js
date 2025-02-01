@@ -20,9 +20,11 @@ export const uploadOnS3 = async (filePath, fileName) => {
       try {
         const data = await s3.upload(params).promise();
         console.log('File uploaded to S3:', data.Location);
+        fs.unlinkSync(filePath);
         return data.Location; // Return the URL of the uploaded file
       } catch (error) {
         console.error('Error uploading file to S3:', error);
+        fs.unlinkSync(filePath);
         throw error;
       }
 }
