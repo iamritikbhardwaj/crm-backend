@@ -10,7 +10,6 @@ import resetDatabase from './dbConfig/resetDatabase.js';
 
 // Define __dirname for ES modules
 
-
 (async () => {
   // await resetDatabase()
   await dbInit()

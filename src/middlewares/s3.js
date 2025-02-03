@@ -1,9 +1,13 @@
-import AWS from 'aws-sdk';
+import { Upload } from '@aws-sdk/lib-storage';
+import { S3 } from '@aws-sdk/client-s3';
 import fs from 'fs';
 
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+const s3 = new S3({
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+
   region: process.env.AWS_REGION,
 });
 
@@ -18,7 +22,10 @@ export const uploadOnS3 = async (filePath, fileName) => {
       };
 
       try {
-        const data = await s3.upload(params).promise();
+        const data = await new Upload({
+          client: s3,
+          params,
+        }).done();
         console.log('File uploaded to S3:', data.Location);
         fs.unlinkSync(filePath);
         return data.Location; // Return the URL of the uploaded file
