@@ -26,6 +26,7 @@ import {
   updateDocs,
   updateOps,
   updateTripStatus,
+  fetchDocs
 } from "../controllers/tripController.js";
 import {
   createBooking,
@@ -100,6 +101,7 @@ router.post(
 router.get("/getAllTrips", getAllTrip);
 router.post("/updateStatus", updateTripStatus);
 router.post("/updateOps", updateOps);
+router.get("/getSalesDocs", fetchDocs);
 
 // ! booking
 router.post(

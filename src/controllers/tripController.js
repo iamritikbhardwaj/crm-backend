@@ -259,3 +259,29 @@ export const updateDocs = asyncHandler(async (req, res, url) => {
       });
     }
 })
+
+export const fetchDocs = asyncHandler(async (req, res) => {
+    const id = req.query?.id;
+  
+    console.log(id, "id");
+  
+    try {
+      const response = await tripModel.findOne({
+        where: {
+          tripId: id,
+        },
+      });
+      if (!response) {
+        res.status(400).json({ MESSAGE: "Some erro occured", STATUS: "Failed" });
+      } else {
+        const docs = response?.documents.filter(doc => new String(doc).includes('freeze') )
+        res.status(200).json({
+          STATUS: "SUCCESS",
+          MESSAGE: "Trip updated successfully",
+          OUTPUT: docs,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+})
