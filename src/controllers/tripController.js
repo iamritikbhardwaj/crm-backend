@@ -229,7 +229,8 @@ export const updateOps = asyncHandler(async (req, res) => {
 export const updateDocs = asyncHandler(async (req, res, url) => {
     const { docs } = req.body;
 
-    const documents = [...docs, ...url]
+    const documents = [...docs]
+    documents.push(url)
   
     const id = req.query?.id;
   
