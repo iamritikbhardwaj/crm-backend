@@ -26,5 +26,8 @@ export const upload = multer({
     { name: 'passport', maxCount: 10 },
     { name: 'freezeQuotation', maxCount: 10 },
     { name: 'pan', maxCount: 10 },
-    { name: 'emailConf', maxCount: 10 }
+    { name: 'emailConf', maxCount: 10 },
+    { name: 'hotelvoucher', maxCount: 10 },
+    { name: 'activitiesvoucher', maxCount: 10 },
+    { name: 'miscvoucher', maxCount: 10 },
 ]);
