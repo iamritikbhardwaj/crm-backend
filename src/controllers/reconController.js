@@ -33,10 +33,10 @@ export const getAllRecon = asyncHanler(async (req, res) => {
 
 export const createRecon = asyncHanler(async (req, res) => {
      const reconData = req.body;
-     const id = req?.query?.id;
-     console.log(reconData,id, 'reconData');
+     const id = req.query;
+     console.log(reconData, 'reconData');
      try {
-          if(id !== undefined && id !== null) {
+          if(req.query.hasOwnProperty("id") && id !== undefined && id !== null) {
                console.log('update recon')
             const recon = await reconModel.update(reconData, {
                  where: {

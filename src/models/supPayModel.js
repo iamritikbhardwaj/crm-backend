@@ -18,7 +18,7 @@ const vendorPayModel = sequelize.define(
       allowNull: false,
     },
     currency: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     payment_status: {

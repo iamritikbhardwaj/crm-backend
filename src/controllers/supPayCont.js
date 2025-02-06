@@ -28,8 +28,8 @@ export const getAllSuppPay = asyncHandler(async (req, res) => {
 
 export const createSuppPay = asyncHandler(async (req, res) => {
      const suppData = req.body;
-     const id = req?.query?.id
-     console.log(id, 'suppData');
+     const { id } = req.query;
+     console.log(id,suppData, 'suppData');
      
      try {
           if(req.query.hasOwnProperty('id')) {

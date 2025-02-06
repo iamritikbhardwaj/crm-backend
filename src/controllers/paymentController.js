@@ -22,16 +22,16 @@ export const getAllPayments = asyncHandler(async (req, res) => {
 });
 
 export const createPayment = asyncHandler(async (req, res) => {
-     console.log('createPayment');
+     // console.log('createPayment');
      const paymentData = req.body;
-     const id = req?.query?.id;
+     const id = req.query;
      console.log(id, 'paymentData');
      try {
-        if(req.query.hasOwnProperty('id') && id !== undefined && id !== null) {
-        console.log('update payment')
+          if (req.query.hasOwnProperty("id") && id !== undefined && id !== null) {
+               console.log('update paymentt')
         const payment = await paymentModel.update(paymentData, {
             where: {
-                payment_id: id
+               payment_id: id
             }
         })
         if(payment[0] === 0) {

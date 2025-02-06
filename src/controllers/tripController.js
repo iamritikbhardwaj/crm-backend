@@ -46,14 +46,14 @@ const generateUniqueTripId = async () => {
 };
 
 export const getAllTrip = asyncHandler(async (req, res) => {
-  const tripId = req?.query?.id;
+  const {id} = req.query;
   console.log("getAllTrip");
   try {
-    if(req.query.hasOwnProperty('id')) {
+    if(req.query.hasOwnProperty('id') && id !== undefined && id !== null) {
       console.log('fetch one trip')
       const trip = await tripModel.findOne({
         where: {
-          tripId: tripId
+          tripId: id
         }
       })
       if(!trip) {
@@ -228,8 +228,7 @@ export const updateOps = asyncHandler(async (req, res) => {
 
 export const updateDocs = asyncHandler(async (req, res, url) => {
     const { docs } = req.body;
-    const documents = docs
-    documents.push(url)
+    const documents = [...docs, ...url];
   
     const id = req.query?.id;
   
@@ -272,7 +271,7 @@ export const fetchDocs = asyncHandler(async (req, res) => {
         },
       });
       if (!response) {
-        res.status(400).json({ MESSAGE: "Some erro occured", STATUS: "Failed" });
+        res.status(400).json({ MESSAGE: "Some error occured", STATUS: "Failed" });
       } else {
         const docs = response?.documents.filter(doc => new String(doc).includes('freeze') )
         res.status(200).json({

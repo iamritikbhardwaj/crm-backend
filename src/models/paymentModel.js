@@ -5,7 +5,7 @@ export const paymentModel = sequelize.define(
     "payment",
     {
         payment_id: {
-            type: DataTypes.UUID,
+            type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
         },
