@@ -24,7 +24,7 @@ export const getAllPayments = asyncHandler(async (req, res) => {
 export const createPayment = asyncHandler(async (req, res) => {
      // console.log('createPayment');
      const paymentData = req.body;
-     const id = req.query;
+     const { id } = req.query;
      console.log(id, 'paymentData');
      try {
           if (req.query.hasOwnProperty("id") && id !== undefined && id !== null) {

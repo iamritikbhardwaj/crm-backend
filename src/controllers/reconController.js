@@ -33,7 +33,7 @@ export const getAllRecon = asyncHanler(async (req, res) => {
 
 export const createRecon = asyncHanler(async (req, res) => {
      const reconData = req.body;
-     const id = req.query;
+     const {id} = req.query;
      console.log(reconData, 'reconData');
      try {
           if(req.query.hasOwnProperty("id") && id !== undefined && id !== null) {
