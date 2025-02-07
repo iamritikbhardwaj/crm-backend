@@ -78,13 +78,14 @@ export const createUser = asyncHandler(async (req, res) => {
         if (error.name === "SequelizeValidationError") {
           console.error("Validation Error:", error.errors);
         } else {
-          console.error("Unexpected Error:", error);
-          res.status(500).json({
+          console.error("Unexpected Error:", error.errors);
+          
+        }
+        res.status(201).json({
             STATUS: "FAIL",
             MESSAGE: "Error creating user",
             OUTPUT: error
           })
-        }
       }
 });
 

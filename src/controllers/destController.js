@@ -58,13 +58,18 @@ export const createDest = asyncHandler(async (req, res) => {
         });
     }}}
     catch (error) {
-        console.log(error);
-        res.status(500).json({
-            STATUS: 'FAIL',
-            MESSAGE: 'Error creating destination',
-            OUTPUT: null
-        });
-    }
+        if (error.name === "SequelizeValidationError") {
+            console.error("Validation Error:", error.errors);
+          } else {
+            console.error("Unexpected Error:", error.errors);
+            
+          }
+          res.status(201).json({
+              STATUS: "FAIL",
+              MESSAGE: "Error creating user",
+              OUTPUT: error
+            })
+        }
 });
 
 export const deleteDest = asyncHandler(async (req, res) => {

@@ -60,12 +60,22 @@ export const createAgent = asyncHandler(async (req, res) => {
           });
      }}}
      catch (error) {
-          console.log(error);
-          res.status(500).json({
-               STATUS: 'FAIL',
-               MESSAGE: 'Error creating agent',
-               OUTPUT: null
-          });
+          if (error.name === "SequelizeValidationError") {
+               console.error("Validation Error:", error.errors);
+               res.status(201).json({
+                    STATUS: "FAIL",
+                    MESSAGE: "Error creating user",
+                    OUTPUT: error
+                  })
+             } else {
+               console.error("Unexpected Error:", error.errors);
+               res.status(201).json({
+                    STATUS: "FAIL",
+                    MESSAGE: "Error creating user",
+                    OUTPUT: error
+                  })
+             }
+             
      }
 });
 

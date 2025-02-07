@@ -85,11 +85,16 @@ export const createSupp = asyncHandler(async (req, res) => {
     }
 } 
 catch (error) {
-        console.log(error);
-        res.status(500).json({
-            STATUS: 'FAIL',
-            MESSAGE: 'Error creating supplier',
-            OUTPUT: null
-        });
+    if (error.name === "SequelizeValidationError") {
+        console.error("Validation Error:", error.errors);
+      } else {
+        console.error("Unexpected Error:", error.errors);
+        
+      }
+      res.status(201).json({
+          STATUS: "FAIL",
+          MESSAGE: "Error creating user",
+          OUTPUT: error
+        })
     }
 });

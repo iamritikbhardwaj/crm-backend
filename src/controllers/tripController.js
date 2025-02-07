@@ -172,11 +172,14 @@ export const updateTripStatus = asyncHandler(async (req, res) => {
   console.log(id, "id");
 
   try {
-    const response = await tripModel.update(status, {
-      where: {
-        tripId: id,
-      },
-    });
+    const response = await tripModel.update(
+      { status },
+      {
+        where: {
+          tripId: id,
+        },
+      }
+    );
     if (!response) {
       res.status(400).json({ MESSAGE: "Some erro occured", STATUS: "Failed" });
     } else {
@@ -203,13 +206,14 @@ export const updateOps = asyncHandler(async (req, res) => {
     console.log(id, "id");
   
     try {
-      const response = await tripModel.update(opsSpoc, {
+      const response = await tripModel.update({opsSpoc}, {
         where: {
           tripId: id,
         },
       });
+      console.log(response, "response");
       if (!response) {
-        res.status(400).json({ MESSAGE: "Some erro occured", STATUS: "Failed" });
+        res.status(400).json({ MESSAGE: "Some error occured", STATUS: "Failed" });
       } else {
         res.status(200).json({
           STATUS: "SUCCESS",
