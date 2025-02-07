@@ -79,6 +79,11 @@ export const createUser = asyncHandler(async (req, res) => {
           console.error("Validation Error:", error.errors);
         } else {
           console.error("Unexpected Error:", error);
+          res.status(500).json({
+            STATUS: "FAIL",
+            MESSAGE: "Error creating user",
+            OUTPUT: error
+          })
         }
       }
 });

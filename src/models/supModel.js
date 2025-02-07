@@ -14,6 +14,7 @@ export const supModel = sequelize.define(
         name:  {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true
         },
         status: {
             type: DataTypes.STRING,

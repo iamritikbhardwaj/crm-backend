@@ -15,6 +15,7 @@ export const destModel = sequelize.define(
         destination: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
         },
         currency: {
             type: DataTypes.STRING,

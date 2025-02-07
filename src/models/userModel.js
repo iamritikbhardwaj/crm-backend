@@ -28,6 +28,7 @@ export const userModel = sequelize.define(
             phone: {
                 type: DataTypes.STRING,
                 allowNull: false,
+                unique: true,
             },
             profile: {
                 type: DataTypes.STRING,
