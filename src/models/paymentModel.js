@@ -10,7 +10,7 @@ export const paymentModel = sequelize.define(
             primaryKey: true,
         },
         amount: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.BOOLEAN,
             allowNull: false,
         },
         paymentMode: {
@@ -30,11 +30,11 @@ export const paymentModel = sequelize.define(
             allowNull: false,
         }, 
         convRate: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.BOOLEAN,
             allowNull: true,
         },
         conFee: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: true,
         },
         tripId: {

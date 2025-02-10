@@ -22,7 +22,7 @@ export const getAllPayments = asyncHandler(async (req, res) => {
 });
 
 export const createPayment = asyncHandler(async (req, res) => {
-     // console.log('createPayment');
+
      const paymentData = req.body;
      const { id } = req.query;
      console.log(id, 'paymentData');

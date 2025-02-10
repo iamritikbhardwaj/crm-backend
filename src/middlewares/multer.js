@@ -6,7 +6,6 @@ if (!fs.existsSync(tempDir)) {
     fs.mkdirSync(tempDir, { recursive: true });
 }
 
-// const id = req.params.id;
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
        if(file) return cb(null, tempDir);
