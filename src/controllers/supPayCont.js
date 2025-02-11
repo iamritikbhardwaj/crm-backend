@@ -4,7 +4,14 @@ import { v4 as uuidv4 } from "uuid";
 
 export const getAllSuppPay = asyncHandler(async (req, res) => {
      console.log('getAllSuppPay');
-    try { const supp = await vendorPayModel.findAll();
+     const { id } = req.query;
+     console.log(id, "id")
+    try { 
+     const supp = await vendorPayModel.findAll({
+     where: {
+          tripId: id
+     }
+    });
      console.log(supp, 'supp');
      if(!supp) {
         res.status(400);

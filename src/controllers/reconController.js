@@ -4,7 +4,13 @@ import { v4 as uuidv4 } from "uuid";
 
 export const getAllRecon = asyncHanler(async (req, res) => {
      console.log('getAllRecon');
-    try { const recon = await reconModel.findAll();
+     const { id } = req.query;
+    try { 
+     const recon = await reconModel.findAll({
+          where: {
+               tripId: id
+          }
+     });
      console.log(recon, 'recon');
      if(recon) {
           res.status(200).json({

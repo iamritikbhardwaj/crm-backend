@@ -4,7 +4,12 @@ import { v4 as uuidv4 } from "uuid";
 
 export const getAllPayments = asyncHandler(async (req, res) => {
      console.log('getAllPayment');
-    try { const payment = await paymentModel.findAll();
+     const { id } = req.query;
+    try { const payment = await paymentModel.findAll({
+     where: {
+          tripId: id
+     }
+    });
      console.log(payment, 'payment');
      res.status(200).json({
           STATUS: 'SUCCESS',

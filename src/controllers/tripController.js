@@ -288,3 +288,46 @@ export const fetchDocs = asyncHandler(async (req, res) => {
       console.log(error);
     }
 })
+
+// this is for agent payment
+export const updatePayment = asyncHandler(async(req, res) => {
+  const { id } = req.query;
+  const {payment} = req.body;
+  try {
+    const response = tripModel.update({payment},{
+      where: {
+        tripId: id
+      }
+    });
+    if(response[0] === 1) {
+      res.status(200).json({
+        MESSAGE: "Payment Updated Successfully",
+        STATUS: "SUCCESS",
+        OUTPUT: []
+      })
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const updatePayStatus = asyncHandler(async(req, res) => {
+  const { id } = req.query;
+  const {paymentStatus} = req.body;
+  try {
+    const response = tripModel.update({paymentStatus},{
+      where: {
+        tripId: id
+      }
+    });
+    if(response[0] === 1) {
+      res.status(200).json({
+        MESSAGE: "Payment status Updated Successfully",
+        STATUS: "SUCCESS",
+        OUTPUT: []
+      })
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});

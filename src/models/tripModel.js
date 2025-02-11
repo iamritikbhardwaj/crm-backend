@@ -9,8 +9,8 @@ export const tripModel = sequelize.define(
                 allowNull: false,
                 primaryKey: true,
             },
-            payment: {
-                type: DataTypes.INTEGER,
+            payment: { // agent payment
+                type: DataTypes.DECIMAL,
                 allowNull: false,
                 defaultValue: 0,
             },
