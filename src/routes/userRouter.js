@@ -28,7 +28,8 @@ import {
   updateTripStatus,
   fetchDocs,
   updatePayment,
-  updatePayStatus
+  updatePayStatus,
+  updateOrderValue
 } from "../controllers/tripController.js";
 import {
   createBooking,
@@ -105,7 +106,8 @@ router.post("/updateStatus", updateTripStatus);
 router.post("/updateOps", updateOps);
 router.get("/getSalesDocs", fetchDocs);
 router.post("/updatePayment", updatePayment);
-router.post("/updatePayStat", updatePayStatus)
+router.post("/updatePayStat", updatePayStatus);
+router.post("/updateOrderVal", updateOrderValue);
 
 // ! booking
 router.post(

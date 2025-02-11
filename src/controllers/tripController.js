@@ -313,9 +313,30 @@ export const updatePayment = asyncHandler(async(req, res) => {
 
 export const updatePayStatus = asyncHandler(async(req, res) => {
   const { id } = req.query;
-  const {paymentStatus} = req.body;
+  const {paymentStatus, opsStatus} = req.body;
   try {
-    const response = tripModel.update({paymentStatus},{
+    const response = tripModel.update({paymentStatus, opsStatus},{
+      where: {
+        tripId: id
+      }
+    });
+    if(response[0] === 1) {
+      res.status(200).json({
+        MESSAGE: "Payment status Updated Successfully",
+        STATUS: "SUCCESS",
+        OUTPUT: []
+      })
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const updateOrderValue = asyncHandler(async(req, res) => {
+  const { id } = req.query;
+  const { orderValue } = req.body;
+  try {
+    const response = tripModel.update({orderValue},{
       where: {
         tripId: id
       }
