@@ -231,8 +231,17 @@ export const updateOps = asyncHandler(async (req, res) => {
   });
 
 export const updateDocs = asyncHandler(async (req, res, url) => {
-    const doc = req.body;
-    const documents = [...doc?.docs, ...url]
+    const {docs} = req.body;
+    const documents = []
+    if(Array.isArray(docs) && Array.isArray(url)) {
+      documents.push(...docs, ...url)
+    }else if(!Array.isArray(docs) && Array.isArray(url)) {
+      documents.push(docs,...url);
+    }else if(Array.isArray(docs) && !Array.isArray(url)) {
+      documents.push(...docs, url);
+    }else {
+      documents.push(docs, url);
+    }
     const id = req.query?.id;
     try {
       console.log(id, documents, "id");
