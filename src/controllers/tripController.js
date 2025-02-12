@@ -232,13 +232,10 @@ export const updateOps = asyncHandler(async (req, res) => {
 
 export const updateDocs = asyncHandler(async (req, res, url) => {
     const { docs } = req.body;
-    const documents = [...docs, ...url];
-  
+    const documents = [...docs, ...url]
     const id = req.query?.id;
-  
-    console.log(id, documents, "id");
-  
     try {
+      console.log(id, documents, "id");
       const response = await tripModel.update({documents}, {
         where: {
           tripId: id,
@@ -255,7 +252,7 @@ export const updateDocs = asyncHandler(async (req, res, url) => {
         });
       }
     } catch (error) {
-      res.status(500).json({
+      res.status(201).json({
         STATUS: "FAIL",
         MESSAGE: error.message,
         OUTPUT: null,
