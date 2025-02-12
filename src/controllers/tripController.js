@@ -305,6 +305,12 @@ export const updatePayment = asyncHandler(async(req, res) => {
         STATUS: "SUCCESS",
         OUTPUT: []
       })
+    }else{
+      res.status(400).json({
+        MESSAGE: "Payment Update FAILED",
+        STATUS: "FAIL",
+        OUTPUT: []
+      })
     }
   } catch (error) {
     console.log(error);
@@ -326,9 +332,21 @@ export const updatePayStatus = asyncHandler(async(req, res) => {
         STATUS: "SUCCESS",
         OUTPUT: []
       })
+    } else if(response[0] === 0){
+      res.status(200).json({
+        MESSAGE: "Payment status and Booking status already exists",
+        STATUS: "SUCCESS",
+        OUTPUT: []
+      })
+    } else{
+      res.status(201).json({
+        MESSAGE: "Failed to update data",
+        STATUS: "SUCCESS",
+        OUTPUT: []
+      })
     }
   } catch (error) {
-    console.log(error);
+    console.log(error, "errorssss");
   }
 });
 
