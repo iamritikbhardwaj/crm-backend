@@ -26,7 +26,8 @@ export const handleUserLogin = asyncHandler(async (req, res) => {
         res.status(200).cookie('token', token, user, options).json({
             STATUS: 'SUCCESS',
             MESSAGE: 'User logged in successfully',
-            OUTPUT: user
+            user: user,
+            token: token
         });
     } else {
         res.status(201).json({

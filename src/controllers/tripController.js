@@ -232,13 +232,20 @@ export const updateOps = asyncHandler(async (req, res) => {
 
 export const updateDocs = asyncHandler(async (req, res, url) => {
     const { docs } = req.body;
-    const documents = [...docs, ...url];
+    const documents = [];
+    if(Array.from(docs).length === 1) {
+      documents = [...docs, ...url]
+      fetch();
+    } else{
+      documents = [docs, ...url]
+      fetch();
+    }
   
     const id = req.query?.id;
   
     console.log(id, documents, "id");
   
-    try {
+    const fetch = async() => {try {
       const response = await tripModel.update({documents}, {
         where: {
           tripId: id,
@@ -260,7 +267,7 @@ export const updateDocs = asyncHandler(async (req, res, url) => {
         MESSAGE: error.message,
         OUTPUT: null,
       });
-    }
+    }}
 })
 
 export const fetchDocs = asyncHandler(async (req, res) => {
