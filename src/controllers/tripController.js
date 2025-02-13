@@ -312,7 +312,7 @@ export const updatePayment = asyncHandler(async(req, res) => {
         OUTPUT: []
       })
     }else{
-      res.status(400).json({
+      res.status(201).json({
         MESSAGE: "Payment Update FAILED",
         STATUS: "FAIL",
         OUTPUT: []
