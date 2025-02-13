@@ -26,7 +26,8 @@ export const tripModel = sequelize.define(
             },
             validation: {
                 type: DataTypes.STRING,
-                allowNull: true,
+                allowNull: false,
+                defaultValue: 'Sales'
             },
             opsSpoc: {
                 type: DataTypes.STRING,

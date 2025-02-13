@@ -376,3 +376,32 @@ export const updateOrderValue = asyncHandler(async(req, res) => {
     console.log(error);
   }
 });
+
+export const updateValidation = asyncHandler(async(req, res) => {
+  const { id } = req.query;
+  const {validation} = req.body;
+  console.log(validation,id, "validation");
+  try {
+    const response = await tripModel.update({validation: validation},{
+      where: {
+        tripId: id
+      }
+    });
+    console.log(response, "response");
+    if(response[0] === 1) {
+      res.status(200).json({
+        MESSAGE: "Validated Successfully",
+        STATUS: "SUCCESS",
+        OUTPUT: []
+      })
+    }else{
+      res.status(201).json({
+        MESSAGE: "Failed",
+        STATUS: "FAIL",
+        OUTPUT: response
+      })
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});

@@ -21,13 +21,13 @@ const storage = multer.diskStorage({
 export const upload = multer({ 
     storage,
  }).fields([
-    { name: 'airTicketdoc', maxCount: 10 },
-    { name: 'passportdoc', maxCount: 10 },
-    { name: 'freezeQuotation', maxCount: 10 },
-    { name: 'pandoc', maxCount: 10 },
-    { name: 'miscdoc', maxCount: 10 },
-    { name: 'emailConfdoc', maxCount: 10 },
-    { name: 'hotelvoucher', maxCount: 10 },
-    { name: 'activitiesvoucher', maxCount: 10 },
-    { name: 'miscvoucher', maxCount: 10 },
+    { name: 'airTicketdoc', maxCount: 20 },
+    { name: 'passportdoc', maxCount: 20 },
+    { name: 'freezeQuotation', maxCount: 20 },
+    { name: 'pandoc', maxCount: 20 },
+    { name: 'miscdoc', maxCount: 20 },
+    { name: 'emailConfdoc', maxCount: 20 },
+    { name: 'hotelvoucher', maxCount: 20 },
+    { name: 'activitiesvoucher', maxCount: 20 },
+    { name: 'miscvoucher', maxCount: 20 },
 ]);

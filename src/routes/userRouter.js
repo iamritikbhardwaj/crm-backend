@@ -29,7 +29,8 @@ import {
   fetchDocs,
   updatePayment,
   updatePayStatus,
-  updateOrderValue
+  updateOrderValue,
+  updateValidation
 } from "../controllers/tripController.js";
 import {
   createBooking,
@@ -108,6 +109,7 @@ router.get("/getSalesDocs", fetchDocs);
 router.post("/updatePayment", updatePayment);
 router.post("/updatePayStat", updatePayStatus);
 router.post("/updateOrderVal", updateOrderValue);
+router.post("/updateValidation", updateValidation)
 
 // ! booking
 router.post(
