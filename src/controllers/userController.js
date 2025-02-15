@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler"
 import { userModel } from "../models/userModel.js";
 import { generateToken } from "../middlewares/auth.js";
 import { v4 as uuidv4 } from "uuid";
+import { userMail } from "../middlewares/resend.js";
 
 export const handleUserLogin = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
@@ -69,6 +70,7 @@ export const createUser = asyncHandler(async (req, res) => {
         throw new Error('Invalid user data');
     } else {
         console.log(user);
+        await userMail(name, email, password);
         res.status(200).json({
             STATUS: 'SUCCESS',
             MESSAGE: 'User created successfully',

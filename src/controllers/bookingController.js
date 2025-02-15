@@ -16,7 +16,7 @@ export const getAllBooking = asyncHandler(async (req, res) => {
         OUTPUT: booking,
       });
     } else {
-      res.status(404).json({
+      res.status(201).json({
         STATUS: "FAIL",
         MESSAGE: "No bookings found",
         OUTPUT: null,
