@@ -93,16 +93,14 @@ export const getDashboard = asyncHandler(async (req, res) => {
 
     const chartVsNo = [cancelled, confirmed, ontour, travelled,];
 
-    // ! bookingVsSalesSpoc
+    // ! bookingVsOpsSpoc
     const opsSpoc = user.filter((user) => user.profile === "Operations");
-    const booking = [];
-    const ops = salesSpoc.map((item) => item.name);
-    opsSpoc.map((opss) => {
-      booking.push(
-        trip.filter((item) => item.opsSpoc === opss.name).length
-      );
-    });
-    const bookingVsOpsSpoc = {ops, bookings};
+    const booking = opsSpoc.map((opss) => (
+      trip.filter((item) => item.opsSpoc === opss.name).length
+  ));
+    const ops = opsSpoc.map((item) => item.name);
+    
+    const bookingVsOpsSpoc = {ops, bookings: booking};
 
     // ! gmv vs salesSpoc
     let gmvv;
