@@ -3,6 +3,9 @@ import { bookingModel } from "../models/bookingModel.js";
 import { v4 as uuidv4 } from "uuid";
 import path from "path";
 import fs from "fs";
+import { createBookingMail, rejectBookingMail } from "../middlewares/resend.js";
+import { where } from "sequelize";
+import { profile } from "console";
 
 export const getAllBooking = asyncHandler(async (req, res) => {
   console.log("getAllBooking");
@@ -33,19 +36,22 @@ export const getAllBooking = asyncHandler(async (req, res) => {
 });
 
 export const deleteBooking = asyncHandler(async (req, res) => {
-  const id = req?.params?.id;
+  const id = req.params;
+  const { reject } = req.query;
   console.log(req.params, "id");
   try {
-    const response = await bookingModel.findOne({
-      where: {
-        booking_id: id,
-      },
-    })
-    if(response.status === 200) {
-     response.data.OUTPUT.documents.array.forEach(element => {
-          let path = element.path;
-          fs.unlinkSync(path);
-     });
+    if (reject === "true") {
+      const data = await bookingModel.findOne({
+        where: {
+          booking_id: id,
+        },
+      })
+      const sales = await userModel.findOne({
+        where: {
+          name: data.salesSpoc,
+        },
+      })
+      await rejectBookingMail(sales.email, sales.name, data.booking_id, data.customerName, data.arrivalDate, data.departureDate, data.pax, data.salesSpoc, "better luck next time");
     }
     const booking = await bookingModel.destroy({
       where: {
@@ -146,6 +152,16 @@ export const createBooking = asyncHandler(async (req, res, url) => {
         res.status(400);
         throw new Error("Invalid booking data");
       } else {
+        const sales = await userModel.findOne({
+          where: {
+            name: salesSpoc,
+          },
+        })
+        const ops = await userModel.findAll({
+          where: profile === "Operations"
+        })
+        const cc = ops.map((item) => item.email);
+        createBookingMail(sales.email, salesSpoc, booking.booking_id, customerName, arrivalDate, departureDate, pax, cc);
         res.status(200).json({
           STATUS: "SUCCESS",
           MESSAGE: "Booking created successfully",
@@ -161,24 +177,4 @@ export const createBooking = asyncHandler(async (req, res, url) => {
       OUTPUT: null,
     });
   }
-});
-
-export const getDoc = asyncHandler(async (req, res) => {
-     console.log('getDoc');
-     const pathh = req.query?.path;
-     const filePath = path.resolve(pathh)
-
-     fs.exists(filePath, (exists) => {
-      if (exists) {
-        // If the file exists, send it as a response
-        res.download(filePath, (err) => {
-          if (err) {
-            console.error('Error sending file:', err);
-            res.status(500).send('Error sending file');
-          }
-        });
-      } else {
-        res.status(404).send('File not found');
-      }
-    });
 });

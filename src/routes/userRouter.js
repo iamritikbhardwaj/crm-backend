@@ -31,7 +31,6 @@ import {
   createBooking,
   getAllBooking,
   deleteBooking,
-  getDoc,
 } from "../controllers/bookingController.js";
 import {
   createPayment,

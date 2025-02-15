@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import vendorPayModel from "../models/supPayModel.js";
 import { v4 as uuidv4 } from "uuid";
+import tripModel from "../models/tripModel.js";
 
 export const getAllSuppPay = asyncHandler(async (req, res) => {
      console.log('getAllSuppPay');
@@ -50,6 +51,19 @@ export const createSuppPay = asyncHandler(async (req, res) => {
                res.status(400);
                throw new Error('Invalid supplier data');
           } else {
+               const vendor = await vendorPayModel.findAll({
+                    where: {
+                         tripId: suppData.tripId
+                    }
+               })
+               const pay = vendor.filter((item) => item.payment_status !== "PAID").length;
+               if(pay === 0) {
+                    await tripModel.update({ paymentStatus: "PAID"},{where: {tripId: suppData.tripId}});
+               }
+               const book = vendor.filter((item) => item.booking_status !== "COMPLETED").length;
+               if(book === 0) {
+                    await tripModel.update({ opsStatus: "COMPLETED" }, {where: {tripId: suppData.tripId}});
+               }
                res.status(200).json({
                     STATUS: 'SUCCESS',
                     MESSAGE: 'Supplier updated successfully',
@@ -63,6 +77,7 @@ export const createSuppPay = asyncHandler(async (req, res) => {
           res.status(400);
           throw new Error('Invalid supplier data');
      } else {
+          await tripModel.update({ paymentStatus: "UNPAID", opsStatus: "PENDING" },{where: {tripId: suppData.tripId}});
           res.status(200).json({
                STATUS: 'SUCCESS',
                MESSAGE: 'Supplier created successfully',

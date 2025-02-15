@@ -30,25 +30,26 @@ const userMail = async (name, email, password) => {
 };
 
 // ! in this mail we need to provide from, to, user name , booking id, customer name, start date, end date, pax, sales spoc
-const createBookingMail = async (mail) => {
+const createBookingMail = async (email, name, booking_id, customer_name, start_date, end_date, pax, cc) => {
   try {
     const data = await resend.emails.send({
       from: "ActivityBeds <noreply@tomatotrails.com>",
-      to: mail.email,
+      to: email,
+      cc: cc,
       subject: "Successful Booking Creation",
-      text: `Dear ${mail.user},
+      text: `Dear ${name},
       The new Booking is created as per below details. It is under Que for the Validation Team. You will get the email if the booking is Confirmed/Rejected.
-      BOOKING ID ${mail.booking_id}
+      BOOKING ID ${booking_id}
        
-      CUSTOMER NAME ${mail.customer_name}
+      CUSTOMER NAME ${customer_name}
        
-      START DATE ${mail.start_date}
+      START DATE ${start_date}
        
-      END DATE ${mail.end_date}
+      END DATE ${end_date}
        
-      NO OF ADULT/CHILD ${mail.pax}
+      NO OF ADULT/CHILD ${pax}
        
-      SALES SPOC ${mail.sales_spoc}
+      SALES SPOC ${name}
             
       Warm Regards
  
@@ -61,27 +62,28 @@ const createBookingMail = async (mail) => {
   }
 };
 
-const confirmBookingMail = async (mail) => {
+const confirmBookingMail = async (email, user, tripId, customer_name, start_date, end_date, pax, sales_spoc, ops_spoc, cc) => {
   try {
     const data = await resend.emails.send({
       from: "ActivityBeds <noreply@tomatotrails.com>",
-      to: mail.email,
+      to: email,
+      cc: cc,
       subject: "Successful Trip Creation",
-      text: `Dear ${mail.user},
+      text: `Dear ${user},
         Your New Booking is Confirmed by the Validation Team & the Delivery SPOC is assigned for the same. Pls find the details of the Confirmed Trip for your reference.
-        TRIP ID ${mail.tripId}
+        TRIP ID ${tripId}
          
-        CUSTOMER NAME ${mail.customer_name}
+        CUSTOMER NAME ${customer_name}
          
-        START DATE ${mail.start_date}
+        START DATE ${start_date}
          
-        END DATE ${mail.end_date}
+        END DATE ${end_date}
          
-        NO OF ADULT/CHILD ${mail.pax}
+        NO OF ADULT/CHILD ${pax}
          
-        SALES SPOC ${mail.sales_spoc}
+        SALES SPOC ${sales_spoc}
 
-        OPS SPOC ${mail.ops_spoc}
+        OPS SPOC ${ops_spoc}
               
         Warm Regards
    
@@ -94,28 +96,28 @@ const confirmBookingMail = async (mail) => {
   }
 };
 
-const rejectBookingMail = async (mail) => {
+const rejectBookingMail = async (email, user, booking_id, customer_name, start_date, end_date, pax, sales_spoc, comments) => {
   try {
     const data = await resend.emails.send({
       from: "ActivityBeds <noreply@tomatotrails.com>",
-      to: mail.email,
+      to: email,
       subject: "New Booking Rejected",
-      text: `Dear ${mail.user},
+      text: `Dear ${user},
         The new Booking is REJECTED by Validation Team as per below Comments. Pls read the same & try to resolve. Thereafter pls create the New Booking.
         Pls Note that data is erased from the database on Rejection of Booking.        
-        BOOKING ID ${mail.booking_id}
+        BOOKING ID ${booking_id}
          
-        CUSTOMER NAME ${mail.customer_name}
+        CUSTOMER NAME ${customer_name}
          
-        START DATE ${mail.start_date}
+        START DATE ${start_date}
          
-        END DATE ${mail.end_date}
+        END DATE ${end_date}
          
-        NO OF ADULT/CHILD ${mail.pax}
+        NO OF ADULT/CHILD ${pax}
          
-        SALES SPOC ${mail.sales_spoc}
+        SALES SPOC ${sales_spoc}
 
-        Rejection Comments ${mail.comments}
+        Rejection Comments ${comments}
               
         Warm Regards
    
@@ -128,28 +130,29 @@ const rejectBookingMail = async (mail) => {
   }
 };
 
-const cancelBookingMail = async (mail) => {
+const cancelBookingMail = async (email, user, tripId, customer_name, start_date, end_date, pax, ops_spoc, cc) => {
   try {
     const data = await resend.emails.send({
       from: "ActivityBeds <noreply@tomatotrails.com>",
-      to: mail.email,
+      to: email,
+      cc: cc,
       subject: "Trip ID Cancelled",
-      text: `Dear ${mail.user},
+      text: `Dear ${user},
       Your Trip ID is canceled by the operation team. Pls find the details of the Cancelled Trip for your reference.
       
-      TRIP ID ${mail.tripId}
+      TRIP ID ${tripId}
       
-      CUSTOMER NAME ${mail.customer_name}
+      CUSTOMER NAME ${customer_name}
       
-      START DATE ${mail.start_date}
+      START DATE ${start_date}
       
-      END DATE ${mail.end_date}
+      END DATE ${end_date}
       
-      NO OF ADULT/CHILD ${mail.pax}
+      NO OF ADULT/CHILD ${pax}
       
-      SALES SPOC ${mail.sales_spoc}
+      SALES SPOC ${user}
       
-      OPS SPOC ${mail.ops_spoc}
+      OPS SPOC ${ops_spoc}
       
       Warm Regards
       
@@ -162,26 +165,26 @@ const cancelBookingMail = async (mail) => {
   }
 };
 
-const voucherMail = async (mail) => {
+const voucherMail = async (email, user, tripId, customer_name, start_date, end_date, pax, sales_spoc, ops_spoc) => {
   try {
     const data = await resend.emails.send({
       from: "ActivityBeds <noreply@tomatotrails.com>",
-      to: mail.email,
-      subject: `Trip ID ${mail.tripId} Voucher Attached`,
-      text: `Dear ${mail.user},
-            Your Vouchers for the TRIP had been released. Pls find the details of the Trip for which the Voucher is Attached..            TRIP ID ${mail.tripId}
+      to: email,
+      subject: `Trip ID ${tripId} Voucher Attached`,
+      text: `Dear ${user},
+            Your Vouchers for the TRIP had been released. Pls find the details of the Trip for which the Voucher is Attached..            TRIP ID ${tripId}
              
-            CUSTOMER NAME ${mail.customer_name}
+            CUSTOMER NAME ${customer_name}
              
-            START DATE ${mail.start_date}
+            START DATE ${start_date}
              
-            END DATE ${mail.end_date}
+            END DATE ${end_date}
              
-            NO OF ADULT/CHILD ${mail.pax}
+            NO OF ADULT/CHILD ${pax}
              
-            SALES SPOC ${mail.sales_spoc}
+            SALES SPOC ${sales_spoc}
     
-            OPS SPOC ${mail.ops_spoc}
+            OPS SPOC ${ops_spoc}
                   
             Warm Regards
        
@@ -194,25 +197,32 @@ const voucherMail = async (mail) => {
   }
 };
 
-const reconMail = async (mail) => {
+const reconMail = async (email, user, tripId, customer_name, start_date, end_date, pax, sales_spoc, ops_spoc) => {
   try {
+    const finance = userModel.findAll({
+      where: {
+        profile: "Finance",
+      }
+    })
+    const cc = finance.map((item) => item.email);
     const data = await resend.emails.send({
       from: "ActivityBeds <noreply@tomatotrails.com>",
-      to: mail.email,
-      subject: `Trip ID ${mail.tripId} – Reconciliation Done`,
-      text: `Dear ${mail.user},
+      to: cc,
+      cc: email,
+      subject: `Trip ID ${tripId} – Reconciliation Done`,
+      text: `Dear ${user},
         The Reconciliation is completed for the below TRIP ID. Pls validate the same so that the Accounts are closed.               
-              CUSTOMER NAME ${mail.customer_name}
+              CUSTOMER NAME ${customer_name}
                
-              START DATE ${mail.start_date}
+              START DATE ${start_date}
                
-              END DATE ${mail.end_date}
+              END DATE ${end_date}
                
-              NO OF ADULT/CHILD ${mail.pax}
+              NO OF ADULT/CHILD ${pax}
                
-              SALES SPOC ${mail.sales_spoc}
+              SALES SPOC ${sales_spoc}
       
-              OPS SPOC ${mail.ops_spoc}
+              OPS SPOC ${ops_spoc}
                     
               Warm Regards
          
