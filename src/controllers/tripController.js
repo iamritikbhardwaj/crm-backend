@@ -105,7 +105,7 @@ export const createTrip = asyncHandler(async (req, res, url) => {
   } = tripData;
   const documents = [...docs, ...url]
   console.log(documents, "tripData");
-  const id = req?.query?.id;
+  const {id} = req.query;
   console.log(tripData, "tripData");
 
   try {
@@ -163,72 +163,6 @@ export const createTrip = asyncHandler(async (req, res, url) => {
     });
   }
 });
-
-export const updateTripStatus = asyncHandler(async (req, res) => {
-  const { status } = req.body;
-
-  const id = req.query?.id;
-
-  console.log(id, "id");
-
-  try {
-    const response = await tripModel.update(
-      { status },
-      {
-        where: {
-          tripId: id,
-        },
-      }
-    );
-    if (!response) {
-      res.status(400).json({ MESSAGE: "Some erro occured", STATUS: "Failed" });
-    } else {
-      res.status(200).json({
-        STATUS: "SUCCESS",
-        MESSAGE: "Trip updated successfully",
-        OUTPUT: response,
-      });
-    }
-  } catch (error) {
-    res.status(500).json({
-      STATUS: "FAIL",
-      MESSAGE: error.message,
-      OUTPUT: null,
-    });
-  }
-});
-
-export const updateOps = asyncHandler(async (req, res) => {
-    const { opsSpoc } = req.body;
-  
-    const id = req.query?.id;
-  
-    console.log(id, "id");
-  
-    try {
-      const response = await tripModel.update({opsSpoc}, {
-        where: {
-          tripId: id,
-        },
-      });
-      console.log(response, "response");
-      if (!response) {
-        res.status(400).json({ MESSAGE: "Some error occured", STATUS: "Failed" });
-      } else {
-        res.status(200).json({
-          STATUS: "SUCCESS",
-          MESSAGE: "Trip updated successfully",
-          OUTPUT: response,
-        });
-      }
-    } catch (error) {
-      res.status(500).json({
-        STATUS: "FAIL",
-        MESSAGE: error.message,
-        OUTPUT: null,
-      });
-    }
-  });
 
 export const updateDocs = asyncHandler(async (req, res, url) => {
     const {docs} = req.body;
@@ -295,39 +229,12 @@ export const fetchDocs = asyncHandler(async (req, res) => {
     }
 })
 
-// this is for agent payment
-export const updatePayment = asyncHandler(async(req, res) => {
+export const updateTrip = asyncHandler(async(req, res) => {
   const { id } = req.query;
-  const {payment} = req.body;
+  const data = req.body;
+  console.log(data, id, "updateOrderValue");
   try {
-    const response = tripModel.update({payment},{
-      where: {
-        tripId: id
-      }
-    });
-    if(response[0] === 1) {
-      res.status(200).json({
-        MESSAGE: "Payment Updated Successfully",
-        STATUS: "SUCCESS",
-        OUTPUT: []
-      })
-    }else{
-      res.status(201).json({
-        MESSAGE: "Payment Update FAILED",
-        STATUS: "FAIL",
-        OUTPUT: []
-      })
-    }
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-export const updatePayStatus = asyncHandler(async(req, res) => {
-  const { id } = req.query;
-  const {paymentStatus, opsStatus} = req.body;
-  try {
-    const response = tripModel.update({paymentStatus, opsStatus},{
+    const response = tripModel.update(data,{
       where: {
         tripId: id
       }
@@ -338,67 +245,11 @@ export const updatePayStatus = asyncHandler(async(req, res) => {
         STATUS: "SUCCESS",
         OUTPUT: []
       })
-    } else if(response[0] === 0){
-      res.status(200).json({
-        MESSAGE: "Payment status and Booking status already exists",
-        STATUS: "SUCCESS",
-        OUTPUT: []
-      })
-    } else{
+    }else{
       res.status(201).json({
         MESSAGE: "Failed to update data",
         STATUS: "SUCCESS",
         OUTPUT: []
-      })
-    }
-  } catch (error) {
-    console.log(error, "errorssss");
-  }
-});
-
-export const updateOrderValue = asyncHandler(async(req, res) => {
-  const { id } = req.query;
-  const { orderValue } = req.body;
-  try {
-    const response = tripModel.update({orderValue},{
-      where: {
-        tripId: id
-      }
-    });
-    if(response[0] === 1) {
-      res.status(200).json({
-        MESSAGE: "Payment status Updated Successfully",
-        STATUS: "SUCCESS",
-        OUTPUT: []
-      })
-    }
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-export const updateValidation = asyncHandler(async(req, res) => {
-  const { id } = req.query;
-  const {validation} = req.body;
-  console.log(validation,id, "validation");
-  try {
-    const response = await tripModel.update({validation: validation},{
-      where: {
-        tripId: id
-      }
-    });
-    console.log(response, "response");
-    if(response[0] === 1) {
-      res.status(200).json({
-        MESSAGE: "Validated Successfully",
-        STATUS: "SUCCESS",
-        OUTPUT: []
-      })
-    }else{
-      res.status(201).json({
-        MESSAGE: "Failed",
-        STATUS: "FAIL",
-        OUTPUT: response
       })
     }
   } catch (error) {

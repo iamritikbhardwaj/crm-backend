@@ -24,13 +24,8 @@ import {
   createTrip,
   getAllTrip,
   updateDocs,
-  updateOps,
-  updateTripStatus,
   fetchDocs,
-  updatePayment,
-  updatePayStatus,
-  updateOrderValue,
-  updateValidation
+  updateTrip
 } from "../controllers/tripController.js";
 import {
   createBooking,
@@ -57,6 +52,7 @@ import { upload } from "../middlewares/multer.js";
 import expressAsyncHandler from "express-async-handler";
 import path from "path";
 import { uploadOnS3 } from "../middlewares/s3.js";
+import { getDashboard } from "../controllers/dashboardController.js";
 
 const router = Router();
 
@@ -103,13 +99,8 @@ router.post(
   createTrip
 );
 router.get("/getAllTrips", getAllTrip);
-router.post("/updateStatus", updateTripStatus);
-router.post("/updateOps", updateOps);
 router.get("/getSalesDocs", fetchDocs);
-router.post("/updatePayment", updatePayment);
-router.post("/updatePayStat", updatePayStatus);
-router.post("/updateOrderVal", updateOrderValue);
-router.post("/updateValidation", updateValidation)
+router.post("/updateTrip", updateTrip);
 
 // ! booking
 router.post(
@@ -192,5 +183,7 @@ router.post("/updateDocs", upload, expressAsyncHandler(async (req, res) => {
   updateDocs(req, res, url);
 })
 );
+
+router.get("/getDashData", getDashboard);
 
 export default router;

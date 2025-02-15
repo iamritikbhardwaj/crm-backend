@@ -14,11 +14,6 @@ export const tripModel = sequelize.define(
                 allowNull: false,
                 defaultValue: 0,
             },
-            status: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                defaultValue: 'CONFIRMED',
-            },
             paymentStatus: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -44,7 +39,8 @@ export const tripModel = sequelize.define(
             },
             status: { // where are we setting this
               type: DataTypes.STRING,
-              allowNull: true,
+              allowNull: false,
+              defaultValue: 'CONFIRMED',
             },
             destination: {
               type: DataTypes.STRING,
@@ -73,6 +69,10 @@ export const tripModel = sequelize.define(
             pax: {
               type: DataTypes.JSON, // Use JSON instead of JSONB
               allowNull: false,
+            },
+            transferPrice: {
+              type: DataTypes.DECIMAL,
+              allowNull: true,
             },
             orderValue: {
               type: DataTypes.STRING,
