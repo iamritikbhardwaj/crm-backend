@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import { tripModel } from "../models/tripModel.js";
 import { confirmBookingMail, reconMail } from "../middlewares/resend.js";
+import { userModel } from "../models/userModel.js";
 
 const generateUniqueTripId = async () => {
   try {
@@ -154,9 +155,9 @@ export const createTrip = asyncHandler(async (req, res, url) => {
           },
         });
         const ops = await userModel.findOne({
-          where: name === opsSpoc,
+          where: {name: opsSpoc,}
         });
-        confirmBookingMail(
+        await confirmBookingMail(
           sales.email,
           salesSpoc,
           trip.tripId,

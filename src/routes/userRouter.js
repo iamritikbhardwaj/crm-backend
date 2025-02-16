@@ -130,7 +130,7 @@ router.post(
   })
 );
 router.get("/getAllBookings", getAllBooking);
-router.delete("/deleteBooking/:id", deleteBooking);
+router.delete("/deleteBooking", deleteBooking);
 
 // ! agent
 router.post("/createAgent", createAgent);

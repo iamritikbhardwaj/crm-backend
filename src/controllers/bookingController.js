@@ -1,11 +1,8 @@
 import asyncHandler from "express-async-handler";
 import { bookingModel } from "../models/bookingModel.js";
 import { v4 as uuidv4 } from "uuid";
-import path from "path";
-import fs from "fs";
 import { createBookingMail, rejectBookingMail } from "../middlewares/resend.js";
-import { where } from "sequelize";
-import { profile } from "console";
+import { userModel } from "../models/userModel.js";
 
 export const getAllBooking = asyncHandler(async (req, res) => {
   console.log("getAllBooking");
@@ -36,11 +33,9 @@ export const getAllBooking = asyncHandler(async (req, res) => {
 });
 
 export const deleteBooking = asyncHandler(async (req, res) => {
-  const id = req.params;
-  const { reject } = req.query;
-  console.log(req.params, "id");
+  const { id, reject } = req.query;
   try {
-    if (reject === "true") {
+    if (reject === true) {
       const data = await bookingModel.findOne({
         where: {
           booking_id: id,
@@ -58,8 +53,6 @@ export const deleteBooking = asyncHandler(async (req, res) => {
         booking_id: id,
       },
     });
-
-    console.log(booking, "booking");
 
     if (booking !== 1) {
       res.status(404).json({
@@ -102,7 +95,7 @@ export const createBooking = asyncHandler(async (req, res, url) => {
     whatsappNumber,
     opsSpoc,
   } = bookingData;
-  console.log(bookingData, req.files, "tripData");
+  console.log(bookingData, req.files, "booking data");
   const id = req?.query?.id;
   console.log(url, "id");
 
@@ -158,8 +151,8 @@ export const createBooking = asyncHandler(async (req, res, url) => {
           },
         })
         const ops = await userModel.findAll({
-          where: profile === "Operations"
-        })
+          where: { profile: "Operations" },
+        });
         const cc = ops.map((item) => item.email);
         createBookingMail(sales.email, salesSpoc, booking.booking_id, customerName, arrivalDate, departureDate, pax, cc);
         res.status(200).json({
