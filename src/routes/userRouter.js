@@ -25,12 +25,14 @@ import {
   getAllTrip,
   updateDocs,
   fetchDocs,
-  updateTrip
+  updateTrip,
+  voucher
 } from "../controllers/tripController.js";
 import {
   createBooking,
   getAllBooking,
   deleteBooking,
+  cancelBooking,
 } from "../controllers/bookingController.js";
 import {
   createPayment,
@@ -100,6 +102,7 @@ router.post(
 router.get("/getAllTrips", getAllTrip);
 router.get("/getSalesDocs", fetchDocs);
 router.post("/updateTrip", updateTrip);
+router.post("/voucher", voucher);
 
 // ! booking
 router.post(
@@ -131,6 +134,7 @@ router.post(
 );
 router.get("/getAllBookings", getAllBooking);
 router.delete("/deleteBooking", deleteBooking);
+router.delete("/cancelBooking", cancelBooking);
 
 // ! agent
 router.post("/createAgent", createAgent);

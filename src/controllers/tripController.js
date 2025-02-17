@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { tripModel } from "../models/tripModel.js";
-import { confirmBookingMail, reconMail } from "../middlewares/resend.js";
+import { cancelBookingMail, confirmBookingMail, reconMail, voucherMail } from "../middlewares/resend.js";
 import { userModel } from "../models/userModel.js";
 
 const generateUniqueTripId = async () => {
@@ -269,32 +269,32 @@ export const fetchDocs = asyncHandler(async (req, res) => {
 
 export const updateTrip = asyncHandler(async (req, res) => {
   const { id } = req.query;
-  const value = req.body;
-  console.log(value, id, "updateOrderValue");
+  const data = req.body;
   try {
-    const response = tripModel.update(value, {
+    const response = await tripModel.update(data, {
       where: {
         tripId: id,
       },
     });
-    if (response[0] === 1) {
-      if (value.hasOwnProperty("status") || value.hasOwnProperty("validation")) {
-        const data = await tripModel.findOne({
-          where: {
-            tripId: id,
-          },
-        });
+    console.log(response, "response");
+    if (response) {
+      const value = await tripModel.findOne({
+        where: {
+          tripId: id,
+        },
+      })
+      console.log(value.status, "value");
+      if (value.status === "CANCELLED") {
         const sales = await userModel.findOne({
           where: {
-            name: data.salesSpoc,
+            name: value.salesSpoc,
           },
         });
         const ops = await userModel.findOne({
           where: {
-            name: data.opsSpoc,
+            name: value.opsSpoc,
           },
         });
-        if (value?.status === "CANCELLED") {
           await cancelBookingMail(
             sales.email,
             sales.name,
@@ -306,28 +306,12 @@ export const updateTrip = asyncHandler(async (req, res) => {
             ops.name,
             ops.email
           );
-        } else if (
-          value?.validation === "Operations" ||
-          value?.validation === "Finance"
-        ) {
-          reconMail(
-            ops.email,
-            ops.name,
-            data.tripId,
-            data.customerName,
-            data.arrivalDate,
-            data.departureDate,
-            data.pax,
-            sales.name,
-            ops.name
-          );
-        }
+          res.status(200).json({
+            MESSAGE: "Payment status Updated Successfully",
+            STATUS: "SUCCESS",
+            OUTPUT: [],
+          });
       }
-      res.status(200).json({
-        MESSAGE: "Payment status Updated Successfully",
-        STATUS: "SUCCESS",
-        OUTPUT: [],
-      });
     } else {
       res.status(201).json({
         MESSAGE: "Failed to update data",
@@ -337,5 +321,48 @@ export const updateTrip = asyncHandler(async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+  }
+});
+
+export const voucher = asyncHandler(async (req, res) => {
+  const { id } = req.query;
+  try {
+    const data = await tripModel.findOne({
+      where: {
+        tripId: id,
+      },
+    });
+    const sales = await userModel.findOne({
+      where: {
+        name: data.salesSpoc,
+      },
+    });
+    voucherMail(sales.email, sales.name, data.tripId, data.customerName, data.arrivalDate, data.departureDate, data.pax, data.salesSpoc, data.opsSpoc);
+    res.status(200).json({
+      MESSAGE: "Voucher sent successfully",
+      STATUS: "SUCCESS",
+      OUTPUT: [],
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const recon = asyncHandler(async (req, res) => {
+  const id = req.query;
+  try {
+    const trip = await tripModel.findAll({
+      where: {
+        tripId: id
+      }
+    });
+    const ops = await userModel.findAll({
+      where: {
+        name: trip.opsSpoc
+      }
+    });
+    await reconMail(ops.email, ops.name, id, trip.customerName, trip.arrivalDate, trip.departureDate, trip.pax, trip.salesSpoc, trip.opsSpoc)
+  } catch (error) {
+    console.log(error)
   }
 });

@@ -96,7 +96,7 @@ const confirmBookingMail = async (email, user, tripId, customer_name, start_date
   }
 };
 
-const rejectBookingMail = async (email, user, booking_id, customer_name, start_date, end_date, pax, sales_spoc, comments) => {
+const rejectBookingMail = async (email, user, booking_id, customer_name, start_date, end_date, pax, comments) => {
   try {
     const data = await resend.emails.send({
       from: "ActivityBeds <noreply@tomatotrails.com>",
@@ -115,7 +115,7 @@ const rejectBookingMail = async (email, user, booking_id, customer_name, start_d
          
         NO OF ADULT/CHILD ${pax}
          
-        SALES SPOC ${sales_spoc}
+        SALES SPOC ${user}
 
         Rejection Comments ${comments}
               

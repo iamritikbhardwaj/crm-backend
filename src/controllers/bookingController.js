@@ -1,8 +1,9 @@
 import asyncHandler from "express-async-handler";
 import { bookingModel } from "../models/bookingModel.js";
 import { v4 as uuidv4 } from "uuid";
-import { createBookingMail, rejectBookingMail } from "../middlewares/resend.js";
+import { cancelBookingMail, createBookingMail, rejectBookingMail } from "../middlewares/resend.js";
 import { userModel } from "../models/userModel.js";
+import { where } from "sequelize";
 
 export const getAllBooking = asyncHandler(async (req, res) => {
   console.log("getAllBooking");
@@ -76,7 +77,6 @@ export const deleteBooking = asyncHandler(async (req, res) => {
     });
   }
 });
-
 export const createBooking = asyncHandler(async (req, res, url) => {
   const data = req.body.data;
   const bookingData = JSON.parse(data);
@@ -169,5 +169,42 @@ export const createBooking = asyncHandler(async (req, res, url) => {
       MESSAGE: "Error creating booking",
       OUTPUT: null,
     });
+  }
+});
+
+export const cancelBooking = asyncHandler(async (req, res) => {
+  const { id } = req.query;
+  try {
+    const booking = await bookingModel.findOne({
+      where: {
+        booking_id: id
+      }
+   });
+    const sales = await userModel.findOne({
+      where: {
+        name: booking.salesSpoc,
+      },
+    })
+    await rejectBookingMail(sales.email, sales.name, booking.booking_id, booking.customerName, booking.arrivalDate, booking.departureDate, booking.pax, "better luck next time");
+    const response = await bookingModel.destroy({
+      where: {
+        booking_id: id,
+      },
+    });
+    if (response !== 1) {
+      res.status(404).json({
+        STATUS: "FAIL",
+        MESSAGE: "Booking not found",
+        OUTPUT: null,
+      });
+    } else {
+      res.status(200).json({
+        STATUS: "SUCCESS",
+        MESSAGE: "Booking cancelled successfully",
+        OUTPUT: booking,
+      });
+    }
+  } catch (error) {
+    console.log(error);
   }
 });
