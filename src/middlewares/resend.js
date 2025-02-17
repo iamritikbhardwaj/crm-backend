@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { userModel } from "../models/userModel.js";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
