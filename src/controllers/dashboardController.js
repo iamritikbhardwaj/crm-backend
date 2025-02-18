@@ -165,3 +165,78 @@ export const getDashboard = asyncHandler(async (req, res) => {
     res.status(201).json({ message: error.message });
   }
 });
+
+export const userSpecificDashboard = asyncHandler(async (req, res) => {
+  const { startDate, endDate, user } = req.query;
+
+  const sales = JSON.parse(user);
+
+  console.log(startDate, endDate, JSON.stringify(sales), "dashboard");
+
+  // Check if both startDate and endDate are provided
+  if (!startDate || !endDate) {
+    return res
+      .status(400)
+      .json({ message: "Both startDate and endDate are required" });
+  }
+
+  // Convert the timestamps to Date objects
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  try {
+    const trip = await tripModel.findAll({
+      where: {
+        created_at: {
+          [Op.between]: [start, end],
+        },
+        salesSpoc: sales.name,
+      },
+    });
+
+    const agent = await agentModel.findAll();
+
+    // ! main data
+    const activeAgents = agent.filter(
+      (agent) => agent.status === "ACTIVE"
+    ).length;
+    const gmv = trip.reduce(
+      (total, item) => parseInt(total) + parseInt(item.orderValue),
+      0
+    );
+    const gpv = gmv -
+      trip.reduce(
+        (total, item) => parseInt(total) + parseInt(item?.transferPrice || 0) ,
+        0
+      );
+
+    // ! Status Chart vs Number
+    const confirmed = trip.filter((item) => item.status === "CONFIRMED").length;
+    const cancelled = trip.filter((item) => 
+      item.status === "CANCELLED"
+    ).length;
+    const ontour = trip.filter((item) => 
+      item.status === "ON-TOUR"
+    ).length;
+    const travelled = trip.filter((item) => 
+      item.status === "TRAVELLED").length;
+
+    const chartVsNo = [cancelled, confirmed, ontour, travelled,];
+
+    res.status(200).json({
+      STATUS: "SUCCESS",
+      MESSAGE: "Dashboard data fetched successfully",
+      OUTPUT: {
+        noOfBookings: trip.length,
+        activeAgents,
+        gmv,
+        gpv,
+        
+      },
+      chart: chartVsNo,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(201).json({ message: error.message });
+  }
+});

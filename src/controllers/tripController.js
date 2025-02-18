@@ -313,13 +313,14 @@ export const updateTrip = asyncHandler(async (req, res) => {
         await cancelBookingMail(
           sales.email,
           sales.name,
-          data.tripId,
-          data.customerName,
-          data.arrivalDate,
-          data.departureDate,
-          data.pax,
+          value.tripId,
+          value.customerName,
+          value.arrivalDate,
+          value.departureDate,
+          value.pax,
           ops.name,
-          ops.email
+          ops.email,
+          "Better luck next time!"
         );
       }
       res.status(200).json({
@@ -386,6 +387,12 @@ export const recon = asyncHandler(async (req, res) => {
         name: trip.opsSpoc,
       },
     });
+    const finance = await userModel.findAll({
+      where: {
+        profile: "Finance",
+      }
+    });
+    const cc = finance.map((item) => item.email);
     await reconMail(
       ops.email,
       trip.opsSpoc,
@@ -395,7 +402,8 @@ export const recon = asyncHandler(async (req, res) => {
       trip.departureDate,
       trip.pax,
       trip.salesSpoc,
-      trip.opsSpoc
+      trip.opsSpoc,
+      cc
     );
     res.status(200).json({
       MESSAGE: "Recon mail sent successfully",

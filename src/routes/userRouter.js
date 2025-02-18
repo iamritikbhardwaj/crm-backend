@@ -54,7 +54,7 @@ import { upload } from "../middlewares/multer.js";
 import expressAsyncHandler from "express-async-handler";
 import path from "path";
 import { uploadOnS3 } from "../middlewares/s3.js";
-import { getDashboard } from "../controllers/dashboardController.js";
+import { getDashboard, userSpecificDashboard } from "../controllers/dashboardController.js";
 
 const router = Router();
 
@@ -189,6 +189,8 @@ router.post("/updateDocs", upload, expressAsyncHandler(async (req, res) => {
 })
 );
 
+// ! dashboard
 router.get("/getDashData", getDashboard);
+router.get("/userSpecificDashboard", userSpecificDashboard)
 
 export default router;

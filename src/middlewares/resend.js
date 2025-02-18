@@ -36,7 +36,7 @@ const createBookingMail = async (email, name, booking_id, customer_name, start_d
     const data = await resend.emails.send({
       from: "ActivityBeds <noreply@tomatotrails.com>",
       to: email,
-      cc: cc,
+      bcc: cc,
       subject: "Successful Booking Creation",
       text: `Dear ${name},
       The new Booking is created as per below details. It is under Que for the Validation Team. You will get the email if the booking is Confirmed/Rejected.
@@ -48,7 +48,7 @@ const createBookingMail = async (email, name, booking_id, customer_name, start_d
        
       END DATE ${end_date}
        
-      NO OF ADULT/CHILD ${pax.A}/${pax.C}-${pax.Ca}
+      NO OF ADULT/CHILD ${pax?.A}/${pax?.C}-${pax?.Ca}
        
       SALES SPOC ${name}
             
@@ -68,7 +68,7 @@ const confirmBookingMail = async (email, user, tripId, customer_name, start_date
     const data = await resend.emails.send({
       from: "ActivityBeds <noreply@tomatotrails.com>",
       to: email,
-      cc: cc,
+      bcc: cc,
       subject: "Successful Trip Creation",
       text: `Dear ${user},
         Your New Booking is Confirmed by the Validation Team & the Delivery SPOC is assigned for the same. Pls find the details of the Confirmed Trip for your reference.
@@ -80,7 +80,7 @@ const confirmBookingMail = async (email, user, tripId, customer_name, start_date
          
         END DATE ${end_date}
          
-        NO OF ADULT/CHILD ${pax.A}/${pax.C}-${pax.Ca}
+        NO OF ADULT/CHILD ${pax?.A}/${pax?.C}-${pax?.Ca}
          
         SALES SPOC ${sales_spoc}
 
@@ -114,7 +114,7 @@ const rejectBookingMail = async (email, user, booking_id, customer_name, start_d
          
         END DATE ${end_date}
          
-        NO OF ADULT/CHILD ${pax.A}/${pax.C}-${pax.Ca}
+        NO OF ADULT/CHILD ${pax?.A}/${pax?.C}-${pax?.Ca}
          
         SALES SPOC ${user}
 
@@ -131,12 +131,12 @@ const rejectBookingMail = async (email, user, booking_id, customer_name, start_d
   }
 };
 
-const cancelBookingMail = async (email, user, tripId, customer_name, start_date, end_date, pax, ops_spoc, cc) => {
+const cancelBookingMail = async (email, user, tripId, customer_name, start_date, end_date, pax, ops_spoc, cc, comments) => {
   try {
     const data = await resend.emails.send({
       from: "ActivityBeds <noreply@tomatotrails.com>",
       to: email,
-      cc: cc,
+      bcc: cc,
       subject: "Trip ID Cancelled",
       text: `Dear ${user},
       Your Trip ID is canceled by the operation team. Pls find the details of the Cancelled Trip for your reference.
@@ -149,11 +149,13 @@ const cancelBookingMail = async (email, user, tripId, customer_name, start_date,
       
       END DATE ${end_date}
       
-      NO OF ADULT/CHILD ${pax.A}/${pax.C}-${pax.Ca}
+      NO OF ADULT/CHILD ${pax?.A}/${pax?.C}-${pax?.Ca}
       
       SALES SPOC ${user}
       
       OPS SPOC ${ops_spoc}
+
+      Rejection Comments ${comments}
       
       Warm Regards
       
@@ -181,7 +183,7 @@ const voucherMail = async (email, user, tripId, customer_name, start_date, end_d
              
             END DATE ${end_date}
              
-            NO OF ADULT/CHILD ${pax.A}/${pax.C}-${pax.Ca}
+            NO OF ADULT/CHILD ${pax?.A}/${pax?.C}-${pax?.Ca}
              
             SALES SPOC ${sales_spoc}
     
@@ -198,14 +200,8 @@ const voucherMail = async (email, user, tripId, customer_name, start_date, end_d
   }
 };
 
-const reconMail = async (email, user, tripId, customer_name, start_date, end_date, pax, sales_spoc, ops_spoc) => {
+const reconMail = async (email, user, tripId, customer_name, start_date, end_date, pax, sales_spoc, ops_spoc, cc) => {
   try {
-    const finance = userModel.findAll({
-      where: {
-        profile: "Finance",
-      }
-    })
-    const cc = Array.from(finance).map((item) => item.email);
     const data = await resend.emails.send({
       from: "ActivityBeds <noreply@tomatotrails.com>",
       to: cc,
@@ -219,7 +215,7 @@ const reconMail = async (email, user, tripId, customer_name, start_date, end_dat
                
               END DATE ${end_date}
                
-              NO OF ADULT/CHILD ${pax.A}/${pax.C}-${pax.Ca}
+              NO OF ADULT/CHILD ${pax?.A}/${pax?.C}-${pax?.Ca}
                
               SALES SPOC ${sales_spoc}
       
