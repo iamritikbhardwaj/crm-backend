@@ -205,7 +205,7 @@ const reconMail = async (email, user, tripId, customer_name, start_date, end_dat
         profile: "Finance",
       }
     })
-    const cc = finance.map((item) => item.email);
+    const cc = Array.from(finance).map((item) => item.email);
     const data = await resend.emails.send({
       from: "ActivityBeds <noreply@tomatotrails.com>",
       to: cc,

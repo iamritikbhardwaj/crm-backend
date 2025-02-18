@@ -321,12 +321,12 @@ export const updateTrip = asyncHandler(async (req, res) => {
           ops.name,
           ops.email
         );
-        res.status(200).json({
-          MESSAGE: "Payment status Updated Successfully",
-          STATUS: "SUCCESS",
-          OUTPUT: [],
-        });
       }
+      res.status(200).json({
+        MESSAGE: "Payment status Updated Successfully",
+        STATUS: "SUCCESS",
+        OUTPUT: [],
+      });
     } else {
       res.status(201).json({
         MESSAGE: "Failed to update data",
