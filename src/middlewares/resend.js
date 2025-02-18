@@ -48,7 +48,7 @@ const createBookingMail = async (email, name, booking_id, customer_name, start_d
        
       END DATE ${end_date}
        
-      NO OF ADULT/CHILD ${pax}
+      NO OF ADULT/CHILD ${pax.A}/${pax.C}-${pax.Ca}
        
       SALES SPOC ${name}
             
@@ -80,7 +80,7 @@ const confirmBookingMail = async (email, user, tripId, customer_name, start_date
          
         END DATE ${end_date}
          
-        NO OF ADULT/CHILD ${pax}
+        NO OF ADULT/CHILD ${pax.A}/${pax.C}-${pax.Ca}
          
         SALES SPOC ${sales_spoc}
 
@@ -114,7 +114,7 @@ const rejectBookingMail = async (email, user, booking_id, customer_name, start_d
          
         END DATE ${end_date}
          
-        NO OF ADULT/CHILD ${pax}
+        NO OF ADULT/CHILD ${pax.A}/${pax.C}-${pax.Ca}
          
         SALES SPOC ${user}
 
@@ -149,7 +149,7 @@ const cancelBookingMail = async (email, user, tripId, customer_name, start_date,
       
       END DATE ${end_date}
       
-      NO OF ADULT/CHILD ${pax}
+      NO OF ADULT/CHILD ${pax.A}/${pax.C}-${pax.Ca}
       
       SALES SPOC ${user}
       
@@ -181,7 +181,7 @@ const voucherMail = async (email, user, tripId, customer_name, start_date, end_d
              
             END DATE ${end_date}
              
-            NO OF ADULT/CHILD ${pax}
+            NO OF ADULT/CHILD ${pax.A}/${pax.C}-${pax.Ca}
              
             SALES SPOC ${sales_spoc}
     
@@ -219,7 +219,7 @@ const reconMail = async (email, user, tripId, customer_name, start_date, end_dat
                
               END DATE ${end_date}
                
-              NO OF ADULT/CHILD ${pax}
+              NO OF ADULT/CHILD ${pax.A}/${pax.C}-${pax.Ca}
                
               SALES SPOC ${sales_spoc}
       
