@@ -11,11 +11,20 @@ export const getAllPayments = asyncHandler(async (req, res) => {
      }
     });
      console.log(payment, 'payment');
-     res.status(200).json({
-          STATUS: 'SUCCESS',
-          MESSAGE: 'Payments fetched successfully',
-          OUTPUT: payment
-     });}
+     if (payment.length !== 0) {
+          res.status(200).json({
+               STATUS: 'SUCCESS',
+               MESSAGE: 'Payments fetched successfully',
+               OUTPUT: payment
+          })
+     } else {
+          res.status(204).json({
+               STATUS: 'FAIL',
+               MESSAGE: 'No payments found',
+               OUTPUT: false
+          })
+     }
+}
      catch (error) {
           console.log(error);
           res.status(500).json({
