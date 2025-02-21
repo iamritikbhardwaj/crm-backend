@@ -18,10 +18,10 @@ export const getAllPayments = asyncHandler(async (req, res) => {
                OUTPUT: payment
           })
      } else {
-          res.status(204).json({
+          res.status(201).json({
                STATUS: 'FAIL',
                MESSAGE: 'No payments found',
-               OUTPUT: false
+               OUTPUT: null
           })
      }
 }
