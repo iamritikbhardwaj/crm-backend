@@ -7,6 +7,7 @@ import {
   voucherMail,
 } from "../middlewares/resend.js";
 import { userModel } from "../models/userModel.js";
+import { Op } from "sequelize";
 
 const generateUniqueTripId = async () => {
   try {
@@ -76,11 +77,22 @@ export const getAllTrip = asyncHandler(async (req, res) => {
     } else {
       const trip = await tripModel.findAll();
       console.log(trip, "trip");
-      res.status(200).json({
-        STATUS: "SUCCESS",
-        MESSAGE: "Trips fetched successfully",
-        OUTPUT: trip,
-      });
+      if (trip) {
+        trip.forEach((item)=> {
+          (async ()=>{if(new Date(trip.arrivalDate) < Date.now()) {
+            await tripModel.update({status: trip.status === "CONFIRMED" ? "ON-TRIP" :  trip.status}, {
+              where: {
+                tripId: trip.tripId,
+              }
+            })
+          }})()
+        })
+        res.status(200).json({
+          STATUS: "SUCCESS",
+          MESSAGE: "Trips fetched successfully",
+          OUTPUT: trip,
+        });
+      }
     }
   } catch (error) {
     console.log(error);
@@ -390,7 +402,7 @@ export const recon = asyncHandler(async (req, res) => {
     const finance = await userModel.findAll({
       where: {
         profile: "Finance",
-      }
+      },
     });
     const cc = finance.map((item) => item.email);
     await reconMail(
@@ -412,5 +424,41 @@ export const recon = asyncHandler(async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+  }
+});
+
+export const fetchFilteredTrips = asyncHandler(async (req, res) => {
+  try {
+    const { from, to } = req.query;
+    console.log(from, to, "filtered data");
+    const start = new Date(from);
+    const end = new Date(to);
+
+    const trips = await tripModel.findAll({
+      where: {
+        arrivalDate: { [Op.between]: [start, end] },
+      },
+    });
+    console.log(trips);
+    if (trips.length > 0) {
+      res.status(200).json({
+        STATUS: "SUCCESS",
+        MESSAGE: "Trips fetched successfully",
+        OUTPUT: trips,
+      });
+    } else {
+      res.status(201).json({
+        STATUS: "FAIL",
+        MESSAGE: "No trips found",
+        OUTPUT: null,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      STATUS: "FAIL",
+      MESSAGE: "Error fetching trips",
+      OUTPUT: null,
+    });
   }
 });

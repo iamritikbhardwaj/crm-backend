@@ -27,7 +27,8 @@ import {
   fetchDocs,
   updateTrip,
   voucher,
-  recon
+  recon,
+  fetchFilteredTrips
 } from "../controllers/tripController.js";
 import {
   createBooking,
@@ -101,6 +102,7 @@ router.post(
   createTrip
 );
 router.get("/getAllTrips", getAllTrip);
+router.get("/fetchFilteredTrip", fetchFilteredTrips);
 router.get("/getSalesDocs", fetchDocs);
 router.post("/updateTrip", updateTrip);
 router.post("/voucher", voucher);
