@@ -173,7 +173,7 @@ export const createBooking = asyncHandler(async (req, res, url) => {
 });
 
 export const cancelBooking = asyncHandler(async (req, res) => {
-  const { id } = req.query;
+  const { id, remarks } = req.query;
   try {
     const booking = await bookingModel.findOne({
       where: {
@@ -184,8 +184,8 @@ export const cancelBooking = asyncHandler(async (req, res) => {
       where: {
         name: booking.salesSpoc,
       },
-    })
-    await rejectBookingMail(sales.email, sales.name, booking.booking_id, booking.customerName, booking.arrivalDate, booking.departureDate, booking.pax, "better luck next time");
+    });
+    await rejectBookingMail(sales.email, sales.name, booking.booking_id, booking.customerName, booking.arrivalDate, booking.departureDate, booking.pax, remarks);
     const response = await bookingModel.destroy({
       where: {
         booking_id: id,

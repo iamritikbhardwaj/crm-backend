@@ -167,11 +167,13 @@ export const createTrip = asyncHandler(async (req, res, url) => {
         throw new Error("Invalid trip data");
       } else {
         const sales = await userModel.findOne({
+          attributes: ["email", "name"],
           where: {
             name: salesSpoc,
           },
         });
         const ops = await userModel.findOne({
+          attributes: ["email", "name"],
           where: { name: opsSpoc },
         });
         await confirmBookingMail(
@@ -182,6 +184,8 @@ export const createTrip = asyncHandler(async (req, res, url) => {
           arrivalDate,
           departureDate,
           pax,
+          salesSpoc,
+          opsSpoc,
           ops.email
         );
         res.status(200).json({
@@ -227,29 +231,29 @@ export const updateDocs = asyncHandler(async (req, res, url) => {
     if (response[0] === 0) {
       res.status(400).json({ MESSAGE: "Some error occured", STATUS: "Failed" });
     } else {
-      if (url[0].includes("voucher")) {
-        const data = await tripModel.findOne({
-          where: {
-            tripId: id,
-          },
-        });
-        const sales = await userModel.findOne({
-          where: {
-            name: data.salesSpoc,
-          },
-        });
-        voucherMail(
-          sales.email,
-          sales.name,
-          data.tripId,
-          data.customerName,
-          data.arrivalDate,
-          data.departureDate,
-          data.pax,
-          data.salesSpoc,
-          data.opsSpoc
-        );
-      }
+      // if (url[0].includes("voucher")) {
+      //   const data = await tripModel.findOne({
+      //     where: {
+      //       tripId: id,
+      //     },
+      //   });
+      //   const sales = await userModel.findOne({
+      //     where: {
+      //       name: data.salesSpoc,
+      //     },
+      //   });
+      //   voucherMail(
+      //     sales.email,
+      //     sales.name,
+      //     data.tripId,
+      //     data.customerName,
+      //     data.arrivalDate,
+      //     data.departureDate,
+      //     data.pax,
+      //     data.salesSpoc,
+      //     data.opsSpoc
+      //   );
+      // }
       console.log(response, "response");
       res.status(200).json({
         STATUS: "SUCCESS",

@@ -59,13 +59,17 @@ export const getDashboard = asyncHandler(async (req, res) => {
     const activeAgents = agent.filter(
       (agent) => agent.status === "ACTIVE"
     ).length;
-    const gmv = trip.reduce(
+    const notCancelledTrips = trip.filter(
+      (trip) => trip.status !== "CANCELLED"
+    );
+    const gmv = notCancelledTrips.reduce(
       (total, item) => parseInt(total) + parseInt(item.orderValue),
       0
     );
-    const gpv = gmv -
+    const gpv =
+      gmv -
       trip.reduce(
-        (total, item) => parseInt(total) + parseInt(item?.transferPrice || 0) ,
+        (total, item) => parseInt(total) + parseInt(item?.transferPrice || 0),
         0
       );
 
@@ -73,70 +77,80 @@ export const getDashboard = asyncHandler(async (req, res) => {
     const salesSpoc = user.filter((user) => user.profile === "Sales");
     const bookings = [];
     const sales = salesSpoc.map((sales) => sales.name);
-    salesSpoc.map((sales) => {
+    salesSpoc.forEach((sales) => {
       bookings.push(
         trip.filter((item) => item.salesSpoc === sales.name).length
       );
     });
-    const bookingVsSalesSpoc = {sales, bookings};
+    const bookingVsSalesSpoc = { sales, bookings };
 
     // ! Status Chart vs Number
     const confirmed = trip.filter((item) => item.status === "CONFIRMED").length;
-    const cancelled = trip.filter((item) => 
-      item.status === "CANCELLED"
-    ).length;
-    const ontour = trip.filter((item) => 
-      item.status === "ON-TOUR"
-    ).length;
-    const travelled = trip.filter((item) => 
-      item.status === "TRAVELLED").length;
+    const cancelled = trip.filter((item) => item.status === "CANCELLED").length;
+    const ontour = trip.filter((item) => item.status === "ON-TOUR").length;
+    const travelled = trip.filter((item) => item.status === "TRAVELLED").length;
 
-    const chartVsNo = [cancelled, confirmed, ontour, travelled,];
+    const chartVsNo = [cancelled, confirmed, ontour, travelled];
 
     // ! bookingVsOpsSpoc
     const opsSpoc = user.filter((user) => user.profile === "Operations");
-    const booking = opsSpoc.map((opss) => (
-      trip.filter((item) => item.opsSpoc === opss.name).length
-  ));
+    const booking = opsSpoc.map(
+      (opss) => trip.filter((item) => item.opsSpoc === opss.name).length
+    );
     const ops = opsSpoc.map((item) => item.name);
-    
-    const bookingVsOpsSpoc = {ops, bookings: booking};
+
+    const bookingVsOpsSpoc = { ops, bookings: booking };
 
     // ! gmv vs salesSpoc
     let gmvv;
-    const gmvVsSalesSpoc = salesSpoc.map((sales) => 
-      ( trip.filter((item) => item.salesSpoc === sales.name).reduce(
-        (total, tripi) => parseInt(total) + parseInt(tripi.orderValue),
-        0
-      ))
+    const gmvVsSalesSpoc = salesSpoc.map((sales) =>
+      trip
+        .filter((item) => item.salesSpoc === sales.name)
+        .reduce(
+          (total, tripi) => parseInt(total) + parseInt(tripi.orderValue),
+          0
+        )
     );
 
     // ! gpv vs salesSpoc
-    const gpvVsSalesSpoc = salesSpoc.map((sales) => 
-    ( trip.filter((item) => item.salesSpoc === sales.name).reduce(
-      (total, tripi) => parseInt(total) + parseInt(tripi.orderValue),
-      0
-    ) - trip.filter((item) => item.salesSpoc === sales.name).reduce(
-      (total, tripi) => parseInt(total) + parseInt(tripi?.transferPrice || 0),
-      0
-    ))
-  );
+    const gpvVsSalesSpoc = salesSpoc.map(
+      (sales) =>
+        trip
+          .filter((item) => item.salesSpoc === sales.name)
+          .reduce(
+            (total, tripi) => parseInt(total) + parseInt(tripi.orderValue),
+            0
+          ) -
+        trip
+          .filter((item) => item.salesSpoc === sales.name)
+          .reduce(
+            (total, tripi) =>
+              parseInt(total) + parseInt(tripi?.transferPrice || 0),
+            0
+          )
+    );
 
-  // ! Operational Status (Bookings)
-    
-  const bo = vendor.filter((item) => item.booking_status === "IN-PROGRESS").length;
-  const bnp = vendor.filter((item) => item.booking_status === "Pending").length;
-  const bc = vendor.filter((item) => item.booking_status === "COMPLETED").length;
-  const operationalStatusData = [bnp, bo, bc];
+    // ! Operational Status (Bookings)
 
-  // ! user activity
+    const bo = vendor.filter(
+      (item) => item.booking_status === "IN-PROGRESS"
+    ).length;
+    const bnp = vendor.filter(
+      (item) => item.booking_status === "Pending"
+    ).length;
+    const bc = vendor.filter(
+      (item) => item.booking_status === "COMPLETED"
+    ).length;
+    const operationalStatusData = [bnp, bo, bc];
+
+    // ! user activity
     const userActivity = user.map((item) => ({
       name: item.name,
       status: item.status,
       registered: new String(item.createdAt).slice(3, 15),
       activity: "10 sec ago",
       avatar: "https://i.pravatar.cc/40?img=1",
-    }))
+    }));
     if (!user || !trip || !recon) {
       return res.status(404).json({ message: "Data not found" });
     }
@@ -149,7 +163,6 @@ export const getDashboard = asyncHandler(async (req, res) => {
         activeAgents,
         gmv,
         gpv,
-        
       },
       chart: chartVsNo,
       bvss: bookingVsSalesSpoc,
@@ -158,7 +171,7 @@ export const getDashboard = asyncHandler(async (req, res) => {
       gvss: gmvVsSalesSpoc,
       gpvs: gpvVsSalesSpoc,
       ops: operationalStatusData,
-      user: userActivity
+      user: userActivity,
     });
   } catch (error) {
     console.log(error);
@@ -204,24 +217,20 @@ export const userSpecificDashboard = asyncHandler(async (req, res) => {
       (total, item) => parseInt(total) + parseInt(item.orderValue),
       0
     );
-    const gpv = gmv -
+    const gpv =
+      gmv -
       trip.reduce(
-        (total, item) => parseInt(total) + parseInt(item?.transferPrice || 0) ,
+        (total, item) => parseInt(total) + parseInt(item?.transferPrice || 0),
         0
       );
 
     // ! Status Chart vs Number
     const confirmed = trip.filter((item) => item.status === "CONFIRMED").length;
-    const cancelled = trip.filter((item) => 
-      item.status === "CANCELLED"
-    ).length;
-    const ontour = trip.filter((item) => 
-      item.status === "ON-TOUR"
-    ).length;
-    const travelled = trip.filter((item) => 
-      item.status === "TRAVELLED").length;
+    const cancelled = trip.filter((item) => item.status === "CANCELLED").length;
+    const ontour = trip.filter((item) => item.status === "ON-TOUR").length;
+    const travelled = trip.filter((item) => item.status === "TRAVELLED").length;
 
-    const chartVsNo = [cancelled, confirmed, ontour, travelled,];
+    const chartVsNo = [cancelled, confirmed, ontour, travelled];
 
     res.status(200).json({
       STATUS: "SUCCESS",
@@ -231,7 +240,6 @@ export const userSpecificDashboard = asyncHandler(async (req, res) => {
         activeAgents,
         gmv,
         gpv,
-        
       },
       chart: chartVsNo,
     });

@@ -4,22 +4,22 @@ import {
   getAllUsers,
   deleteUser,
   handleUserLogin,
-} from "../controllers/userController.js";
+} from "../controllers/user.Controller.js";
 import {
   createAgent,
   getAllAgents,
   deleteAgent,
-} from "../controllers/agentController.js";
+} from "../controllers/agent.Controller.js";
 import {
   createSupp,
   getAllSupp,
   deleteSupp,
-} from "../controllers/suppController.js";
+} from "../controllers/supp.Controller.js";
 import {
   createDest,
   getAllDest,
   deleteDest,
-} from "../controllers/destController.js";
+} from "../controllers/dest.Controller.js";
 import {
   createTrip,
   getAllTrip,
@@ -29,33 +29,33 @@ import {
   voucher,
   recon,
   fetchFilteredTrips
-} from "../controllers/tripController.js";
+} from "../controllers/trip.Controller.js";
 import {
   createBooking,
   getAllBooking,
   deleteBooking,
   cancelBooking,
-} from "../controllers/bookingController.js";
+} from "../controllers/booking.Controller.js";
 import {
   createPayment,
   getAllPayments,
   deletePayment,
-} from "../controllers/paymentController.js";
+} from "../controllers/payment.Controller.js";
 import {
   createRecon,
   getAllRecon,
   deleteRecon,
-} from "../controllers/reconController.js";
+} from "../controllers/recon.Controller.js";
 import {
   createSuppPay,
   deleteSuppPay,
   getAllSuppPay,
-} from "../controllers/supPayCont.js";
+} from "../controllers/supPay.Controller.js";
 import { upload } from "../middlewares/multer.js";
 import expressAsyncHandler from "express-async-handler";
 import path from "path";
 import { uploadOnS3 } from "../middlewares/s3.js";
-import { getDashboard, userSpecificDashboard } from "../controllers/dashboardController.js";
+import { getDashboard, userSpecificDashboard } from "../controllers/dashboard.Controller.js";
 
 const router = Router();
 
