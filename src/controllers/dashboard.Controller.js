@@ -102,8 +102,7 @@ export const getDashboard = asyncHandler(async (req, res) => {
     const bookingVsOpsSpoc = { ops, bookings: booking };
 
     // ! gmv vs salesSpoc
-    let gmvv;
-    const gmvVsSalesSpoc = salesSpoc.map((sales) =>
+    const gmvVsSalesSpoc = salesSpoc.map((sales) => 
       trip
         .filter((item) => item.salesSpoc === sales.name)
         .reduce(
