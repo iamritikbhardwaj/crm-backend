@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkcrm=self.webpackChunkcrm||[]).push([[670],{5920:(n,r,c)=>{c.d(r,{A:()=>i});c(5043);var e=c(423),s=c(2134),t=c(579);const i=function(n){let{path:r}=n;const c=(0,s.Zp)();return(0,t.jsx)("div",{children:(0,t.jsx)("button",{onClick:()=>c(r||"/"),children:(0,t.jsx)(e.yCO,{})})})}},6670:(n,r,c)=>{c.r(r),c.d(r,{default:()=>t});c(5043);var e=c(5920),s=c(579);const t=function(){return(0,s.jsxs)(s.Fragment,{children:[(0,s.jsx)(e.A,{}),(0,s.jsx)("div",{children:"Profile"})]})}}}]);
-//# sourceMappingURL=670.719f2c69.chunk.js.map
