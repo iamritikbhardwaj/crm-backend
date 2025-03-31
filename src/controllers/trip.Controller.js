@@ -8,6 +8,7 @@ import {
 } from "../middlewares/resend.js";
 import { userModel } from "../models/userModel.js";
 import { Op } from "sequelize";
+import updateTripStatus from "../utils/updateStatus.util.js";
 
 const generateUniqueTripId = async () => {
   try {
@@ -57,6 +58,7 @@ export const getAllTrip = asyncHandler(async (req, res) => {
   const { id } = req.query;
   console.log("getAllTrip");
   try {
+    await updateTripStatus();
     if (req.query.hasOwnProperty("id") && id !== undefined && id !== null) {
       console.log("fetch one trip");
       const trip = await tripModel.findOne({

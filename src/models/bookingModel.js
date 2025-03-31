@@ -76,4 +76,3 @@ export const bookingModel = sequelize.define(
     updatedAt: 'updated_at',
   }
 );
-

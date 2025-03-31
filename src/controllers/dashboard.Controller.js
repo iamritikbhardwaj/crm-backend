@@ -22,28 +22,21 @@ export const getDashboard = asyncHandler(async (req, res) => {
 
   try {
     const trip = await tripModel.findAll({
+      attributes: [
+        "orderValue",
+        "transferPrice",
+        "salesSpoc",
+        "opsSpoc",
+        "status",
+      ],
       where: {
-        created_at: {
+        arrivalDate: {
           [Op.between]: [start, end],
         },
       },
     });
 
-    const user = await userModel.findAll({
-      where: {
-        createdAt: {
-          [Op.between]: [start, end],
-        },
-      },
-    });
-
-    const vendor = await supPayModel.findAll({
-      where: {
-        created_at: {
-          [Op.between]: [start, end],
-        },
-      },
-    });
+    const user = await userModel.findAll();
 
     const recon = await reconModel.findAll({
       where: {
@@ -68,7 +61,7 @@ export const getDashboard = asyncHandler(async (req, res) => {
     );
     const gpv =
       gmv -
-      trip.reduce(
+      notCancelledTrips.reduce(
         (total, item) => parseInt(total) + parseInt(item?.transferPrice || 0),
         0
       );
@@ -129,18 +122,6 @@ export const getDashboard = asyncHandler(async (req, res) => {
           )
     );
 
-    // ! Operational Status (Bookings)
-
-    const bo = vendor.filter(
-      (item) => item.booking_status === "IN-PROGRESS"
-    ).length;
-    const bnp = vendor.filter(
-      (item) => item.booking_status === "Pending"
-    ).length;
-    const bc = vendor.filter(
-      (item) => item.booking_status === "COMPLETED"
-    ).length;
-    const operationalStatusData = [bnp, bo, bc];
 
     // ! user activity
     const userActivity = user.map((item) => ({
@@ -165,11 +146,9 @@ export const getDashboard = asyncHandler(async (req, res) => {
       },
       chart: chartVsNo,
       bvss: bookingVsSalesSpoc,
-      bvso: bookingVsOpsSpoc,
-      sales,
-      gvss: gmvVsSalesSpoc,
       gpvs: gpvVsSalesSpoc,
-      ops: operationalStatusData,
+      gvss: gmvVsSalesSpoc,
+      bvso: bookingVsOpsSpoc,
       user: userActivity,
     });
   } catch (error) {
@@ -182,8 +161,6 @@ export const userSpecificDashboard = asyncHandler(async (req, res) => {
   const { startDate, endDate, user } = req.query;
 
   const sales = JSON.parse(user);
-
-  console.log(startDate, endDate, JSON.stringify(sales), "dashboard");
 
   // Check if both startDate and endDate are provided
   if (!startDate || !endDate) {

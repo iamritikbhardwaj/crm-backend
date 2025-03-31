@@ -20,7 +20,7 @@ import resetDatabase from './dbConfig/resetDatabase.js';
 const app = express();
 
 const corsOptions = {
-    origin: PROD_URL ,  // Allow only this origin
+    origin: process.env.ENVIRONMENT === 'PRODUCTION' ? PROD_URL : CLIENT_URL ,  // Allow only this origin
     methods: ['GET', 'POST', 'DELETE'],
     allowedHeaders: ['content-Type', 'Authorization', 'credentials'],
     credentials: true,
