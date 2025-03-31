@@ -58,7 +58,6 @@ export const getAllTrip = asyncHandler(async (req, res) => {
   const { id } = req.query;
   console.log("getAllTrip");
   try {
-    await updateTripStatus();
     if (req.query.hasOwnProperty("id") && id !== undefined && id !== null) {
       console.log("fetch one trip");
       const trip = await tripModel.findOne({
@@ -77,18 +76,26 @@ export const getAllTrip = asyncHandler(async (req, res) => {
         });
       }
     } else {
+      await updateTripStatus();
       const trip = await tripModel.findAll();
       console.log(trip, "trip");
       if (trip) {
-        trip.forEach((item)=> {
-          (async ()=>{if(new Date(trip.arrivalDate) < Date.now()) {
-            await tripModel.update({status: trip.status === "CONFIRMED" ? "ON-TRIP" :  trip.status}, {
-              where: {
-                tripId: trip.tripId,
-              }
-            })
-          }})()
-        })
+        trip.forEach((item) => {
+          (async () => {
+            if (new Date(trip.arrivalDate) < Date.now()) {
+              await tripModel.update(
+                {
+                  status: trip.status === "CONFIRMED" ? "ON-TRIP" : trip.status,
+                },
+                {
+                  where: {
+                    tripId: trip.tripId,
+                  },
+                }
+              );
+            }
+          })();
+        });
         res.status(200).json({
           STATUS: "SUCCESS",
           MESSAGE: "Trips fetched successfully",

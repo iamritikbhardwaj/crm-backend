@@ -37,7 +37,6 @@ app.use("/api/users", router);
 app.set('view engine', 'ejs');
 app.set('views', path.resolve('../public/temp'));
 
-
 const __dirname = path.resolve();
 
 // Serve frontend build files in production
