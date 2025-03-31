@@ -95,7 +95,7 @@ export const getDashboard = asyncHandler(async (req, res) => {
 
     // ! gmv vs salesSpoc
     const gmvVsSalesSpoc = salesSpoc.map((sales) => 
-      trip
+      notCancelledTrips
         .filter((item) => item.salesSpoc === sales.name)
         .reduce(
           (total, tripi) => parseInt(total) + parseInt(tripi.orderValue),
@@ -106,7 +106,7 @@ export const getDashboard = asyncHandler(async (req, res) => {
     // ! gpv vs salesSpoc
     const gpvVsSalesSpoc = salesSpoc.map(
       (sales) =>
-        trip
+        notCancelledTrips
           .filter((item) => item.salesSpoc === sales.name)
           .reduce(
             (total, tripi) => parseInt(total) + parseInt(tripi.orderValue),
@@ -120,6 +120,7 @@ export const getDashboard = asyncHandler(async (req, res) => {
             0
           )
     );
+    console.log(gmvVsSalesSpoc, gpvVsSalesSpoc);
 
 
     // ! user activity
@@ -149,6 +150,7 @@ export const getDashboard = asyncHandler(async (req, res) => {
       gvss: gmvVsSalesSpoc,
       bvso: bookingVsOpsSpoc,
       user: userActivity,
+      sales
     });
   } catch (error) {
     console.log(error);
