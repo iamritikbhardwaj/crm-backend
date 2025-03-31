@@ -2,7 +2,6 @@ import asyncHandler from "express-async-handler";
 import { Op } from "sequelize";
 import tripModel from "../models/tripModel.js";
 import { userModel } from "../models/userModel.js";
-import supPayModel from "../models/supPayModel.js";
 import { reconModel } from "../models/reconModel.js";
 import agentModel from "../models/agentModel.js";
 
@@ -53,7 +52,7 @@ export const getDashboard = asyncHandler(async (req, res) => {
       (agent) => agent.status === "ACTIVE"
     ).length;
     const notCancelledTrips = trip.filter(
-      (trip) => trip.status !== "CANCELLED"
+      (item) => item.status !== "CANCELLED"
     );
     const gmv = notCancelledTrips.reduce(
       (total, item) => parseInt(total) + parseInt(item.orderValue),
@@ -189,13 +188,16 @@ export const userSpecificDashboard = asyncHandler(async (req, res) => {
     const activeAgents = agent.filter(
       (agent) => agent.status === "ACTIVE"
     ).length;
-    const gmv = trip.reduce(
+    const notCancelledTrips = trip.filter(
+      (item) => item.status !== "CANCELLED"
+    );
+    const gmv = notCancelledTrips.reduce(
       (total, item) => parseInt(total) + parseInt(item.orderValue),
       0
     );
     const gpv =
       gmv -
-      trip.reduce(
+      notCancelledTrips.reduce(
         (total, item) => parseInt(total) + parseInt(item?.transferPrice || 0),
         0
       );
