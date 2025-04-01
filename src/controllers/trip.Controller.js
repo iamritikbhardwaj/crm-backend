@@ -114,29 +114,29 @@ export const getAllTrip = asyncHandler(async (req, res) => {
 });
 
 export const createTrip = asyncHandler(async (req, res, url) => {
-  const data = req.body.data;
-  const tripData = JSON.parse(data);
-  const {
-    bookingDate,
-    destination,
-    salesSpoc,
-    agent,
-    customerName,
-    arrivalDate,
-    departureDate,
-    pax,
-    orderValue,
-    countryCode,
-    whatsappNumber,
-    documents: docs,
-    opsSpoc,
-  } = tripData;
-  const documents = [...docs, ...url];
-  console.log(documents, "tripData");
-  const { id } = req.query;
-  console.log(tripData, "tripData");
-
   try {
+    const data = req.body;
+    // const tripData = JSON.parse(data);
+    const {
+      bookingDate,
+      destination,
+      salesSpoc,
+      agent,
+      customerName,
+      arrivalDate,
+      departureDate,
+      pax,
+      orderValue,
+      countryCode,
+      whatsappNumber,
+      docs,
+      opsSpoc,
+    } = data;
+    const documents = [...Array.from(docs), ...url];
+    console.log(documents, "tripData");
+    const { id } = req.query;
+    console.log(data, "tripData");
+
     if (req.query.hasOwnProperty("id") && id !== undefined && id !== null) {
       console.log("update trip");
       const trip = await tripModel.update(tripData, {
@@ -209,7 +209,7 @@ export const createTrip = asyncHandler(async (req, res, url) => {
     res.status(500).json({
       STATUS: "FAIL",
       MESSAGE: error.message,
-      OUTPUT: null,
+      OUTPUT: error,
     });
   }
 });
