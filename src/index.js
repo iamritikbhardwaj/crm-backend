@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import router from './routes/userRouter.js';
 import { DBConnect } from './dbConfig/dbConfig.js';
-import { CLIENT_URL, PROD_URL } from './constants.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import {dbInit} from './dbConfig/dbInit.js';

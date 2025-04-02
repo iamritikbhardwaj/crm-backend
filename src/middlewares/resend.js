@@ -12,7 +12,7 @@ const userMail = async (name, email, password) => {
       text: `Dear ${name},
             Your account has been created, kindly find your login details below to access our Delivery CRM
             URL
-            http://91.205.105.35:63193/login
+            crm.tomatotrails.com/login
             USERNAME
             ${email}
             PASSWORD
