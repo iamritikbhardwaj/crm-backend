@@ -1,0 +1,67 @@
+version: '3'
+services:
+  mycrm:
+    build: .
+    environment:
+      - PORT=63193
+      - DB_DIALECT=mysql
+      - DB_HOST=db1
+      - DB_PORT=5432
+      - DB_USER=ritik
+      - DB_PASSWORD=Cherry@1
+      - DB_NAME=prodcrm
+      - JWT_SECRET=a0f937n4vvm82-345cb288mgnoi
+      - ENVIRONMENT=PRODUCTION
+      #resend key
+      - RESEND_API_KEY=re_2CBnDRDQ_5hnTYsmsPGy3gM4XAdpHrMBa
+      #aws credentials
+      - AWS_ACCESS_KEY_ID=AKIAWNHTHUAKJHBJBHU4
+      - AWS_SECRET_ACCESS_KEY=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
+      - AWS_REGION=us-east-1
+      - S3_BUCKET_NAME=myactivitycrmbucket
+    depends_on:
+      - db1
+
+  testcrm:
+    build: .
+    environment:
+      - PORT=63193
+      - DB_DIALECT=mysql
+      - DB_HOST=db1
+      - DB_PORT=54333062
+      - DB_USER=ritik
+      - DB_PASSWORD=Cherry@1
+      - DB_NAME=prodcrm
+      - JWT_SECRET=a0f937n4vvm82-345cb288mgnoi
+      - ENVIRONMENT=PRODUCTION
+      #resend key
+      - RESEND_API_KEY=re_2CBnDRDQ_5hnTYsmsPGy3gM4XAdpHrMBa
+      #aws credentials
+      - AWS_ACCESS_KEY_ID=AKIAWNHTHUAKJHBJBHU4
+      - AWS_SECRET_ACCESS_KEY=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
+      - AWS_REGION=us-east-1
+      - S3_BUCKET_NAME=myactivitycrmbucket
+    depends_on:
+      - db2
+
+  db1:
+    image: mysql:8
+    environment:
+      - MYSQL_USER=ritik
+      - MYSQL_PASSWORD=Cherry@1
+      - MYSQL_DB="prodcrm"
+    volumes:
+      - db1-data:/var/lib/mysql/data
+
+  db2:
+    image: mysql:8
+    environment:
+      - MYSQL_USER="ritik"
+      - MYSQL_PASSWORD="Cherry@1"
+      - MYSQL_DB="testcrm"
+    volumes:
+      - db2-data:/var/lib/mysql/data
+
+volumes:
+  db1-data:
+  db2-data:
