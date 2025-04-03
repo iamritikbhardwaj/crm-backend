@@ -10,7 +10,7 @@ services:
     volumes:
       - db1-data:/var/lib/mysql/data
     ports:
-      - "3306:3306"
+      - "3001:3306"
 
   db2:
     image: mysql:8
@@ -22,7 +22,7 @@ services:
     volumes:
       - db2-data:/var/lib/mysql/data
     ports:
-      - "3306:3306"
+      - "3000:3306"
 
   mycrm:
     build: .
@@ -53,7 +53,7 @@ services:
     depends_on:
       - db2
     ports:
-      - "63193:63193"
+      - "5001:63193"
     environment:
       DB_DIALECT: mysql
       DB_HOST: db2
