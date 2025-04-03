@@ -2,7 +2,7 @@
 FROM node:23-alpine
 
 # Install netcat for the wait-for script
-RUN apk add --no-cache bash
+# RUN apk add --no-cache bash
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -14,8 +14,8 @@ COPY package*.json ./
 RUN npm install
 
 # Copy wait script
-COPY wait-for-it.sh ./wait-for-it.sh
-RUN chmod +x ./wait-for-it.sh
+# COPY wait-for-it.sh ./wait-for-it.sh
+# RUN chmod +x ./wait-for-it.sh
 
 # Copy the rest of the application code
 COPY . .
@@ -24,4 +24,7 @@ COPY . .
 EXPOSE 63193
 
 # Command to run the app when the container starts
-CMD ./wait-for-it.sh db2:3306 -- npm run start
+#CMD ./wait-for-it.sh db2:3306 -- npm run start
+
+# Command to run the app when the container starts
+CMD ["npm", "run", "start"]
