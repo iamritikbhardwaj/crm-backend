@@ -36,7 +36,7 @@ services:
       PORT: 63193
       DB_DIALECT: mysql
       DB_HOST: db1
-      DB_PORT: 5432
+      DB_PORT: 3306
       DB_USER: ritik
       DB_PASSWORD: Cherry@1
       DB_NAME: prodcrm
@@ -59,7 +59,7 @@ services:
     environment:
       DB_DIALECT: mysql
       DB_HOST: db2
-      DB_PORT: 5432
+      DB_PORT: 3306
       DB_USER: ritik
       DB_PASSWORD: Cherry@1
       DB_NAME: prodcrm
