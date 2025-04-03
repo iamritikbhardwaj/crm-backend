@@ -19,7 +19,7 @@ import resetDatabase from './dbConfig/resetDatabase.js';
 const app = express();
 
 const corsOptions = {
-    origin: ['https://crm.tomatotrails.com', 'https://91.205.105.35:63193','https://91.205.105.35:5001', "http://localhost:3000", "https://91.205.105.35"] ,  // Allow only this origin
+    origin: ['https://crm.tomatotrails.com', 'https://91.205.105.35:63193','https://91.205.105.35:5001', "http://localhost:3000", "https://91.205.105.35", "http://91.205.105.35:63193"] ,  // Allow only this origin
     methods: ['GET', 'POST', 'DELETE'],
     allowedHeaders: ['content-Type', 'Authorization', 'credentials'],
     credentials: true,

@@ -1,16 +1,6 @@
 import { DataTypes } from "sequelize";
-import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import sequelize from "../dbConfig/dbConfig.js";
-
-export const userSchema = z.object({
-    name: z.string(),
-    phone: z.string().optional(),
-    profile: z.string().optional(),
-    email: z.string(),
-    password: z.string(),
-    status: z.string().optional(),
-});
 
 export const userModel = sequelize.define(
         "user",
@@ -46,7 +36,7 @@ export const userModel = sequelize.define(
             status: {
                 type: DataTypes.STRING,
                 allowNull: false,
-                defaultValue: "active",
+                defaultValue: "Active",
             },
         },
         {
