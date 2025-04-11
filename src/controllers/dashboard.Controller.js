@@ -29,7 +29,7 @@ export const getDashboard = asyncHandler(async (req, res) => {
         "status",
       ],
       where: {
-        arrivalDate: {
+        created_at: {
           [Op.between]: [start, end],
         },
       },

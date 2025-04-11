@@ -73,6 +73,7 @@ export const tripModel = sequelize.define(
             transferPrice: {
               type: DataTypes.DECIMAL(10, 2),
               allowNull: true,
+              defaultValue: 0,
             },
             orderValue: {
               type: DataTypes.STRING,

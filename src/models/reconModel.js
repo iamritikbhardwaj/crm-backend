@@ -10,15 +10,15 @@ export const reconModel = sequelize.define(
             primaryKey: true,
         },
         online: {
-            type: DataTypes.STRING,
+            type: DataTypes.DECIMAL(10, 2),
             allowNull: false,
         },
         offline: {
-            type: DataTypes.STRING,
+            type: DataTypes.DECIMAL(10, 2),
             allowNull: false,
         },
         land: {
-            type: DataTypes.STRING,
+            type: DataTypes.DECIMAL(10, 2),
             allowNull: false,
         },
         tripId: {
