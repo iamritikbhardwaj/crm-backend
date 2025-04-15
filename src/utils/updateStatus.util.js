@@ -9,8 +9,8 @@ async function updateTripStatus() {
       {
         status: sequelize.Sequelize.literal(`
           CASE
-            WHEN departureDate <= CURDATE() AND status != 'CANCELLED' THEN 'TRAVELLED' 
-            WHEN arrivalDate <= CURDATE() AND status != 'CANCELLED' THEN 'ON-TOUR' 
+            WHEN departureDate <= CURDATE() AND status = 'ON-TOUR' THEN 'TRAVELLED' 
+            WHEN arrivalDate <= CURDATE() AND status != 'TRAVELLED' THEN 'ON-TOUR' 
             ELSE status 
           END
         `),
