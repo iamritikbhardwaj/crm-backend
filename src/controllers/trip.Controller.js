@@ -102,7 +102,6 @@ export const getAllTrip = asyncHandler(async (req, res) => {
 export const createTrip = asyncHandler(async (req, res, url) => {
   try {
     const data = req.body;
-    // const tripData = JSON.parse(data);
     const {
       bookingDate,
       destination,
