@@ -77,25 +77,11 @@ export const getAllTrip = asyncHandler(async (req, res) => {
       }
     } else {
       await updateTripStatus();
-      const trip = await tripModel.findAll();
+      const trip = await tripModel.findAll({
+        limit: 30,
+      });
       console.log(trip, "trip");
       if (trip) {
-        trip.forEach((item) => {
-          (async () => {
-            if (new Date(trip.arrivalDate) < Date.now()) {
-              await tripModel.update(
-                {
-                  status: trip.status === "CONFIRMED" ? "ON-TRIP" : trip.status,
-                },
-                {
-                  where: {
-                    tripId: trip.tripId,
-                  },
-                }
-              );
-            }
-          })();
-        });
         res.status(200).json({
           STATUS: "SUCCESS",
           MESSAGE: "Trips fetched successfully",
