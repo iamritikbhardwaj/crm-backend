@@ -117,6 +117,8 @@ export const createTrip = asyncHandler(async (req, res, url) => {
       docs,
       opsSpoc,
     } = data;
+    console.log(JSON.parse(pax), "tripData");
+    return
     const docss = typeof docs === "string" ? [docs] : Array.from(docs).map((doc) => doc);
     const documents = [ ...docss, ...url];
     console.log(documents, "tripData");
