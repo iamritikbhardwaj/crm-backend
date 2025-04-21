@@ -77,9 +77,7 @@ export const getAllTrip = asyncHandler(async (req, res) => {
       }
     } else {
       await updateTripStatus();
-      const trip = await tripModel.findAll({
-        limit: 30,
-      });
+      const trip = await tripModel.findAll({});
       console.log(trip, "trip");
       if (trip) {
         res.status(200).json({
@@ -118,8 +116,9 @@ export const createTrip = asyncHandler(async (req, res, url) => {
       opsSpoc,
     } = data;
     console.log(JSON.parse(pax), "tripData");
-    const docss = typeof docs === "string" ? [docs] : Array.from(docs).map((doc) => doc);
-    const documents = [ ...docss, ...url];
+    const docss =
+      typeof docs === "string" ? [docs] : Array.from(docs).map((doc) => doc);
+    const documents = [...docss, ...url];
     console.log(documents, "tripData");
     const { id } = req.query;
     console.log(data, "tripData");
