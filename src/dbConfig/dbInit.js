@@ -4,6 +4,7 @@ import supModel from '../models/supModel.js';
 import tripModel from '../models/tripModel.js';
 import supPayModel from '../models/supPayModel.js';
 import { reconModel } from '../models/reconModel.js';
+import issuesModel from '../models/issues.models.js';
 
 export async function dbInit() {
   try {
@@ -63,6 +64,20 @@ export async function dbInit() {
       onUpdate: 'CASCADE',
     });
 
+    // Trip - issues
+    tripModel.hasMany(issuesModel, {
+      as: 'issues',
+      foreignKey: 'tripId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    });
+    issuesModel.belongsTo(tripModel, {
+      as: 'Trips',
+      foreignKey: 'tripId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    });
+
     // Sync models
     console.time('dbSync');
     await Promise.all([
@@ -72,6 +87,7 @@ export async function dbInit() {
       paymentModel.sync(),
       supPayModel.sync(),
       reconModel.sync(),
+      issuesModel.sync(),
     ]);
     console.timeEnd('dbSync');
     console.log('Database initialized successfully!');
