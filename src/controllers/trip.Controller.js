@@ -78,7 +78,7 @@ export const getAllTrip = asyncHandler(async (req, res) => {
     } else {
       await updateTripStatus();
       const trip = await tripModel.findAll({
-        limit: 30
+        limit: 300,
       });
       console.log(trip, "trip");
       if (trip) {
