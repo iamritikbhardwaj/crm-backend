@@ -16,8 +16,8 @@ export const getDashboard = asyncHandler(async (req, res) => {
   }
 
   // Convert the timestamps to Date objects
-  const start = new Date(startDate);
-  const end = new Date(endDate);
+  const start = new Date(Date.parse(startDate) - 24 * 60 * 60 * 1000);
+  const end = new Date((Date.parse(endDate)) + 24 * 60 * 60 * 1000);
 
   try {
     const trip = await tripModel.findAll({
@@ -29,7 +29,7 @@ export const getDashboard = asyncHandler(async (req, res) => {
         "status",
       ],
       where: {
-        created_at: {
+        bookingDate: {
           [Op.between]: [start, end],
         },
       },
@@ -177,7 +177,7 @@ export const userSpecificDashboard = asyncHandler(async (req, res) => {
   try {
     const trip = await tripModel.findAll({
       where: {
-        created_at: {
+        bookingDate: {
           [Op.between]: [start, end],
         },
         salesSpoc: sales.name,

@@ -57,6 +57,8 @@ import path from "path";
 import { uploadOnS3 } from "../middlewares/s3.js";
 import { getDashboard, userSpecificDashboard } from "../controllers/dashboard.Controller.js";
 import { createIssue, deleteIssue, getAllIssues } from "../controllers/issues.controller.js";
+import { createPaymentLink } from "../middlewares/stripe.js";
+import { createPayLink, getAllPayLinks } from "../controllers/paymentLink.controller.js";
 
 const router = Router();
 
@@ -200,5 +202,9 @@ router.get("/userSpecificDashboard", userSpecificDashboard)
 router.get("/getAllIssues", getAllIssues);
 router.post("/createIssues", createIssue);
 router.delete("/deleteIssue", deleteIssue)
+
+// ! payment links
+router.post("/createPaymentLink", createPaymentLink, createPayLink);
+router.get("/getAllPaymentLinks", getAllPayLinks);
 
 export default router;

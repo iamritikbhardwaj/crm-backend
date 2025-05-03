@@ -4,8 +4,10 @@ import router from './routes/user.routes.js';
 import { DBConnect } from './dbConfig/dbConfig.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
-import {dbInit} from './dbConfig/dbInit.js';
+import { dbInit } from './dbConfig/dbInit.js';
 import resetDatabase from './dbConfig/resetDatabase.js';
+import { createPaymentLink } from './middlewares/stripe.js';
+import { verifyToken } from './middlewares/auth.js';
 
 // Define __dirname for ES modules
 
@@ -19,10 +21,10 @@ import resetDatabase from './dbConfig/resetDatabase.js';
 const app = express();
 
 const corsOptions = {
-    origin: ['https://crm.tomatotrails.com', 'https://91.205.105.35:63193','https://91.205.105.35:5001', "http://localhost:3000", "https://91.205.105.35", "http://91.205.105.35:63193"] ,  // Allow only this origin
-    methods: ['GET', 'POST', 'DELETE'],
-    allowedHeaders: ['content-Type', 'Authorization', 'credentials'],
-    credentials: true,
+  origin: ['https://crm.tomatotrails.com', 'https://91.205.105.35:63193', 'https://91.205.105.35:5001', "http://localhost:3000", "https://91.205.105.35", "http://91.205.105.35:63193"],  // Allow only this origin
+  methods: ['GET', 'POST', 'DELETE'],
+  allowedHeaders: ['content-Type', 'Authorization', 'credentials'],
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
@@ -32,6 +34,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/api/users", router);
+app.post('/stripe/create-payment-link', createPaymentLink); // stripe route
 
 app.set('view engine', 'ejs');
 app.set('views', path.resolve('../public/temp'));
@@ -56,5 +59,5 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
-    console.log(`server started on port ${port}`);
+  console.log(`server started on port ${port}`);
 });
