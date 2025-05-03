@@ -49,7 +49,9 @@ const sendInvoiceWithPaymentLink = async (email, amount, currency) => {
  */
 export const createPaymentLink = async (req, res, next) => {
     try {
-        const { email, amount, currency } = req.body;
+        const { agent_email: email, amount, currency } = req.body;
+
+        console.log(`Email: ${email}, Amount: ${amount}, Currency: ${currency}`);
 
         if (!email || !amount || !currency) {
             throw new Error("Missing required parameters: email, amount, or currency");
@@ -64,13 +66,8 @@ export const createPaymentLink = async (req, res, next) => {
         const paymentLink = await sendInvoiceWithPaymentLink(email, parsedAmount, currency);
         console.log(`Invoice sent with payment link: ${paymentLink}`);
         
-        // Assuming you want to pass the payment link to the next middleware
-        // or send it as a response
-        if (typeof next === 'function') {
-            next(paymentLink);
-        } else {
-            res.status(200).json({ success: true, paymentLink });
-        }
+        req.paymentLink = paymentLink;
+        next();
     } catch (error) {
         console.error("Error while creating payment link using stripe:", error);
         

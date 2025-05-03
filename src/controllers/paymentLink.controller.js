@@ -1,10 +1,9 @@
 import asyncHandler from "express-async-handler";
 import payLinkModel from "../models/payLink.model.js";
 import { v4 as uuidv4 } from "uuid";
-import { link } from "fs";
 
-export const getAllPayLinks = asyncHandler(async (req, res, paymentLink) => {
-     console.log(req.body, req.query, paymentLink, 'getAllPayLink');
+export const getAllPayLinks = asyncHandler(async (req, res) => {
+     console.log(req.body, req.query, 'getAllPayLink');
     try { const paylink = await payLinkModel.findAll({where: {
         tripId: req.query.tripId
     }});
@@ -33,13 +32,13 @@ export const getAllPayLinks = asyncHandler(async (req, res, paymentLink) => {
 });
 
 export const createPayLink = asyncHandler(async (req, res, paymentLink) => {
-    // const {tripId} = req.body;
-    console.log(req.body, req.query, paymentLink, 'createPayLink');
+    console.log(req.body, req.query, req.paymentLink, 'createPayLink');
     try {
         const paylink = await payLinkModel.create({
-            id: uuidv4(),
-            Trips: tripId,
-            link: paymentLink,
+            link_id: uuidv4(),
+            tripId: req.query.tripId,
+            link: req.paymentLink,
+            ...req.body
         });
         if (!paylink) {
             res.status(400).json({
