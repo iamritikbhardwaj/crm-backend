@@ -6,12 +6,12 @@ const sendPaymentLink = async (email, amount, currency) => {
     try {
         // Convert amount to integer cents (Stripe requires integer amounts)
         const unitAmount = Math.round(parseFloat(amount) * 100);
-        
+
         // Ensure currency is lowercase as Stripe requires
         const normalizedCurrency = String(currency).toLowerCase();
-        
+
         console.log(`Creating payment link with: ${unitAmount} ${normalizedCurrency} for ${email}`);
-        
+
         // First create a price object
         const price = await stripe.prices.create({
             currency: normalizedCurrency,
@@ -20,7 +20,7 @@ const sendPaymentLink = async (email, amount, currency) => {
                 name: "Invoice Payment",
             },
         });
-        
+
         // Then create a payment link with that price
         const paymentLink = await stripe.paymentLinks.create({
             line_items: [
@@ -33,7 +33,7 @@ const sendPaymentLink = async (email, amount, currency) => {
                 email: email,
             },
         });
-        
+
         console.log("Payment link created successfully:", paymentLink.url);
         return paymentLink.url;
     } catch (error) {
@@ -54,10 +54,10 @@ const sendPaymentLink = async (email, amount, currency) => {
 export const createPaymentLink = async (req, res, next) => {
     try {
         // Extract parameters from request body
-        const { agent_email: email, amount, currency } = req.body;
-        
+        const { agent_email: email, amount, currency, commision, xerate } = req.body;
+
         console.log(`Processing payment request - Email: ${email}, Amount: ${amount}, Currency: ${currency}`);
-        
+
         // Validate required parameters
         if (!email) {
             return res.status(400).json({
@@ -65,42 +65,42 @@ export const createPaymentLink = async (req, res, next) => {
                 error: "Missing required parameter: email"
             });
         }
-        
+
         if (!amount) {
             return res.status(400).json({
                 success: false,
                 error: "Missing required parameter: amount"
             });
         }
-        
+
         if (!currency) {
             return res.status(400).json({
                 success: false,
                 error: "Missing required parameter: currency"
             });
         }
-        
+
         // Validate amount is a number
-        const parsedAmount = parseFloat(amount);
+        const parsedAmount = (parseFloat(amount) * parseFloat(xerate)) + (parseFloat(amount) * parseFloat(commision) / 100);
         if (isNaN(parsedAmount) || parsedAmount <= 0) {
             return res.status(400).json({
                 success: false,
                 error: "Amount must be a positive number"
             });
         }
-        
+
         // Create payment link
         const paymentLink = await sendPaymentLink(email, parsedAmount, currency);
         console.log(`Payment link created: ${paymentLink}`);
-        
+
         // Attach to request object for the next middleware
         req.paymentLink = paymentLink;
-        
+
         // Continue to next middleware
         next();
     } catch (error) {
         console.error("Error in createPaymentLink middleware:", error);
-        
+
         // Send error response
         return res.status(500).json({
             success: false,
