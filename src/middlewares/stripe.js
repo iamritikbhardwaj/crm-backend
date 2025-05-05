@@ -3,25 +3,43 @@ import { Stripe } from "stripe"
 const stripe = new Stripe(process.env.STRIPE_SKKEY)
 
 const sendPaymentLink = async (email, amount, currency) => {
-    const paymentLink = await stripe.paymentLinks.create({
-        line_items: [
-            {
-                price_data: {
-                    currency: currency,
-                    product_data: {
-                        name: "Invoice",
-                    },
-                    unit_amount: amount * 100,
-                },
-                quantity: 1,
+    try {
+        // Convert amount to integer cents (Stripe requires integer amounts)
+        const unitAmount = Math.round(parseFloat(amount) * 100);
+        
+        // Ensure currency is lowercase as Stripe requires
+        const normalizedCurrency = String(currency).toLowerCase();
+        
+        console.log(`Creating payment link with: ${unitAmount} ${normalizedCurrency} for ${email}`);
+        
+        // First create a price object
+        const price = await stripe.prices.create({
+            currency: normalizedCurrency,
+            unit_amount: unitAmount,
+            product_data: {
+                name: "Invoice Payment",
             },
-        ],
-        email: email,
-        metadata: {
-            email: email,
-        },
-    });
-    return paymentLink.url;
+        });
+        
+        // Then create a payment link with that price
+        const paymentLink = await stripe.paymentLinks.create({
+            line_items: [
+                {
+                    price: price.id,
+                    quantity: 1,
+                },
+            ],
+            metadata: {
+                email: email,
+            },
+        });
+        
+        console.log("Payment link created successfully:", paymentLink.url);
+        return paymentLink.url;
+    } catch (error) {
+        console.error("Error in sendPaymentLink function:", error);
+        throw error; // Re-throw to be handled by the calling function
+    }
 }
 
 /**
@@ -35,36 +53,58 @@ const sendPaymentLink = async (email, amount, currency) => {
  */
 export const createPaymentLink = async (req, res, next) => {
     try {
+        // Extract parameters from request body
         const { agent_email: email, amount, currency } = req.body;
-
-        console.log(`Email: ${email}, Amount: ${amount}, Currency: ${currency}`);
-
-        if (!email || !amount || !currency) {
-            throw new Error("Missing required parameters: email, amount, or currency");
-        }
-
-        // Ensure amount is a number
-        const parsedAmount = parseFloat(amount);
-        if (isNaN(parsedAmount)) {
-            throw new Error("Amount must be a valid number");
-        }
-
-        const paymentLink = await sendPaymentLink(email, parsedAmount, currency);
-        console.log(`Invoice sent with payment link: ${paymentLink}`);
         
+        console.log(`Processing payment request - Email: ${email}, Amount: ${amount}, Currency: ${currency}`);
+        
+        // Validate required parameters
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                error: "Missing required parameter: email"
+            });
+        }
+        
+        if (!amount) {
+            return res.status(400).json({
+                success: false,
+                error: "Missing required parameter: amount"
+            });
+        }
+        
+        if (!currency) {
+            return res.status(400).json({
+                success: false,
+                error: "Missing required parameter: currency"
+            });
+        }
+        
+        // Validate amount is a number
+        const parsedAmount = parseFloat(amount);
+        if (isNaN(parsedAmount) || parsedAmount <= 0) {
+            return res.status(400).json({
+                success: false,
+                error: "Amount must be a positive number"
+            });
+        }
+        
+        // Create payment link
+        const paymentLink = await sendPaymentLink(email, parsedAmount, currency);
+        console.log(`Payment link created: ${paymentLink}`);
+        
+        // Attach to request object for the next middleware
         req.paymentLink = paymentLink;
+        
+        // Continue to next middleware
         next();
     } catch (error) {
-        console.error("Error while creating payment link using stripe:", error);
+        console.error("Error in createPaymentLink middleware:", error);
         
-        // Handle the error appropriately
-        if (res && res.status) {
-            res.status(500).json({ 
-                success: false, 
-                error: error.message || "Failed to create payment link" 
-            });
-        } else if (typeof next === 'function') {
-            next(error);
-        }
+        // Send error response
+        return res.status(500).json({
+            success: false,
+            error: error.message || "Failed to create payment link"
+        });
     }
 }
