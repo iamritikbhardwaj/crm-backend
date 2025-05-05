@@ -80,8 +80,10 @@ export const createPaymentLink = async (req, res, next) => {
             });
         }
 
+        const finalAmount = parseFloat(amount) * parseFloat(xerate)
+
         // Validate amount is a number
-        const parsedAmount = (parseFloat(amount) * parseFloat(xerate)) + (parseFloat(amount) * parseFloat(commision) / 100);
+        const parsedAmount = (finalAmount) + (finalAmount * parseFloat(commision) / 100);
         if (isNaN(parsedAmount) || parsedAmount <= 0) {
             return res.status(400).json({
                 success: false,
