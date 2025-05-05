@@ -16,8 +16,8 @@ export const getDashboard = asyncHandler(async (req, res) => {
   }
 
   // Convert the timestamps to Date objects
-  const start = new Date(Date.parse(startDate) - 24 * 60 * 60 * 1000);
-  const end = new Date((Date.parse(endDate)) + 24 * 60 * 60 * 1000);
+  const start = new Date(Date.parse(startDate));
+  const end = new Date((Date.parse(endDate)));
 
   try {
     const trip = await tripModel.findAll({
