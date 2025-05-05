@@ -172,7 +172,7 @@ export const userSpecificDashboard = asyncHandler(async (req, res) => {
 
   // Convert the timestamps to Date objects
   const start = new Date(startDate);
-  const end = new Date(endDate);
+  const end = new Date(Date(endDate) + 24 * 60 * 60 * 1000);
 
   try {
     const trip = await tripModel.findAll({
