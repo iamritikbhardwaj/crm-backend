@@ -32,18 +32,12 @@ export const getAllPayLinks = asyncHandler(async (req, res) => {
 });
 
 export const createPayLink = asyncHandler(async (req, res, paymentLink) => {
-    const { amount, xerate, commision } = req.body
     console.log(req.body, req.query, req.paymentLink, 'createPayLink');
-
-    const amountWithoutCommission = parseFloat(amount) * parseFloat(xerate);
-    const parsedAmount = (amountWithoutCommission) + (amountWithoutCommission * parseFloat(commision) / 100)
-
     try {
         const paylink = await payLinkModel.create({
             link_id: uuidv4(),
             tripId: req.query.tripId,
             link: req.paymentLink,
-            amount: parsedAmount,
             ...req.body
         });
         if (!paylink) {
