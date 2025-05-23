@@ -40,4 +40,4 @@ jobs:
             docker pull ritiklrt2/prod_crm:latest
             docker stop  prod_crm || true
             docker rm prod_crm || true
-            docker run -d --name prod_crm ritiklrt2/prod_crm:latest
+            docker run -d -p 63193:8000 --name prod_crm ritiklrt2/prod_crm:latest
