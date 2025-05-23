@@ -14,6 +14,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -22,11 +25,9 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ritiklrt2/prod_crm:latest .
+          docker-compose build
+          docker-compose push
 
-      - name: Push Docker image
-        run: |
-          docker push ritiklrt2/prod_crm:latest
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -35,9 +36,8 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             # Login to Docker Hub (or your registry)
-            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-      
-            docker pull ritiklrt2/prod_crm:latest
-            docker stop  prod_crm || true
-            docker rm prod_crm || true
-            docker run -d -p 63193:8000 --name prod_crm ritiklrt2/prod_crm:latest
+            # echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+            cd
+            docker compose pull
+            docker compose down
+            docker compose up -d

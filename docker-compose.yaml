@@ -1,85 +1,77 @@
-version: "3"
 services:
-  db1:
-    image: mysql:8
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=Cherry@1
-      - MYSQL_USER=ritik
-      - MYSQL_PASSWORD=Cherry@1
-      - MYSQL_DB="prodcrm"
-    volumes:
-      - db1-data:/var/lib/mysql/data
+  mycrm-production:
+    container_name: mycrm-production
+    build:
+      context: ./crm-backend
     ports:
-      - "3001:3306"
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 5s
-      retries: 10
-
-  db2:
-    image: mysql:8
-    restart: always
+      - "63193:8000"
     environment:
-      - MYSQL_ROOT_PASSWORD=Cherry@1
-      - MYSQL_USER="ritik"
-      - MYSQL_PASSWORD="Cherry@1"
-      - MYSQL_DB="testcrm"
-    volumes:
-      - db2-data:/var/lib/mysql/data
-    ports:
-      - "3000:3306"
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 5s
-      retries: 10      
-
-  mycrm:
-    build: .
-    depends_on:
-      - db1
-    ports:
-      - "63193:63193"
-    environment:
-      PORT: 63193
-      DB_DIALECT: mysql
-      DB_HOST: db1
-      DB_PORT: 3306
-      DB_USER: ritik
-      DB_PASSWORD: Cherry@1
+      PORT: 8000
       DB_NAME: prodcrm
+      DB_USER: root
+      DB_PASSWORD: Cherry@1
+      DB_HOST: vmi2384156.contaboserver.net
+      DB_DIALECT: mysql
+      DB_PORT: 3306
       JWT_SECRET: a0f937n4vvm82-345cb288mgnoi
       ENVIRONMENT: PRODUCTION
-      #resend key
-      RESEND_API_KEY: "re_2CBnDRDQ_5hnTYsmsPGy3gM4XAdpHrMBa"
-      #aws credentials
-      AWS_ACCESS_KEY_ID: AKIAWNHTHUAKJHBJBHU4
-      AWS_SECRET_ACCESS_KEY: 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
-      AWS_REGION: us-east-1
-      S3_BUCKET_NAME: myactivitycrmbucket
-
-  testcrm:
-    build: .
-    depends_on:
-      - db2
-    ports:
-      - "5001:63193"
-    environment:
-      DB_DIALECT: mysql
-      DB_HOST: db2
-      DB_PORT: 3306
-      DB_USER: ritik
-      DB_PASSWORD: Cherry@1
-      DB_NAME: prodcrm
-      JWT_SECRET: a0f937n4vvm82-345cb288mgnoi
-      ENVIRONMENT: PRODUCTION
-      #resend key
       RESEND_API_KEY: re_2CBnDRDQ_5hnTYsmsPGy3gM4XAdpHrMBa
-      #aws credentials
+      STRIPE_PUBKEY: pk_live_51OqCz5IYcUzbjJNBrorBoSfszChdK031xhstovbbkEIxEQhK8iQ9HijmFssMoDeGfNYDcaosKrYpUSRwWLzAW6eR00zrVgrarN
+      STRIPE_SKKEY: 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
       AWS_ACCESS_KEY_ID: AKIAWNHTHUAKJHBJBHU4
       AWS_SECRET_ACCESS_KEY: 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
       AWS_REGION: us-east-1
       S3_BUCKET_NAME: myactivitycrmbucket
+
+    networks:
+      - crm-network
+
+  mycrm-test:
+    container_name: mycrm-test
+    build:
+      context: ./crm-backend
+    ports:
+      - "8001:8000"
+    environment:
+      PORT: 8000
+      DB_NAME: testDb
+      DB_USER: test
+      DB_PASSWORD: Test@1
+      DB_HOST: mysql-test
+      DB_DIALECT: mysql
+      DB_PORT: 3306
+      JWT_SECRET: a0f937n4vvm82-345cb288mgnoi
+      ENVIRONMENT: PRODUCTION
+      RESEND_API_KEY: re_2CBnDRDQ_5hnTYsmsPGy3gM4XAdpHrMBa
+      STRIPE_PUBKEY: pk_test_51OqCz5IYcUzbjJNBfW7wjSsfUiXZ6G0IdY5Z3OAMONPqyViWo8uyDXFJfuunzoZpV6ZQnQaJxfOIHvt5aIffwoRY00nPZ9tj9l
+      STRIPE_SKKEY: sk_test_51OqCz5IYcUzbjJNB1Fk72HKrvDGWwSNMjzx0VGzdDtnE4S2qnV47TM4OEnBPMaqcWMKaAymduk3OtrXqDlzpzWdn0045fsEciK
+      AWS_ACCESS_KEY_ID: AKIAWNHTHUAKJHBJBHU4
+      AWS_SECRET_ACCESS_KEY: 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
+      AWS_REGION: us-east-1
+      S3_BUCKET_NAME: myactivitycrmbucket
+
+    depends_on:
+      - mysql-test
+    networks:
+      - crm-network
+
+  mysql-test:
+    image: mysql:8.0
+    container_name: mysql-test
+    ports:
+      - "3307:3306"  # Expose container's 3306 as host's 3307
+    environment:
+      - MYSQL_ROOT_PASSWORD=Test@1
+      - MYSQL_DATABASE=testDb
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=Test@1
+    networks:
+      - crm-network
+    volumes:
+      - mysql-test-data:/var/lib/mysql
+
+networks:
+  crm-network:
+
 volumes:
-  db1-data:
-  db2-data:
+  mysql-test-data:
