@@ -92,7 +92,7 @@ router.post(
     for (const field in files) {
       for (const file of files[field]) {
         const filePath = path.resolve(file.path);
-        const fileName = new String(file.fieldname + file.originalname).replace(/^a-zA-Z0-9_-./, "");
+        const fileName = String(file.fieldname + file.originalname).replace(/^a-zA-Z0-9_-./, "");
 
         // Upload to Cloudinary
         const fileUrl = await uploadOnS3(filePath, fileName);

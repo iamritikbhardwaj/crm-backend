@@ -5,14 +5,12 @@ import { DBConnect } from './dbConfig/dbConfig.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import { dbInit } from './dbConfig/dbInit.js';
-import resetDatabase from './dbConfig/resetDatabase.js';
 import { createPaymentLink } from './middlewares/stripe.js';
-import { verifyToken } from './middlewares/auth.js';
+import flyRouter from './routes/flyremit.routes.js';
 
 // Define __dirname for ES modules
 
 (async () => {
-  // await resetDatabase()
   await dbInit()
   await DBConnect()
 }
@@ -34,6 +32,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/api/users", router);
+app.use("/api/flyremit", flyRouter);
 app.post('/stripe/create-payment-link', createPaymentLink); // stripe route
 
 app.set('view engine', 'ejs');
