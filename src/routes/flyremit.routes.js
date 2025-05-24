@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { callFlyRemit, mapFlyAgent } from "../controllers/agent.Controller";
+import { callFlyRemit, mapFlyAgent } from "../controllers/agent.Controller.js";
 
 const router = Router();
 
