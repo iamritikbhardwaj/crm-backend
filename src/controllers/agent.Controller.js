@@ -117,3 +117,24 @@ export const mapFlyAgent = asyncHandler(async (req, res) => {
           });
      }
 });
+
+export const callFlyRemit = asyncHandler(async (req, res) => {
+     const tranId = req?.body?.tranId;
+     const tranStatus = req?.body?.tranStatus;
+     const tripId = req?.body?.tripId;
+
+     try {
+          res.status(200).json({
+               STATUS: 'SUCCESS',
+               MESSAGE: 'Here is the processed link',
+               OUTPUT: `https://crm.tomatotrails.com/viewAllBooking?tripId=${tripId}&tranId=${tranId}&tranStatus=${tranStatus}`
+          });
+     } catch (error) {
+          console.log(error);
+          res.status(500).json({
+               STATUS: 'FAIL',
+               MESSAGE: 'Error mapping agent please try again',
+               OUTPUT: null
+          });
+     }
+})
