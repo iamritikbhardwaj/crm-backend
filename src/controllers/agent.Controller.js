@@ -96,3 +96,24 @@ export const deleteAgent = asyncHandler(async (req, res) => {
           });
      }
 });
+
+export const mapFlyAgent = asyncHandler(async (req, res) => {
+     const flyremit_id = req?.query?.flyremit_id;
+     const agent_id = req?.query?.agent_id;
+     console.log(id, 'id');
+     try {
+          const agent = await agentModel.create({agent: agent_id, flyremit_id: flyremit_id});
+          res.status(200).json({
+               STATUS: 'SUCCESS',
+               MESSAGE: 'Agent mapped successfully',
+               OUTPUT: agent
+          });
+     } catch (error) {
+          console.log(error);
+          res.status(500).json({
+               STATUS: 'FAIL',
+               MESSAGE: 'Error mapping agent please try again',
+               OUTPUT: null
+          });
+     }
+});

@@ -6,6 +6,8 @@ import supPayModel from '../models/supPayModel.js';
 import { reconModel } from '../models/reconModel.js';
 import issuesModel from '../models/issues.models.js';
 import payLinkModel from '../models/payLink.model.js';
+import flyremitModel from '../models/flyremitModel.js';
+import agentModel from '../models/agentModel.js';
 
 export async function dbInit() {
   try {
@@ -93,6 +95,20 @@ export async function dbInit() {
       onUpdate: 'CASCADE',
     });
 
+    // flyremit agent relationship
+    agentModel.hasOne(flyremitModel, {
+      as: 'flyremit',
+      foreignKey: 'agent_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    });
+    flyremitModel.belongsTo(agentModel, {
+      as: 'agent',
+      foreignKey: 'agent_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    });
+
     // Sync models
     console.time('dbSync');
     await Promise.all([
@@ -104,6 +120,7 @@ export async function dbInit() {
       reconModel.sync(),
       issuesModel.sync(),
       payLinkModel.sync(),
+      flyremitModel.sync(),
     ]);
     console.timeEnd('dbSync');
     console.log('Database initialized successfully!');
