@@ -9,11 +9,6 @@ const flyremitModel = sequelize.define(
             allowNull: false,
             primaryKey: true,
         },
-        status: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            defaultValue: "PENDING",
-        }
     },
     {
         timestamps: true,
