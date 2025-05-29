@@ -102,8 +102,9 @@ export const mapFlyAgent = asyncHandler(async (req, res) => {
      const flyremit_id = req?.query?.flyremit_id;
      const agent_id = req?.query?.agent_id;
      console.log(flyremit_id, agent_id, 'flyremit_id');
+     let agent;
      try {
-          const agent = await flyremitModel.create({agent_id: agent_id, flyremit_id: flyremit_id});
+          agent = await flyremitModel.create({agent_id: agent_id, flyremit_id: flyremit_id});
           res.status(200).json({
                STATUS: 'SUCCESS',
                MESSAGE: 'Agent mapped successfully',
@@ -114,7 +115,7 @@ export const mapFlyAgent = asyncHandler(async (req, res) => {
           res.status(500).json({
                STATUS: 'FAIL',
                MESSAGE: 'Error mapping agent please try again',
-               OUTPUT: null
+               OUTPUT: agent
           });
      }
 });
