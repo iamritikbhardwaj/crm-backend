@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import { agentModel } from "../models/agentModel.js";
 import { v4 as uuidv4 } from "uuid";
+import flyremitModel from "../models/flyremitModel.js";
 
 export const getAllAgents = asyncHandler(async (req, res) => {
      console.log('getAllAgent');
@@ -102,7 +103,7 @@ export const mapFlyAgent = asyncHandler(async (req, res) => {
      const agent_id = req?.query?.agent_id;
      console.log(flyremit_id, agent_id, 'flyremit_id');
      try {
-          const agent = await agentModel.create({agent: agent_id, flyremit_id: flyremit_id});
+          const agent = await flyremitModel.create({agent: agent_id, flyremit_id: flyremit_id});
           res.status(200).json({
                STATUS: 'SUCCESS',
                MESSAGE: 'Agent mapped successfully',
