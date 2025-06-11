@@ -159,10 +159,10 @@ export const mapFlyAgent = asyncHandler(async (req, res) => {
           if (!agents) {
                agent = await flyremitModel.create({ agent_id: agent_id, flyremit_id: flyremit_id });
           } else {
-               res.status(200).redirect(`https://v5agent.flyremit.com/Activitybeds/abagent/result?AgentId=${agent_id}&BookingId=${tripId}&Amount=${amount}`);
+               res.status(200).redirect(`https://v5agent.flyremit.com/Activitybeds/abagent/result?AgentId=${agent_id}&BookingId=${tripId}&Amount=${inr}`);
           }
           if (paylink && agent) {
-               res.status(200).redirect(`https://v5agent.flyremit.com/Activitybeds/abagent/result?AgentId=${agent_id}&BookingId=${tripId}&Amount=${amount}`);
+               res.status(200).redirect(`https://v5agent.flyremit.com/Activitybeds/abagent/result?AgentId=${agent_id}&BookingId=${tripId}&Amount=${inr}`);
           } else if (!agent) {
                res.status(400).json({
                     STATUS: 'FAIL',
