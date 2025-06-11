@@ -31,12 +31,18 @@ export const getAllPayLinks = asyncHandler(async (req, res) => {
      }
 });
 
-export const createPayLink = asyncHandler(async (req, res, paymentLink) => {
-    console.log(req.body, req.query, req.paymentLink, 'createPayLink');
+export const createPayLink = asyncHandler(async (req, res ) => {
+    const tripId = req.query.tripId
+    const agentId = req.body.agent_name.split(" ")[0];
+    const name = req.body.agent_name.split(" ").slice(1).join(" ");  
+    const { commision } = req.body;
     try {
         const paylink = await payLinkModel.create({
+            agent_name: name,
             link_id: uuidv4(),
-            tripId: req.query.tripId,
+            source: parseFloat(commision) === 1.5 ? "flyremit" : "stripe",
+            agent_id: agentId,
+            tripId: tripId,
             link: req.paymentLink,
             ...req.body
         });
@@ -47,12 +53,13 @@ export const createPayLink = asyncHandler(async (req, res, paymentLink) => {
                 OUTPUT: paylink,
             });
         } else {
-            res.status(200).json({
+                res.status(200).json({
                 STATUS: "SUCCESS",
                 MESSAGE: "Paylink stored successfully",
+                METHOD: "stripe",
                 OUTPUT: paylink,
             });
-        }
+            }
     } catch (error) {
         console.log(error);
         res.status(500).json({

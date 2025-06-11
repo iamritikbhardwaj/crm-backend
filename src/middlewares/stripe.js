@@ -53,53 +53,65 @@ const sendPaymentLink = async (email, amount, currency) => {
  */
 export const createPaymentLink = async (req, res, next) => {
     try {
+
         // Extract parameters from request body
         const { agent_email: email, amount, currency, commision, xerate } = req.body;
+        const agentId = req.body.agent_name.split(" ")[0];
 
         console.log(`Processing payment request - Email: ${email}, Amount: ${amount}, Currency: ${currency}`);
 
-        // Validate required parameters
-        if (!email) {
-            return res.status(400).json({
-                success: false,
-                error: "Missing required parameter: email"
-            });
+        // flyremit check
+        if (parseFloat(commision) === 1.5) {
+            console.log(commision)
+            req.paymentLink = `https://v5agent.flyremit.com/Activitybeds/abagent/Registration?ActivitybedsId=${agentId}`
+            next();
+            return
+        } else {
+            // Validate required parameters
+            if (!email) {
+                return res.status(400).json({
+                    success: false,
+                    error: "Missing required parameter: email"
+                });
+            }
+
+            if (!amount) {
+                return res.status(400).json({
+                    success: false,
+                    error: "Missing required parameter: amount"
+                });
+            }
+
+            if (!currency) {
+                return res.status(400).json({
+                    success: false,
+                    error: "Missing required parameter: currency"
+                });
+            }
+
+            const finalAmount = parseFloat(amount) * parseFloat(xerate)
+
+            // Validate amount is a number
+            const parsedAmount = (finalAmount) + (finalAmount * parseFloat(commision) / 100);
+            if (isNaN(parsedAmount) || parsedAmount <= 0) {
+                return res.status(400).json({
+                    success: false,
+                    error: "Amount must be a positive number"
+                });
+            }
+
+            // Create payment link
+            const paymentLink = await sendPaymentLink(email, parsedAmount, currency);
+            console.log(`Payment link created: ${paymentLink}`);
+
+            // Attach to request object for the next middleware
+            req.paymentLink = paymentLink;
+
+            // Continue to next middleware
+            next();
         }
 
-        if (!amount) {
-            return res.status(400).json({
-                success: false,
-                error: "Missing required parameter: amount"
-            });
-        }
 
-        if (!currency) {
-            return res.status(400).json({
-                success: false,
-                error: "Missing required parameter: currency"
-            });
-        }
-
-        const finalAmount = parseFloat(amount) * parseFloat(xerate)
-
-        // Validate amount is a number
-        const parsedAmount = (finalAmount) + (finalAmount * parseFloat(commision) / 100);
-        if (isNaN(parsedAmount) || parsedAmount <= 0) {
-            return res.status(400).json({
-                success: false,
-                error: "Amount must be a positive number"
-            });
-        }
-
-        // Create payment link
-        const paymentLink = await sendPaymentLink(email, parsedAmount, currency);
-        console.log(`Payment link created: ${paymentLink}`);
-
-        // Attach to request object for the next middleware
-        req.paymentLink = paymentLink;
-
-        // Continue to next middleware
-        next();
     } catch (error) {
         console.error("Error in createPaymentLink middleware:", error);
 

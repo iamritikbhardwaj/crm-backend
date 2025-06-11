@@ -37,6 +37,14 @@ const payLinkModel = sequelize.define(
             type: DataTypes.DECIMAL(10, 2),
             allowNull: false,
         },
+        source: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        agent_id: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        }
     },
     {
         timestamps: true,

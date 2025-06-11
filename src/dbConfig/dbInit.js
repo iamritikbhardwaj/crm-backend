@@ -119,8 +119,8 @@ export async function dbInit() {
       supPayModel.sync(),
       reconModel.sync(),
       issuesModel.sync(),
-      payLinkModel.sync(),
-      flyremitModel.sync(),
+      payLinkModel.sync({ alter: true }),
+      flyremitModel.sync({ alter: true }),
     ]);
     console.timeEnd('dbSync');
     console.log('Database initialized successfully!');
