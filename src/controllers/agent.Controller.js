@@ -138,9 +138,17 @@ export const deleteAgent = asyncHandler(async (req, res) => {
 
 export const mapFlyAgent = asyncHandler(async (req, res) => {
      const flyremit_id = req?.query?.flyremit_id;
+
      const agent_id = req?.query?.agent_id;
      console.log(flyremit_id, agent_id, 'flyremit_id');
      try {
+          const paylink = await payLinkModel.findOne({
+               where: {
+                    agent_id: agent_id
+               }
+          })
+          const { tripId, amount } = paylink
+
           const agents = await flyremitModel.findOne({
                where: {
                     agent_id: agent_id
@@ -148,16 +156,10 @@ export const mapFlyAgent = asyncHandler(async (req, res) => {
           });
           let agent;
           if (!agents) {
-                agent = await flyremitModel.create({ agent_id: agent_id, flyremit_id: flyremit_id });
+               agent = await flyremitModel.create({ agent_id: agent_id, flyremit_id: flyremit_id });
           } else {
                res.status(200).redirect(`https://v5agent.flyremit.com/Activitybeds/abagent/result?AgentId=${agent_id}&BookingId=${tripId}&Amount=${amount}`);
           }
-          const paylink = await payLinkModel.findOne({
-               where: {
-                    agent_id: agent_id
-               }
-          })
-          const { tripId, amount } = paylink
           if (paylink && agent) {
                res.status(200).redirect(`https://v5agent.flyremit.com/Activitybeds/abagent/result?AgentId=${agent_id}&BookingId=${tripId}&Amount=${amount}`);
           } else if (!agent) {
