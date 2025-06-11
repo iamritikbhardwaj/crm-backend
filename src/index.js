@@ -19,11 +19,19 @@ import flyRouter from './routes/flyremit.routes.js';
 const app = express();
 
 const corsOptions = {
-  origin: ['https://crm.tomatotrails.com', 'https://91.205.105.35:63193', 'https://91.205.105.35:5001', "http://localhost:3000", "https://91.205.105.35", "http://91.205.105.35:63193"],  // Allow only this origin
+  origin: [
+    'https://crm.tomatotrails.com',
+    'https://91.205.105.35:63193',
+    'https://91.205.105.35:5001',
+    'http://localhost:3000',
+    'https://91.205.105.35',
+    'http://91.205.105.35:63193'
+  ],
   methods: ['GET', 'POST', 'DELETE'],
-  allowedHeaders: ['content-Type', 'Authorization', 'credentials'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 };
+
 
 app.use(cors(corsOptions));
 

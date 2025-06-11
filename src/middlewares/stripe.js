@@ -1,4 +1,5 @@
 import { Stripe } from "stripe"
+import flyremitModel from "../models/flyremitModel.js";
 
 const stripe = new Stripe(process.env.STRIPE_SKKEY)
 
@@ -57,15 +58,28 @@ export const createPaymentLink = async (req, res, next) => {
         // Extract parameters from request body
         const { agent_email: email, amount, currency, commision, xerate } = req.body;
         const agentId = req.body.agent_name.split(" ")[0];
+        const tripId = req.query.tripId
+
+        const inr = ((amount * xerate) + (amount * xerate) * (commision / 100)).toFixed(2)
+
 
         console.log(`Processing payment request - Email: ${email}, Amount: ${amount}, Currency: ${currency}`);
 
         // flyremit check
         if (parseFloat(commision) === 1.5) {
-            console.log(commision)
-            req.paymentLink = `https://v5agent.flyremit.com/Activitybeds/abagent/Registration?ActivitybedsId=${agentId}`
-            next();
-            return
+            const agent = await flyremitModel.findOne({
+                where: {
+                    agent_id: agentId
+                }
+            })
+            if (!agent) {
+                console.log(commision)
+                req.paymentLink = `https://v5agent.flyremit.com/Activitybeds/abagent/Registration?ActivitybedsId=${agentId}`
+                next();
+            } else {
+                req.paymentLink = `https://v5agent.flyremit.com/Activitybeds/abagent/result?AgentId=${agentId}&BookingId=${tripId}&Amount=${inr}`;
+                next();
+            }
         } else {
             // Validate required parameters
             if (!email) {
