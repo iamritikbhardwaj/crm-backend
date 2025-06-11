@@ -148,7 +148,7 @@ export const mapFlyAgent = asyncHandler(async (req, res) => {
                }
           })
           const { tripId, amount , xerate, commision} = paylink
-          const inr = ((amount * xerate) + (amount * xerate) * (commision / 100)).toFixed(2)
+          const inr = parseInt((amount * xerate) + (amount * xerate) * (commision / 100)) + 1
 
           const agents = await flyremitModel.findOne({
                where: {

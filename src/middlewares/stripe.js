@@ -60,7 +60,7 @@ export const createPaymentLink = async (req, res, next) => {
         const agentId = req.body.agent_name.split(" ")[0];
         const tripId = req.query.tripId
 
-        const inr = ((amount * xerate) + (amount * xerate) * (commision / 100)).toFixed(2)
+        const inr = parseInt((amount * xerate) + (amount * xerate) * (commision / 100)) + 1
 
 
         console.log(`Processing payment request - Email: ${email}, Amount: ${amount}, Currency: ${currency}`);
