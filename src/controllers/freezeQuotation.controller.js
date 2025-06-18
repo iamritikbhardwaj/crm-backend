@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
-import freezequotationModel, {
+import {
+  freezequotationModel,
   ActivityFreezeQuotationModel,
   HotelFreezeQuotationModel
 } from "../models/freezequotation.model.js";

@@ -7,7 +7,7 @@ import path from 'path';
 import { dbInit } from './dbConfig/dbInit.js';
 import { createPaymentLink } from './middlewares/stripe.js';
 import flyRouter from './routes/flyremit.routes.js';
-import { fqRouter } from './routes/fq.routes.js';
+import fqRouter from './routes/fq.routes.js';
 
 // Define __dirname for ES modules
 
