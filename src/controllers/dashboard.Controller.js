@@ -3,7 +3,7 @@ import { Op } from "sequelize";
 import tripModel from "../models/tripModel.js";
 import { userModel } from "../models/userModel.js";
 import { reconModel } from "../models/reconModel.js";
-import agentModel from "../models/agentModel.js";
+import { agentModel } from "../models/agentModel.js";
 
 export const getDashboard = asyncHandler(async (req, res) => {
   const { startDate, endDate } = req.query;

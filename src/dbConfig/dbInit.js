@@ -7,7 +7,7 @@ import { reconModel } from '../models/reconModel.js';
 import issuesModel from '../models/issues.models.js';
 import payLinkModel from '../models/payLink.model.js';
 import flyremitModel from '../models/flyremitModel.js';
-import agentModel from '../models/agentModel.js';
+import { agentModel, benificiaryModel, agentAccountDetails, agentDocuments, notifications } from '../models/agentModel.js';
 import { ActivityFreezeQuotationModel, freezequotationModel, HotelFreezeQuotationModel } from '../models/freezequotation.model.js';
 
 export async function dbInit() {
@@ -153,6 +153,57 @@ export async function dbInit() {
       onUpdate: "CASCADE",
     });
 
+    // agent relations
+    agentModel.hasOne(benificiaryModel, {
+      as: "benificiary",
+      foreignKey: "agent_id",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    })
+    agentModel.hasOne(agentAccountDetails, {
+      as: "agent_account_details",
+      foreignKey: "agent_id",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    })
+    agentModel.hasOne(agentDocuments, {
+      as: "agent_documents",
+      foreignKey: "agent_id",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    })
+    agentModel.hasOne(notifications, {
+      as: "notifications",
+      foreignKey: "agent_id",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    })
+
+    benificiaryModel.belongsTo(agentModel, {
+      as: "agent",
+      foreignKey: "agent_id",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    })
+    agentAccountDetails.belongsTo(agentModel, {
+      as: "agent",
+      foreignKey: "agent_id",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    })
+    agentDocuments.belongsTo(agentModel, {
+      as: "agent",
+      foreignKey: "agent_id",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    })
+    notifications.belongsTo(agentModel, {
+      as: "agent",
+      foreignKey: "agent_id",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    })
+
     // Sync models
     console.time('dbSync');
     await Promise.all([
@@ -165,6 +216,14 @@ export async function dbInit() {
       issuesModel.sync(),
       payLinkModel.sync({ alter: true }),
       flyremitModel.sync({ alter: true }),
+      freezequotationModel.sync({ alter: true }),
+      ActivityFreezeQuotationModel.sync({ alter: true }),
+      HotelFreezeQuotationModel.sync({ alter: true }),
+      agentModel.sync({ alter: true }),
+      benificiaryModel.sync({ alter: true }),
+      agentAccountDetails.sync({ alter: true }),
+      agentDocuments.sync({ alter: true }),
+      notifications.sync({ alter: true }),
     ]);
     console.timeEnd('dbSync');
     console.log('Database initialized successfully!');
