@@ -9,12 +9,10 @@ export const agentModel = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
-            defaultValue: uuidv4(),
         },
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
         },
         status: {
             type: DataTypes.STRING,
@@ -22,12 +20,12 @@ export const agentModel = sequelize.define(
         },
         email: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
             unique: true,
         },
         phone: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
             unique: true,
         },
         address: {
@@ -47,7 +45,7 @@ export const agentModel = sequelize.define(
             allowNull: true,
         },
         pincode: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.INTEGER,
             allowNull: true,
         },
         certificates: {
@@ -69,7 +67,6 @@ export const benificiaryModel = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
-            defaultValue: uuidv4(),
         },
         name: {
             type: DataTypes.STRING,
@@ -103,14 +100,14 @@ export const benificiaryModel = sequelize.define(
             allowNull: true,
         },
         pincode: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.INTEGER,
             allowNull: true,
         },
         certificates: {
             type: DataTypes.ARRAY(DataTypes.STRING),
             allowNull: true,
         },
-        presentage_owned: {
+        persentage_owned: {
             type: DataTypes.STRING,
             allowNull: true,
         },
@@ -129,7 +126,6 @@ export const notifications = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
-            defaultValue: uuidv4(),
         },
         updates: {
             type: DataTypes.STRING,
@@ -154,7 +150,6 @@ export const agentDocuments = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
-            defaultValue: uuidv4(),
         },
         documents: {
             type: DataTypes.ARRAY(DataTypes.STRING),
@@ -175,7 +170,6 @@ export const agentAccountDetails = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
-            defaultValue: uuidv4(),
         },
         currency: {
             type: DataTypes.STRING,
