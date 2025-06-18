@@ -8,6 +8,7 @@ import issuesModel from '../models/issues.models.js';
 import payLinkModel from '../models/payLink.model.js';
 import flyremitModel from '../models/flyremitModel.js';
 import agentModel from '../models/agentModel.js';
+import { ActivityFreezeQuotationModel, freezequotationModel, HotelFreezeQuotationModel } from '../models/freezequotation.model.js';
 
 export async function dbInit() {
   try {
@@ -107,6 +108,49 @@ export async function dbInit() {
       foreignKey: 'agent_id',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
+    });
+
+        // ! freezequotation relations
+    // trip one-one freezequotation
+    tripModel.hasOne(freezequotationModel, {
+      as: "freezequotation",
+      foreignKey: "tripId",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
+    freezequotationModel.belongsTo(tripModel, {
+      as: "trip",
+      foreignKey: "tripId",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
+
+    // freezequotation one-many products freezequotation
+    freezequotationModel.hasMany(ActivityFreezeQuotationModel, {
+      as: "freezequotation_products",
+      foreignKey: "freezequotation_id",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
+    ActivityFreezeQuotationModel.belongsTo(freezequotationModel, {
+      as: "freezequotation",
+      foreignKey: "freezequotation_id",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
+
+    // freezequotation one-many hotels freezequotation
+    freezequotationModel.hasMany(HotelFreezeQuotationModel, {
+      as: "freezequotation_hotels",
+      foreignKey: "freezequotation_id",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
+    HotelFreezeQuotationModel.belongsTo(freezequotationModel, {
+      as: "freezequotation",
+      foreignKey: "freezequotation_id",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
     });
 
     // Sync models

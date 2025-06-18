@@ -74,10 +74,10 @@ export const createPaymentLink = async (req, res, next) => {
             })
             if (!agent) {
                 console.log(commision)
-                req.paymentLink = `https://v5agent.flyremit.com/Activitybeds/abagent/Registration?ActivitybedsId=${agentId}`
+                req.paymentLink = `https://agent.flyremit.com/Activitybeds/abagent/Registration?ActivitybedsId=${agentId}`
                 next();
             } else {
-                req.paymentLink = `https://v5agent.flyremit.com/Activitybeds/abagent/result?AgentId=${agentId}&BookingId=${tripId}&Amount=${inr}`;
+                req.paymentLink = `https://agent.flyremit.com/Activitybeds/abagent/result?AgentId=${agentId}&BookingId=${tripId}&Amount=${inr}`;
                 next();
             }
         } else {

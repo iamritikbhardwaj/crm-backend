@@ -7,6 +7,7 @@ import path from 'path';
 import { dbInit } from './dbConfig/dbInit.js';
 import { createPaymentLink } from './middlewares/stripe.js';
 import flyRouter from './routes/flyremit.routes.js';
+import { fqRouter } from './routes/fq.routes.js';
 
 // Define __dirname for ES modules
 
@@ -41,6 +42,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/api/users", router);
 app.use("/api/flyremit", flyRouter);
+app.use("/api/freezequotation", fqRouter);
 app.post('/stripe/create-payment-link', createPaymentLink); // stripe route
 
 app.set('view engine', 'ejs');
