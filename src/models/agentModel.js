@@ -18,40 +18,40 @@ export const agentModel = sequelize.define(
             type: DataTypes.STRING,
             allowNull: true,
         },
-        email: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            unique: true,
-        },
-        phone: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            unique: true,
-        },
-        address: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-        state: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-        city: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-        country: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-        pincode: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },
-        certificates: {
-            type: DataTypes.ARRAY(DataTypes.STRING),
-            allowNull: true,
-        }
+        // email: {
+        //     type: DataTypes.STRING,
+        //     allowNull: true,
+        //     unique: true,
+        // },
+        // phone: {
+        //     type: DataTypes.STRING,
+        //     allowNull: true,
+        //     unique: true,
+        // },
+        // address: {
+        //     type: DataTypes.STRING,
+        //     allowNull: true,
+        // },
+        // state: {
+        //     type: DataTypes.STRING,
+        //     allowNull: true,
+        // },
+        // city: {
+        //     type: DataTypes.STRING,
+        //     allowNull: true,
+        // },
+        // country: {
+        //     type: DataTypes.STRING,
+        //     allowNull: true,
+        // },
+        // pincode: {
+        //     type: DataTypes.INTEGER,
+        //     allowNull: true,
+        // },
+        // certificates: {
+        //     type: DataTypes.ARRAY(DataTypes.STRING),
+        //     allowNull: true,
+        // }
     },
     {
         timestamps: true,

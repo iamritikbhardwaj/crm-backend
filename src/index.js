@@ -26,10 +26,10 @@ const corsOptions = {
     'https://91.205.105.35:5001',
     'http://localhost:3000',
     'https://91.205.105.35',
-    'http://91.205.105.35:63193'
+    'http://91.205.105.35:63193',
   ],
   methods: ['GET', 'POST', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'credentials'],
   credentials: true,
 };
 
