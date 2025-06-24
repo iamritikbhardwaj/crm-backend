@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import sequelize from "../dbConfig/dbConfig.js";
 import { DataTypes } from "sequelize";
 
@@ -18,40 +17,40 @@ export const agentModel = sequelize.define(
             type: DataTypes.STRING,
             allowNull: true,
         },
-        // email: {
-        //     type: DataTypes.STRING,
-        //     allowNull: true,
-        //     unique: true,
-        // },
-        // phone: {
-        //     type: DataTypes.STRING,
-        //     allowNull: true,
-        //     unique: true,
-        // },
-        // address: {
-        //     type: DataTypes.STRING,
-        //     allowNull: true,
-        // },
-        // state: {
-        //     type: DataTypes.STRING,
-        //     allowNull: true,
-        // },
-        // city: {
-        //     type: DataTypes.STRING,
-        //     allowNull: true,
-        // },
-        // country: {
-        //     type: DataTypes.STRING,
-        //     allowNull: true,
-        // },
-        // pincode: {
-        //     type: DataTypes.INTEGER,
-        //     allowNull: true,
-        // },
-        // certificates: {
-        //     type: DataTypes.ARRAY(DataTypes.STRING),
-        //     allowNull: true,
-        // }
+        email: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            unique: true,
+        },
+        phone: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            unique: true,
+        },
+        address: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        state: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        city: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        country: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        pincode: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
+        certificates: {
+            type: DataTypes.JSON,
+            allowNull: true,
+        }
     },
     {
         timestamps: true,
@@ -104,7 +103,7 @@ export const benificiaryModel = sequelize.define(
             allowNull: true,
         },
         certificates: {
-            type: DataTypes.ARRAY(DataTypes.STRING),
+            type: DataTypes.JSON,
             allowNull: true,
         },
         persentage_owned: {
@@ -152,7 +151,7 @@ export const agentDocuments = sequelize.define(
             primaryKey: true,
         },
         documents: {
-            type: DataTypes.ARRAY(DataTypes.STRING),
+            type: DataTypes.JSON,
             allowNull: false,
         },
     },

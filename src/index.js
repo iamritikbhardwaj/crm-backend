@@ -8,10 +8,12 @@ import { dbInit } from './dbConfig/dbInit.js';
 import { createPaymentLink } from './middlewares/stripe.js';
 import flyRouter from './routes/flyremit.routes.js';
 import fqRouter from './routes/fq.routes.js';
+// import resetDatabase from './dbConfig/resetDatabase.js';
 
 // Define __dirname for ES modules
 
 (async () => {
+  // await resetDatabase()
   await dbInit()
   await DBConnect()
 }
@@ -27,6 +29,7 @@ const corsOptions = {
     'http://localhost:3000',
     'https://91.205.105.35',
     'http://91.205.105.35:63193',
+    'http://91.205.105.35:8001',
   ],
   methods: ['GET', 'POST', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'credentials'],

@@ -9,6 +9,7 @@ import payLinkModel from '../models/payLink.model.js';
 import flyremitModel from '../models/flyremitModel.js';
 import { agentModel, benificiaryModel, agentAccountDetails, agentDocuments, notifications } from '../models/agentModel.js';
 import { ActivityFreezeQuotationModel, freezequotationModel, HotelFreezeQuotationModel } from '../models/freezequotation.model.js';
+import sequelize from './dbConfig.js';
 
 export async function dbInit() {
   try {
@@ -110,7 +111,7 @@ export async function dbInit() {
       onUpdate: 'CASCADE',
     });
 
-        // ! freezequotation relations
+    // ! freezequotation relations
     // trip one-one freezequotation
     tripModel.hasOne(freezequotationModel, {
       as: "freezequotation",
@@ -207,23 +208,7 @@ export async function dbInit() {
     // Sync models
     console.time('dbSync');
     await Promise.all([
-      tripModel.sync(),
-      supModel.sync(),
-      destModel.sync(),
-      paymentModel.sync(),
-      supPayModel.sync(),
-      reconModel.sync(),
-      issuesModel.sync(),
-      payLinkModel.sync(),
-      flyremitModel.sync(),
-      freezequotationModel.sync(),
-      ActivityFreezeQuotationModel.sync(),
-      HotelFreezeQuotationModel.sync(),
-      // agentModel.sync(),
-      // benificiaryModel.sync(),
-      // agentAccountDetails.sync(),
-      // agentDocuments.sync(),
-      // notifications.sync(),
+      await sequelize.sync({alter: true})
     ]);
     console.timeEnd('dbSync');
     console.log('Database initialized successfully!');
