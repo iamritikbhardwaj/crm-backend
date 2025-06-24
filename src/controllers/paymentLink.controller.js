@@ -41,7 +41,7 @@ export const createPayLink = asyncHandler(async (req, res) => {
     const name = req.body.agent_name.split(" ").slice(1).join(" ");
     const { commision } = req.body;
 
-    console.log(req.body, tripId, agentId, name, 'createPayLink');
+    console.log(req.body, tripId, agentId, name, req.paymentLink, 'createPayLink');
     try {
         let paylink = null
         if (String(await req.paymentLink).includes("ActivitybedsId")) {

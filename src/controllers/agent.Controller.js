@@ -3,6 +3,7 @@ import { agentModel } from "../models/agentModel.js";
 import { v4 as uuidv4 } from "uuid";
 import flyremitModel from "../models/flyremitModel.js";
 import payLinkModel from "../models/payLink.model.js";
+import { agentLedgerModel, paymentUploadsModel } from "../models/finance.models.js";
 
 export const getAllAgents = asyncHandler(async (req, res) => {
      console.log('getAgents');
@@ -206,3 +207,150 @@ export const callFlyRemit = asyncHandler(async (req, res) => {
           });
      }
 })
+
+
+export const createAgentLeadger = asyncHandler(async (req, res) => {
+  try {
+    if (req.query.hasOwnProperty("id")) {
+      const agentLedger = await agentLedgerModel.update(req.body, {
+        where: { transaction_id: req.query.id },
+      });
+      if (agentLedger) {
+        res.status(200).json({
+          STATUS: "SUCCESS",
+          MESSAGE: "Agent ledger updated successfully",
+          OUTPUT: agentLedger,
+        });
+      } else {
+        res.status(400).json({
+          STATUS: "FAIL",
+          MESSAGE: "Error updating agent ledger",
+          OUTPUT: [],
+        });
+      }
+    } else {
+      const agentLedger = await agentLedgerModel.create(req.body);
+      if (agentLedger) {
+        res.status(200).json({
+          STATUS: "SUCCESS",
+          MESSAGE: "Agent ledger created successfully",
+          OUTPUT: agentLedger,
+        });
+      } else {
+        res.status(400).json({
+          STATUS: "FAIL",
+          MESSAGE: "Error creating agent ledger",
+          OUTPUT: [],
+        });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      STATUS: "FAIL",
+      MESSAGE: "Error creating agent ledger",
+      OUTPUT: error,
+    });
+  }
+});
+
+export const getAgentLeadger = asyncHandler(async (req, res) => {
+  try {
+    const agentLedger = await agentLedgerModel.findAll({
+      where: { agent_id: req.params.id },
+    });
+    if (agentLedger) {
+      res.status(200).json({
+        STATUS: "SUCCESS",
+        MESSAGE: "Agent ledger fetched successfully",
+        OUTPUT: agentLedger,
+      });
+    } else {
+      res.status(404).json({
+        STATUS: "FAIL",
+        MESSAGE: "Error fetching agent ledger",
+        OUTPUT: [],
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      STATUS: "FAIL",
+      MESSAGE: "Error fetching agent ledger",
+      OUTPUT: error,
+    });
+  }
+});
+
+export const createAgentPaymentUpload = asyncHandler(async (req, res) => {
+  try {
+    if (req.query.hasOwnProperty("id")) {
+      const agentLedger = await paymentUploadsModel.update(req.body, {
+        where: { transaction_id: req.query.id },
+      });
+      if (agentLedger) {
+        res.status(200).json({
+          STATUS: "SUCCESS",
+          MESSAGE: "Agent paymentUploads updated successfully",
+          OUTPUT: agentLedger,
+        });
+      } else {
+        res.status(400).json({
+          STATUS: "FAIL",
+          MESSAGE: "Error updating agent payment Uploads",
+          OUTPUT: [],
+        });
+      }
+    } else {
+      const payment = await paymentUploadsModel.create(req.body);
+      if (agentLedger) {
+        res.status(200).json({
+          STATUS: "SUCCESS",
+          MESSAGE: "Agent payment created successfully",
+          OUTPUT: payment,
+        });
+      } else {
+        res.status(400).json({
+          STATUS: "FAIL",
+          MESSAGE: "Error creating agent payment",
+          OUTPUT: [],
+        });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      STATUS: "FAIL",
+      MESSAGE: "Error creating agent payment",
+      OUTPUT: error,
+    });
+  }
+});
+
+export const getAgentPaymentsUploads = asyncHandler(async (req, res) => {
+  try {
+    const paymentUploads = await paymentUploadsModel.findAll({
+      where: { agent_id: req.params.id },
+    });
+    if (paymentUploads) {
+      res.status(200).json({
+        STATUS: "SUCCESS",
+        MESSAGE: "Agent paymentUploads fetched successfully",
+        OUTPUT: paymentUploads,
+      });
+    } else {
+      res.status(404).json({
+        STATUS: "FAIL",
+        MESSAGE: "Error fetching agent paymentUploads",
+        OUTPUT: [],
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      STATUS: "FAIL",
+      MESSAGE: "Error fetching agent paymentUploads",
+      OUTPUT: error,
+    });
+  }
+});
