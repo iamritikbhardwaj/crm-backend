@@ -208,7 +208,7 @@ export async function dbInit() {
     // Sync models
     console.time('dbSync');
     await Promise.all([
-      await sequelize.sync({alter: true})
+      await sequelize.sync()
     ]);
     console.timeEnd('dbSync');
     console.log('Database initialized successfully!');

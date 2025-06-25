@@ -72,6 +72,7 @@ export const createPaymentLink = async (req, res, next) => {
                     agent_id: agentId
                 }
             })
+            console.log(agent, 'agent')
             if (!agent) {
                 console.log(commision)
                 req.paymentLink = `https://agent.flyremit.com/Activitybeds/abagent/Registration?ActivitybedsId=${agentId}`

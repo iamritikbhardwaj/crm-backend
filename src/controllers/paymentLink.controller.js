@@ -44,7 +44,7 @@ export const createPayLink = asyncHandler(async (req, res) => {
     console.log(req.body, tripId, agentId, name, req.paymentLink, 'createPayLink');
     try {
         let paylink = null
-        if (String(await req.paymentLink).includes("ActivitybedsId")) {
+        if (String(await req.paymentLink).includes("BookingId")) {
             paylink = await payLinkModel.update({
                 link: req.paymentLink
             }, {
