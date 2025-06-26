@@ -43,26 +43,16 @@ export const createPayLink = asyncHandler(async (req, res) => {
 
     console.log(req.body, tripId, agentId, name, req.paymentLink, 'createPayLink');
     try {
-        let paylink = null
-        if (String(await req.paymentLink).includes("BookingId")) {
-            paylink = await payLinkModel.update({
-                link: req.paymentLink
-            }, {
-                where: {
-                    tripId: tripId
-                }
-            });
-        } else {
-            paylink = await payLinkModel.create({
-                agent_name: name,
-                link_id: uuidv4(),
-                source: parseFloat(commision) === 1.5 ? "flyremit" : "stripe",
-                agent_id: agentId,
-                tripId: tripId,
-                link: req.paymentLink,
-                ...req.body
-            });
-        }
+
+        const paylink = await payLinkModel.create({
+            agent_name: name,
+            link_id: uuidv4(),
+            source: parseFloat(commision) === 1.5 ? "flyremit" : "stripe",
+            agent_id: agentId,
+            tripId: tripId,
+            link: req.paymentLink,
+            ...req.body
+        });
 
         if (!paylink) {
             res.status(400).json({
