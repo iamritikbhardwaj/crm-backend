@@ -10,9 +10,21 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
-    steps:
+    steps: 
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Login to Github
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME}}
+          password: ${{ secrets.DOCKER_PASSWORD}}
+
+      - name: Build docker image
+        run: docker build -t ritiklrt2/evoque-be:latest .
+
+      - name: Docker push image
+        run: docker push ritiklrt2/evoque-be:latest
 
       - name: Set up SSH
         run: |
@@ -28,8 +40,10 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            cd crm-backend
-            git pull
-            cd ..
-            docker compose down
-            docker compose up -d --build
+            # Login to Docker Hub (or your registry)
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      
+            docker pull ritiklrt2/evoque-be:latest
+            docker stop evoque-be || true
+            docker rm evoque-be || true
+            docker run -d -p 3006:8000 --name evoque-be ritiklrt2/evoque-be:latest
