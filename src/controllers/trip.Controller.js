@@ -197,7 +197,7 @@ export const createTrip = asyncHandler(async (req, res, url) => {
     res.status(500).json({
       STATUS: "FAIL",
       MESSAGE: error.message,
-      OUTPUT: error,
+      OUTPUT: error.message || error.MESSAGE || "some error occured"
     });
   }
 });

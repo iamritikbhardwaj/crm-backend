@@ -91,7 +91,7 @@ export const createIssue = asyncHandler(async (req, res) => {
     res.status(500).json({
       STATUS: "FAIL",
       MESSAGE: "Internal server error while creating issue",
-      OUTPUT: error,
+      OUTPUT: error.message || error.MESSAGE || "some error occured"
     });
   }
 });
@@ -123,7 +123,7 @@ export const deleteIssue = asyncHandler(async (req, res) => {
     res.status(500).json({
       STATUS: "SERVER ERROR",
       MESSAGE: "There was an server error while deleting an issue.",
-      OUTPUT: error,
+      OUTPUT: error.message || error.MESSAGE || "some error occured"
     });
   }
 });

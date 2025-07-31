@@ -249,7 +249,7 @@ export const createAgentLeadger = asyncHandler(async (req, res) => {
     res.status(500).json({
       STATUS: "FAIL",
       MESSAGE: "Error creating agent ledger",
-      OUTPUT: error,
+      OUTPUT: error.message || error.MESSAGE || "some error occured"
     });
   }
 });
@@ -277,7 +277,7 @@ export const getAgentLeadger = asyncHandler(async (req, res) => {
     res.status(500).json({
       STATUS: "FAIL",
       MESSAGE: "Error fetching agent ledger",
-      OUTPUT: error,
+      OUTPUT: error.message || error.MESSAGE || "some error occured"
     });
   }
 });
@@ -322,7 +322,7 @@ export const createAgentPaymentUpload = asyncHandler(async (req, res) => {
     res.status(500).json({
       STATUS: "FAIL",
       MESSAGE: "Error creating agent payment",
-      OUTPUT: error,
+      OUTPUT: error.message || error.MESSAGE || "some error occured"
     });
   }
 });
@@ -350,7 +350,7 @@ export const getAgentPaymentsUploads = asyncHandler(async (req, res) => {
     res.status(500).json({
       STATUS: "FAIL",
       MESSAGE: "Error fetching agent paymentUploads",
-      OUTPUT: error,
+      OUTPUT: error.message || error.MESSAGE || "some error occured"
     });
   }
 });
