@@ -2,9 +2,9 @@ name: Docker CI
 
 on:
   push:
-    branches: [main]
+    branches: [activitybeds]
   pull_request:
-    branches: [main]
+    branches: [activitybeds]
 
 jobs:
   build-and-push:
