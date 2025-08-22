@@ -196,7 +196,7 @@ export const callFlyRemit = asyncHandler(async (req, res) => {
           res.status(200).json({
                STATUS: 'SUCCESS',
                MESSAGE: 'Here is the processed link',
-               OUTPUT: `https://crm.tomatotrails.com/viewAllBooking?tripId=${tripId}&tranId=${tranId}&tranStatus=${tranStatus}`
+               OUTPUT: `https://crm.crmbackend.com/viewAllBooking?tripId=${tripId}&tranId=${tranId}&tranStatus=${tranStatus}`
           });
      } catch (error) {
           console.log(error);

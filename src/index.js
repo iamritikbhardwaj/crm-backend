@@ -23,7 +23,7 @@ const app = express();
 
 const corsOptions = {
   origin: [
-    'https://crm.tomatotrails.com',
+    'https://crm.crmbackend.com',
     'https://91.205.105.35:63193',
     'https://91.205.105.35:5001',
     'http://localhost:3000',
