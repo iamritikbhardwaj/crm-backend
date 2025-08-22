@@ -6,7 +6,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const userMail = async (name, email, password) => {
   try {
     const data = await resend.emails.send({
-      from: "ActivityBeds <noreply@tomatotrails.com>",
+      from: "crmbackend <noreply@tomatotrails.com>",
       to: email,
       subject: "Successful Login Creation",
       text: `Dear ${name},
@@ -20,7 +20,7 @@ const userMail = async (name, email, password) => {
             
             Warm Regards
  
-            ActivityBeds
+            crmbackend
             Think Global…Go Local!!!`,
     });
     console.log(data);
@@ -33,7 +33,7 @@ const userMail = async (name, email, password) => {
 const createBookingMail = async (email, name, booking_id, customer_name, start_date, end_date, pax, cc) => {
   try {
     const data = await resend.emails.send({
-      from: "ActivityBeds <noreply@tomatotrails.com>",
+      from: "crmbackend <noreply@tomatotrails.com>",
       to: email,
       bcc: cc,
       subject: "Successful Booking Creation",
@@ -53,7 +53,7 @@ const createBookingMail = async (email, name, booking_id, customer_name, start_d
             
       Warm Regards
  
-      ActivityBeds
+      crmbackend
       Think Global…Go Local!!!`,
     });
     console.log(data);
@@ -65,7 +65,7 @@ const createBookingMail = async (email, name, booking_id, customer_name, start_d
 const confirmBookingMail = async (email, user, tripId, customer_name, start_date, end_date, pax, sales_spoc, ops_spoc, cc) => {
   try {
     const data = await resend.emails.send({
-      from: "ActivityBeds <noreply@tomatotrails.com>",
+      from: "crmbackend <noreply@tomatotrails.com>",
       to: email,
       bcc: cc,
       subject: "Successful Trip Creation",
@@ -87,7 +87,7 @@ const confirmBookingMail = async (email, user, tripId, customer_name, start_date
               
         Warm Regards
    
-        ActivityBeds
+        crmbackend
         Think Global…Go Local!!!`,
     });
     console.log(data);
@@ -99,7 +99,7 @@ const confirmBookingMail = async (email, user, tripId, customer_name, start_date
 const rejectBookingMail = async (email, user, booking_id, customer_name, start_date, end_date, pax, comments) => {
   try {
     const data = await resend.emails.send({
-      from: "ActivityBeds <noreply@tomatotrails.com>",
+      from: "crmbackend <noreply@tomatotrails.com>",
       to: email,
       subject: "New Booking Rejected",
       text: `Dear ${user},
@@ -121,7 +121,7 @@ const rejectBookingMail = async (email, user, booking_id, customer_name, start_d
               
         Warm Regards
    
-        ActivityBeds
+        crmbackend
         Think Global…Go Local!!!`,
     });
     console.log(data);
@@ -133,7 +133,7 @@ const rejectBookingMail = async (email, user, booking_id, customer_name, start_d
 const cancelBookingMail = async (email, user, tripId, customer_name, start_date, end_date, pax, ops_spoc, cc, comments) => {
   try {
     const data = await resend.emails.send({
-      from: "ActivityBeds <noreply@tomatotrails.com>",
+      from: "crmbackend <noreply@tomatotrails.com>",
       to: email,
       bcc: cc,
       subject: "Trip ID Cancelled",
@@ -158,7 +158,7 @@ const cancelBookingMail = async (email, user, tripId, customer_name, start_date,
       
       Warm Regards
       
-      ActivityBeds
+      crmbackend
       Think Global…Go Local!!!`,
     });
     console.log(data);
@@ -170,7 +170,7 @@ const cancelBookingMail = async (email, user, tripId, customer_name, start_date,
 const voucherMail = async (email, user, tripId, customer_name, start_date, end_date, pax, sales_spoc, ops_spoc) => {
   try {
     const data = await resend.emails.send({
-      from: "ActivityBeds <noreply@tomatotrails.com>",
+      from: "crmbackend <noreply@tomatotrails.com>",
       to: email,
       subject: `Trip ID ${tripId} Voucher Attached`,
       text: `Dear ${user},
@@ -190,7 +190,7 @@ const voucherMail = async (email, user, tripId, customer_name, start_date, end_d
                   
             Warm Regards
        
-            ActivityBeds
+            crmbackend
             Think Global…Go Local!!!`,
     });
     console.log(data);
@@ -202,7 +202,7 @@ const voucherMail = async (email, user, tripId, customer_name, start_date, end_d
 const reconMail = async (email, user, tripId, customer_name, start_date, end_date, pax, sales_spoc, ops_spoc, cc) => {
   try {
     const data = await resend.emails.send({
-      from: "ActivityBeds <noreply@tomatotrails.com>",
+      from: "crmbackend <noreply@tomatotrails.com>",
       to: cc,
       cc: email,
       subject: `Trip ID ${tripId} – Reconciliation Done`,
@@ -222,7 +222,7 @@ const reconMail = async (email, user, tripId, customer_name, start_date, end_dat
                     
               Warm Regards
          
-              ActivityBeds
+              crmbackend
               Think Global…Go Local!!!`,
     });
     console.log(data);
