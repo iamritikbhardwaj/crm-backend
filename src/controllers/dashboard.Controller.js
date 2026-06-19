@@ -220,7 +220,6 @@ export const userSpecificDashboard = asyncHandler(async (req, res) => {
         activeAgents,
         gmv,
         gpv,
-        andSomeOtherData: "This is a user-specific dashboard data",
       },
       chart: chartVsNo,
     });
