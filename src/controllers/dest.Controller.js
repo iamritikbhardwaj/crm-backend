@@ -1,6 +1,12 @@
 import asyncHandler from "express-async-handler";
 import { destModel } from "../models/destModel.js";
 import { v4 as uuidv4 } from "uuid";
+import zod from "zod";
+
+export const destSchema = zod.object({
+    destination: zod.string().min(1, "Destination is required"),
+    currency: zod.string().min(1, "Currency is required"),
+  });
 
 export const getAllDest = asyncHandler(async (req, res) => {
     console.log('getAllDest');

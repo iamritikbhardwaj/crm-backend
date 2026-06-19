@@ -59,6 +59,8 @@ import { getDashboard, userSpecificDashboard } from "../controllers/dashboard.Co
 import { createIssue, deleteIssue, getAllIssues } from "../controllers/issues.controller.js";
 import { createPaymentLink } from "../middlewares/stripe.js";
 import { createPayLink, getAllPayLinks } from "../controllers/paymentLink.controller.js";
+import { validate } from "uuid";
+import { destSchema } from "../controllers/dest.Controller.js";
 
 const router = Router();
 
@@ -71,7 +73,7 @@ router.delete("/deleteUser/:id", deleteUser);
 router.post("/login", handleUserLogin);
 
 // ! destination
-router.post("/createDestination", createDest);
+router.post("/createDestination", validate(destSchema), createDest);
 router.get("/getAllDestinations", getAllDest);
 router.delete("/deleteDestination/:id", deleteDest);
 
